@@ -115,37 +115,9 @@ export default function SharePage({ route, navigation }) {
         );
     }
 
-    function onChangeTitlePosition(position) {
-        setVerseTitlePosition(position);
-    }
-
-    function onChangeTitleColor(color) {
-        setVerseTitleColor(color);
-    }
-
-    function onChangeVersePosition(position) {
-        setVersePosition(position);
-    }
-
-    function onChangeVerseBackgroundColor(color) {
-        setVerseBackgroundColor(color);
-    }
-
-    function onChangeVerseOpacity(opacity) {
-        setVerseOpacity(opacity);
-    }
-
-    function onChangeBackgroundImage(image) {
-        setBackgroundWithImage(image);
-    }
-
     function onChangeDashboardBackgroundColor(color) {
         setBackgroundWithImage(null);
         setBackgroundWithColor(color);
-    }
-
-    function onChangingVerseTitleLocation(location) {
-        setVerseTitleLocation(location);
     }
 
     async function onGettingMoreImages() {
@@ -212,18 +184,18 @@ export default function SharePage({ route, navigation }) {
             }
 
             <Settings
-                onChangeTitlePosition={(position) => onChangeTitlePosition(position)}
-                onChangeTitleColor={(color) => onChangeTitleColor(color)}
-                onChangeVersePosition={(position) => onChangeVersePosition(position)}
-                onChangeVerseBackgroundColor={(color) => onChangeVerseBackgroundColor(color)}
-                onChangeVerseOpacity={(opacity) => onChangeVerseOpacity(opacity)}
+                onChangeTitlePosition={(position) => setVerseTitlePosition(position)}
+                onChangeTitleColor={(color) => setVerseTitleColor(color)}
+                onChangeVersePosition={(position) => setVersePosition(position)}
+                onChangeVerseBackgroundColor={(color) => setVerseBackgroundColor(color)}
+                onChangeVerseOpacity={(opacity) => setVerseOpacity(opacity)}
                 opacity={verseOpacity}
-                onChangeBackgroundImage={(image) => onChangeBackgroundImage(image)}
+                onChangeBackgroundImage={(image) => setBackgroundWithImage(image)}
                 onChangeDashboardBackgroundColor={(color) => onChangeDashboardBackgroundColor(color)}
                 imagesBackground={imagesBackground}
                 imagesLoaded={imagesLoaded}
                 onGettingMoreImages={() => onGettingMoreImages()}
-                onChangingVerseTitleLocation={(location) => onChangingVerseTitleLocation(location)}
+                onChangingVerseTitleLocation={(location) => setVerseTitleLocation(location)}
             />
         </View>
     );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { StyleSheet, View, Text, TouchableHighlight, FlatList, ScrollView, Image } from 'react-native';
 import Slider from '@react-native-community/slider';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -33,14 +33,14 @@ export default function Settings(props) {
     function RenderTitleFormatter() {
         return (
             <ScrollView horizontal={true}>
-                <TouchableHighlight 
-                    onPress={()=> props.onChangingVerseTitleLocation('top')}
+                <TouchableHighlight
+                    onPress={() => props.onChangingVerseTitleLocation('top')}
                     underlayColor={colors.primary.opacity}
                     style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <MaterialIcons name='vertical-align-top' color={colors.icon} size={28} />
                 </TouchableHighlight>
-                <TouchableHighlight 
-                    onPress={()=> props.onChangingVerseTitleLocation('bottom')}
+                <TouchableHighlight
+                    onPress={() => props.onChangingVerseTitleLocation('bottom')}
                     underlayColor={colors.primary.opacity}
                     style={{ alignItems: 'center', justifyContent: 'center', marginLeft: 16 }}>
                     <MaterialIcons name='vertical-align-bottom' color={colors.icon} size={28} />
@@ -51,7 +51,7 @@ export default function Settings(props) {
 
     function RenderTitleOptions() {
         return (
-            <ScrollView style={{ maxHeight: 112 }}>
+            <ScrollView style={{ flex: 1 }}>
                 <View>
                     <Text style={styles.labelTitle}>Alinhamento</Text>
                     <View style={styles.textAlignContainer}>
@@ -91,7 +91,7 @@ export default function Settings(props) {
 
     function RenderVerseOptions() {
         return (
-            <ScrollView style={{ maxHeight: 112 }}>
+            <ScrollView style={{ flex: 1 }}>
                 <Text style={styles.labelTitle}>Posição</Text>
                 <View style={styles.textAlignContainer}>
                     <TouchableHighlight underlayColor='transparent' onPress={() => props.onChangeVersePosition('flex-end')}>
@@ -199,6 +199,8 @@ export default function Settings(props) {
         );
     }
 
+
+
     function RenderOptions() {
         switch (selectedSetting) {
             case 1:
@@ -267,11 +269,14 @@ export default function Settings(props) {
 
 const styles = StyleSheet.create({
     settingsContainer: {
-        backgroundColor: colors.background
+        backgroundColor: colors.background,
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0
     },
     options: {
         backgroundColor: colors.primary.regular,
-        width: '100%',
         marginBottom: 8,
         padding: 16,
         borderRadius: 8
