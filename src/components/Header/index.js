@@ -63,7 +63,7 @@ export default function Header(props) {
                         :
                         <>
                             <TouchableHighlight
-                                onPress={() => props.chooseBook()}
+                                onPress={() => props.goToSearchPage()}
                                 style={styles.headerButton}
                                 underlayColor={colors.primary.opacity}>
                                 <MaterialIcons

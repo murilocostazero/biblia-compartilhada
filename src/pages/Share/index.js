@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, View, Text, TouchableHighlight, ImageBackground } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableHighlight, ImageBackground } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Settings from '../../components/Settings';
 import colors from '../../styles/colors';
@@ -10,36 +10,46 @@ import { getPromiseImageStorySize } from '../../handlers/handleFetchImages';
 export default function SharePage({ route, navigation }) {
     const viewRef = useRef();
 
+    //Verse Title
     const [verseTitlePosition, setVerseTitlePosition] = useState('left');
-    const [verseTitleColor, setVerseTitleColor] = useState(colors.primary.dark);
+    const [verseTitleColor, setVerseTitleColor] = useState('#FFF');
     const [versePosition, setVersePosition] = useState('center');
+    const [verseTitleLocation, setVerseTitleLocation] = useState('bottom');
+    const [verseTitle, setVerseTitle] = useState('');
+
+    //Verse
     const [verseBackgroundColor, setVerseBackgroundColor] = useState(colors.primary.light);
     const [verseOpacity, setVerseOpacity] = useState(1);
-    const [backgroundWithImage, setBackgroundWithImage] = useState(null);
-    const [backgroundWithColor, setBackgroundWithColor] = useState(colors.icon);
     const [versesToShow, setVersesToShow] = useState('');
-    const [isInstagramInstalled, setIsInstagramInstalled] = useState(false);
+
+    //Background
+    const [backgroundWithImage, setBackgroundWithImage] = useState(null);
+    const [backgroundWithColor, setBackgroundWithColor] = useState(colors.primary.dark);
     const [imagesBackground, setImagesBackground] = useState([]);
     const [imagesLoaded, setImagesLoaded] = useState(false);
-    const [verseTitleLocation, setVerseTitleLocation] = useState('bottom');
+
 
     useEffect(() => {
+        getVersesToShare();
+        getThreeImages();
+    }, [imagesBackground]);
+
+
+    async function getVersesToShare() {
         const selectedVerses = route.params.selectedVerses;
 
         if (selectedVerses.length > 1) {
-            //Get first item of array
             const firstItem = selectedVerses[0].id + 1;
-            //Get last item of array
             const lastItem = selectedVerses[selectedVerses.length - 1].id + 1;
-            setVersesToShow(`${firstItem}:${lastItem}`);
+            setVersesToShow(`${firstItem}-${lastItem}`);
+
         } else {
             setVersesToShow(`${selectedVerses[0].id + 1}`);
         }
 
-        //Checking if instagram is installed
-        checkInstagramIsInstalled();
-        getThreeImages();
-    }, [imagesBackground]);
+        const verseTitle = `${route.params.choice.choosedBook} ${route.params.choice.chapter+1}`;
+        setVerseTitle(verseTitle);
+    }
 
     async function getThreeImages() {
         while (imagesBackground.length < 3) {
@@ -57,11 +67,8 @@ export default function SharePage({ route, navigation }) {
         setImagesBackground(images);
     }
 
-    function checkInstagramIsInstalled() {
-        Share.isPackageInstalled('com.instagram.android').then(({ isInstalled }) => setIsInstagramInstalled(isInstalled));
-    }
-
     function RenderVerses() {
+        console.log('Fui chamado')
         return (
             <TouchableHighlight
                 style={{
@@ -77,22 +84,26 @@ export default function SharePage({ route, navigation }) {
                         <View>
                             {route.params.selectedVerses.map((item) =>
                                 <View key={item.id}>
-                                    <Text style={styles.verseItem}>{item.verse}</Text>
+                                    <Text style={styles.verseItem}>{item.id+1}. {item.verse}</Text>
                                 </View>)}
-                            <Text style={[
-                                styles.verseTitle, {
-                                    textAlign: verseTitlePosition,
-                                    color: verseTitleColor
-                                }]}>{route.params.choice.choosedBook} {route.params.choice.chapter + 1} - {versesToShow}
+                            <Text
+                                style={[
+                                    styles.verseTitle, {
+                                        textAlign: verseTitlePosition,
+                                        color: verseTitleColor
+                                    }]}>
+                                {verseTitle}
                             </Text>
                         </View>
                         :
                         <View>
-                            <Text style={[
-                                styles.verseTitle, {
-                                    textAlign: verseTitlePosition,
-                                    color: verseTitleColor
-                                }]}>{route.params.choice.choosedBook} {route.params.choice.chapter + 1} - {versesToShow}
+                            <Text
+                                style={[
+                                    styles.verseTitle, {
+                                        textAlign: verseTitlePosition,
+                                        color: verseTitleColor
+                                    }]}>
+                                {verseTitle}
                             </Text>
                             {route.params.selectedVerses.map((item) =>
                                 <View key={item.id}>
@@ -133,7 +144,7 @@ export default function SharePage({ route, navigation }) {
         setBackgroundWithColor(color);
     }
 
-    function onChangingVerseTitleLocation(location){
+    function onChangingVerseTitleLocation(location) {
         setVerseTitleLocation(location);
     }
 
@@ -158,35 +169,6 @@ export default function SharePage({ route, navigation }) {
         }
     }
 
-    // async function onInstagramShare() {
-    //     captureRef(viewRef, {
-    //         format: 'png',
-    //         quality: 0.8
-    //     }).then(async (uri, error) => {
-    //         if (error) {
-    //             console.log('Get view reference error. ', error);
-    //         } else {
-    //             if (backgroundWithImage != null) {
-    //                 Share.shareSingle({
-    //                     backgroundImage: backgroundWithImage,
-    //                     stickerImage: uri,
-    //                     social: Share.Social.INSTAGRAM_STORIES,
-    //                     forceDialog: true
-    //                 }).then((res) => {
-    //                     console.log(res)
-    //                 }).catch((err) => { console.log(err) });
-    //             } else {
-    //                 Share.shareSingle({
-    //                     stickerImage: uri,
-    //                     social: Share.Social.INSTAGRAM_STORIES,
-    //                     backgroundTopColor: backgroundWithColor,
-    //                     backgroundBottomColor: backgroundWithColor
-    //                 });
-    //             }
-    //         }
-    //     });
-    // }
-
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -194,11 +176,6 @@ export default function SharePage({ route, navigation }) {
                     <Ionicons name='chevron-back-outline' color={colors.icon} size={32} />
                 </TouchableHighlight>
                 <View style={{ flexDirection: 'row' }}>
-                    {/* <TouchableHighlight
-                        underlayColor='transparent'
-                        onPress={() => onInstagramShare()}>
-                        <Ionicons name='logo-instagram' color={colors.icon} size={32} />
-                    </TouchableHighlight> */}
                     <TouchableHighlight
                         style={{ marginLeft: 16 }}
                         underlayColor='transparent'

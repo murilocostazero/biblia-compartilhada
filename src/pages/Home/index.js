@@ -6,7 +6,7 @@ import { getFavoriteData, storeFavoriteData } from '../../handlers/handlerASFavo
 import { Header, FirstUseComponent, VersesSettings } from '../../components';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../styles/colors';
-import Bible from '../../files/handleBible';
+import Bible from '../../handlers/handleBible';
 import { VerseContainer, LabelContainer } from './styles';
 
 export default function Home({ navigation }) {
@@ -202,6 +202,10 @@ export default function Home({ navigation }) {
         setReadMode(!readMode);
     }
 
+    function goToSearchPage(){
+        navigation.navigate('Search');
+    }
+
     async function getFavorites() {
         const favorites = await getFavoriteData();
         return favorites == null ? [] : favorites;
@@ -258,6 +262,7 @@ export default function Home({ navigation }) {
                 openVersesSettings={openVersesSettings}
                 isFirstUse={isFirstUse}
                 verseIsSelected={verseIsSelected}
+                goToSearchPage={() => goToSearchPage()}
                 onTappingFavorites={() => onTappingFavorites()}
                 onAddingVerseToFavorite={() => onAddingVerseToFavorite()} />
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

@@ -3,7 +3,7 @@ import { StyleSheet, View, FlatList, TouchableHighlight, Text } from 'react-nati
 import { storeData } from '../../handlers/handlerASChoice';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from '../../styles/colors';
-import Bible from '../../files/handleBible';
+import Bible from '../../handlers/handleBible';
 
 import { HeaderTitle, ListText, Container } from './styles';
 

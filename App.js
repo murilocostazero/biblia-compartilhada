@@ -7,7 +7,8 @@ import {
   ChooseBook,
   ChooseVerse,
   Share,
-  Favorites
+  Favorites,
+  Search
 } from './src/pages';
 
 const Stack = createNativeStackNavigator();
@@ -41,6 +42,11 @@ export default function App() {
           options={{ headerShown: false }}
           name='Favorites'
           component={Favorites} />
+
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name='Search'
+          component={Search} />
 
       </Stack.Navigator>
     </NavigationContainer>

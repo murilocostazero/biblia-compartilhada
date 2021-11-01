@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, FlatList, TouchableHighlight } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from '../../styles/colors';
-import Bible from '../../files/handleBible';
+import Bible from '../../handlers/handleBible';
 import { Container, Header, SearchBar, ListItem, ListText, List } from './styles';
 
 export default function ChooseBook({ navigation }) {
