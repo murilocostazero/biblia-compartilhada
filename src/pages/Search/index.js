@@ -22,7 +22,7 @@ export default function Search({navigation}) {
 
     function getResults() {
         let bible = new Bible();
-        bible.getVerse(query).then((item) => {
+        bible.getVerse(query.toLowerCase()).then((item) => {
             setQuery('');
             setSearchResult(item);
             setIsLoading(false);

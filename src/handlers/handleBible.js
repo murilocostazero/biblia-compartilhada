@@ -49,7 +49,7 @@ export default class Bible {
                 for (let j = 0; j < chapters.length; j++) {
                     const chapter = chapters[j];
                     for (let k = 0; k < chapter.length; k++) {
-                        const verse = chapter[k];
+                        const verse = chapter[k].toLowerCase();
                         if (verse.includes(query)) {
                             const result = {
                                 book: book.name,
