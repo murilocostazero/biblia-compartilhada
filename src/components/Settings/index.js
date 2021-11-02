@@ -5,11 +5,11 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../styles/colors';
 import palette from '../../styles/palette';
 import { ModalColorPicker } from '../../components';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 export default function Settings(props) {
     const [selectedSetting, setSelectedSetting] = useState('');
     const [isModalColorPickerVisible, setIsModalColorPickerVisible] = useState(false);
-    const [verseOpacity, setVerseOpacity] = useState(0.8);
 
     //ModalColorPicker
     const [selectedColor, setSelectedColor] = useState(null)
@@ -118,12 +118,6 @@ export default function Settings(props) {
                 <View style={[styles.paletteColorItem, { backgroundColor: item }]} />
             </TouchableHighlight>
         );
-    }
-
-    function handleTextOpacity(text) {
-        if (isNaN(text) == false && text <= 1) {
-            setVerseOpacity(text);
-        }
     }
 
     function decrementOpacity() {
@@ -271,6 +265,26 @@ export default function Settings(props) {
         );
     }
 
+    function pickImage() {
+        launchImageLibrary({
+            title: 'Select Image',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+            includeBase64: true
+        }, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else {
+                const source = response.assets[0].base64;
+                onSelectingBackground(source);
+            }
+        });
+    }
+
     function RenderBackgroundOptions() {
         return (
             <View>
@@ -278,16 +292,54 @@ export default function Settings(props) {
                     props.imagesBackground.length < 3
                         ? <ActivityIndicator size="large" color={colors.secondary.regular} />
                         : <View>
-                            <TouchableHighlight
-                                onPress={() => props.onGettingMoreImages()}
-                                underlayColor={colors.secondary.light}
-                                style={{ alignSelf: 'flex-end', marginVertical: 8 }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Text style={{ fontFamily: 'PTSans-Bold', marginRight: 4 }}>Carregar mais</Text>
-                                    <Ionicons name='refresh-outline' color={colors.secondary.regular} size={22} />
-                                </View>
-                            </TouchableHighlight>
+                            <View style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                paddingHorizontal: 4,
+                                marginBottom: 8
+                            }}>
+                                <TouchableHighlight
+                                    onPress={() => pickImage()}
+                                    underlayColor={colors.secondary.opacity}
+                                    style={{
+                                        backgroundColor: colors.primary.light,
+                                        borderRadius: 8,
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        padding: 4
+                                    }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <Text style={{
+                                            fontFamily: 'PTSans-Bold',
+                                            marginRight: 8,
+                                            color: '#FFF'
+                                        }}>Imagem da galeria</Text>
+                                        <Ionicons name='images-outline' color={colors.secondary.regular} size={22} />
+                                    </View>
+                                </TouchableHighlight>
+                                <TouchableHighlight
+                                    onPress={() => props.onGettingMoreImages()}
+                                    underlayColor={colors.secondary.light}
+                                    style={{
+                                        backgroundColor: colors.primary.light,
+                                        borderRadius: 8,
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        padding: 4
+                                    }}>
+                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <Text style={{ 
+                                            fontFamily: 'PTSans-Bold',
+                                            marginRight: 8,
+                                            color: '#FFF'
+                                         }}>Carregar mais</Text>
+                                        <Ionicons name='refresh-outline' color={colors.secondary.regular} size={22} />
+                                    </View>
+                                </TouchableHighlight>
+                            </View>
                             <FlatList
+                                style={{ flex: 1 }}
                                 horizontal={true}
                                 data={props.imagesBackground}
                                 keyExtractor={(item) => item.image}

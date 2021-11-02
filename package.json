@@ -20,6 +20,7 @@
     "react-native-blob-util": "^0.13.16",
     "react-native-color-picker": "^0.6.0",
     "react-native-fast-image": "^8.5.11",
+    "react-native-image-picker": "^4.1.2",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.8.0",
     "react-native-share": "^7.2.0",
