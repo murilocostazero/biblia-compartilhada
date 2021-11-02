@@ -1,9 +1,34 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import colors from '../../styles/colors';
-import { TouchableHighlight, View, Text, StyleSheet } from 'react-native';
+import { TouchableHighlight, View, Text, StyleSheet, Animated } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export default function Header(props) {
+    const FadeInView = (props) => {
+        const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
+        React.useEffect(() => {
+            Animated.timing(
+                fadeAnim,
+                {
+                    toValue: 1,
+                    duration: 500,
+                    useNativeDriver: false
+                }
+            ).start();
+        }, [fadeAnim])
+
+        return (
+            <Animated.View                 // Special animatable View
+                style={{
+                    ...props.style,
+                    opacity: fadeAnim,         // Bind opacity to animated value
+                }}
+            >
+                {props.children}
+            </Animated.View>
+        );
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.headerLabel}>Bíblia</Text>
@@ -37,15 +62,18 @@ export default function Header(props) {
                 }
                 {
                     props.selectedVerses.length == 1
-                        ? <TouchableHighlight
-                            onPress={() => props.onAddingVerseToFavorite()}
-                            style={styles.headerButton}
-                            underlayColor={colors.primary.opacity}>
-                            <MaterialIcons
-                                name={props.verseIsSelected ? 'favorite' : 'favorite-outline'}
-                                color={props.verseIsSelected ? colors.error : colors.icon}
-                                size={28} />
-                        </TouchableHighlight>
+                        ?
+                        <FadeInView>
+                            <TouchableHighlight
+                                onPress={() => props.onAddingVerseToFavorite()}
+                                style={styles.headerButton}
+                                underlayColor={colors.primary.opacity}>
+                                <MaterialIcons
+                                    name={props.verseIsSelected ? 'favorite' : 'favorite-outline'}
+                                    color={props.verseIsSelected ? colors.error : colors.icon}
+                                    size={28} />
+                            </TouchableHighlight>
+                        </FadeInView>
                         : <View />
                 }
                 {
@@ -77,7 +105,7 @@ export default function Header(props) {
                                 underlayColor={colors.primary.opacity}>
                                 <MaterialIcons
                                     name='menu-book'
-                                    color={colors.icon}
+                                    color={colors.background}
                                     size={28} />
                             </TouchableHighlight>
                         </>

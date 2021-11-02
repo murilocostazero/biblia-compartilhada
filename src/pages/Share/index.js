@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableHighlight, ImageBackground } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Settings from '../../components/Settings';
+import {Settings, StatusBar} from '../../components/';
 import colors from '../../styles/colors';
 import { captureRef } from 'react-native-view-shot';
 import Share from 'react-native-share';
@@ -28,11 +28,21 @@ export default function SharePage({ route, navigation }) {
     const [imagesBackground, setImagesBackground] = useState([]);
     const [imagesLoaded, setImagesLoaded] = useState(false);
 
+    const [isStatusBarVisible, setIsStatusBarVisible] = useState(false);
+
 
     useEffect(() => {
         getVersesToShare();
         getThreeImages();
     }, [imagesBackground]);
+
+    function handleStatusBarVisibility(){
+        setIsStatusBarVisible(true);
+
+        setTimeout(()=>{
+            setIsStatusBarVisible(false);
+        }, 2000);
+    }
 
 
     async function getVersesToShare() {
@@ -136,7 +146,7 @@ export default function SharePage({ route, navigation }) {
                 url: uri
             });
         } catch (err) {
-            console.error(err)
+            handleStatusBarVisibility();
         }
     }
 
@@ -180,6 +190,12 @@ export default function SharePage({ route, navigation }) {
                         resizeMode='cover'>
                         <RenderVerses />
                     </ImageBackground>
+            }
+
+            {
+                isStatusBarVisible 
+                ? <StatusBar type='error' message='Compartilhamento cancelado' />
+                : <View />
             }
 
             <Settings
