@@ -7,7 +7,6 @@ import { Header, FirstUseComponent, VersesSettings } from '../../components';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../styles/colors';
 import Bible from '../../handlers/handleBible';
-import { VerseContainer, LabelContainer } from './styles';
 
 export default function Home({ navigation }) {
     const [chapterIsReady, setChapterIsReady] = useState(false);
@@ -26,7 +25,7 @@ export default function Home({ navigation }) {
 
     const isFocused = useIsFocused();
 
-    useEffect(() => {        
+    useEffect(() => {
         if (isFocused == true && selectedVerses.length == 0) {
             getInitialData();
         }
@@ -57,20 +56,20 @@ export default function Home({ navigation }) {
         await setChapterIsReady(true);
     }
 
-    
+
     async function getDataFromAS() {
         let data = await getData();
-        
+
         if (data != null) {
             setChoice(data);
-            
+
             let chapter = getChapter(data.choosedBook, data.chapter);
             setChapterToShow(chapter);
         } else {
             setIsFirstUse(true);
         }
     }
-    
+
     async function getDataFromFavoriteAS() {
         let data = await getFavoriteData();
         if (data != null) {
@@ -79,7 +78,7 @@ export default function Home({ navigation }) {
             setFavotireData([]);
         }
     }
-    
+
     function getChapter(choosedBook, chapterNumber) {
         const bible = new Bible();
         const chapter = bible.getChapter(choosedBook, chapterNumber);
@@ -151,7 +150,7 @@ export default function Home({ navigation }) {
                 underlayColor={colors.secondary.light}
                 onPress={() => handleSelect(item)}
                 style={[item.item.isSelected == true ? styles.selectedItem : styles.unselectedItem, styles.verseItem]}>
-                <VerseContainer>
+                <View style={{flexDirection: 'column'}}>
                     {
                         isVerseFavorite != undefined
                             ? <View
@@ -164,13 +163,13 @@ export default function Home({ navigation }) {
                                     bottom: 0,
                                     left: 0,
                                     right: 0,
-                                    opacity: 0.1,
+                                    opacity: 0.3,
                                     alignItems: 'center',
                                     justifyContent: 'center'
                                 }}>
                                 <MaterialIcons
                                     name='favorite'
-                                    color={colors.error}
+                                    color={readMode ? colors.background : colors.error}
                                     size={containerSize || 0} />
                             </View>
                             : <View />
@@ -185,7 +184,7 @@ export default function Home({ navigation }) {
                         ]}>
                         {item.index + 1}. {item.item.verse}
                     </Text>
-                </VerseContainer>
+                </View>
             </TouchableHighlight>
         );
     }
@@ -202,7 +201,7 @@ export default function Home({ navigation }) {
         setReadMode(!readMode);
     }
 
-    function goToSearchPage(){
+    function goToSearchPage() {
         navigation.navigate('Search');
     }
 
@@ -283,13 +282,13 @@ export default function Home({ navigation }) {
                                             onChangingTextBold={() => onChangingTextBold()} />
                                         : <View />
                                 }
-                                <LabelContainer>
+                                <View style={styles.labelContainer}>
                                     <Text style={[styles.chapterTitle, {
                                         color: readMode ? colors.secondary.light : colors.primary.regular
                                     }]}>
                                         {choice.choosedBook} - {choice.chapter + 1}
                                     </Text>
-                                </LabelContainer>
+                                </View>
                                 <FlatList
                                     contentContainerStyle={{ paddingTop: 16 }}
                                     data={chapterToShow}
@@ -372,5 +371,13 @@ const styles = StyleSheet.create({
     chapterTitle: {
         fontFamily: 'PTSans-Bold',
         fontSize: 18
+    },
+    labelContainer: {
+        marginVertical: 4,
+        padding: 4,
+        borderRadius: 8,
+        flexDirection: 'row',
+        aligntems: 'center',
+        justifyContent: 'center'
     }
 });

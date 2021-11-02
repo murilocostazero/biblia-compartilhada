@@ -5,8 +5,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from '../../styles/colors';
 import Bible from '../../handlers/handleBible';
 
-import { HeaderTitle, ListText, Container } from './styles';
-
 export default function ChooseVerse({ route, navigation }) {
     const { choosedBook } = route.params;
     const [chapters, setChapters] = useState(0);
@@ -34,19 +32,19 @@ export default function ChooseVerse({ route, navigation }) {
                 underlayColor={colors.primary.regular}
                 style={styles.chapterButton}
                 onPress={() => addChoiceToStorageAndNavigate(item)}>
-                <ListText>{item.index + 1}</ListText>
+                <Text style={styles.listText}>{item.index + 1}</Text>
             </TouchableHighlight>
         );
     }
 
     return (
-        <Container>
+        <View style={styles.container}>
             <View style={styles.header}>
                 <TouchableHighlight underlayColor='transparent' onPress={() => navigation.goBack()}>
                     <Ionicons name='chevron-back-outline' color={colors.icon} size={32} />
                 </TouchableHighlight>
 
-                <HeaderTitle>Livro: {choosedBook}</HeaderTitle>
+                <Text style={styles.headerTitle}>Livro: {choosedBook}</Text>
             </View>
             <View style={styles.container}>
                 <Text style={styles.chooseChapterText}>Escolha o capítulo</Text>
@@ -59,7 +57,7 @@ export default function ChooseVerse({ route, navigation }) {
                     />
                 </View>
             </View>
-        </Container>
+        </View>
     );
 }
 
@@ -107,5 +105,20 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: colors.primary.dark,
         backgroundColor: colors.primary.light
+    },
+    headerTitle: {
+        fontSize: 22,
+        fontFamily: 'PTSans-Bold',
+        color: colors.primary.regular,
+        marginLeft: 16
+    },
+    listText: {
+        fontSize: 18,
+        fontFamily: 'PTSans-Regular',
+        color: '#FFF'
+    },
+    container: {
+        flex: 1,
+        backgroundColor: colors.background
     }
 });

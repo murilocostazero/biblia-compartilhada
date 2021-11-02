@@ -12,7 +12,6 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.9",
     "@react-native-community/hooks": "^2.8.0",
-    "@react-native-community/slider": "^4.1.9",
     "@react-navigation/native": "^6.0.4",
     "@react-navigation/native-stack": "^6.2.2",
     "react": "17.0.2",
@@ -25,8 +24,7 @@
     "react-native-screens": "^3.8.0",
     "react-native-share": "^7.2.0",
     "react-native-vector-icons": "^8.1.0",
-    "react-native-view-shot": "^3.1.2",
-    "styled-components": "^5.3.1"
+    "react-native-view-shot": "^3.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
