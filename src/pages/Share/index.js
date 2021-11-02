@@ -23,6 +23,7 @@ export default function SharePage({ route, navigation }) {
     const [verseOpacity, setVerseOpacity] = useState(0.8);
     const [versesToShow, setVersesToShow] = useState('');
     const [verseFont, setVerseFont] = useState('PTSans-Regular');
+    const [verseMargin, setVerseMargin] = useState(38);
 
     //Background
     const [backgroundWithImage, setBackgroundWithImage] = useState(null);
@@ -31,11 +32,19 @@ export default function SharePage({ route, navigation }) {
     const [imagesLoaded, setImagesLoaded] = useState(false);
 
     const [isStatusBarVisible, setIsStatusBarVisible] = useState(false);
+    // const [isInstagramInstalled, setIsInstagramInstalled] = useState(false);
 
     useEffect(() => {
         getVersesToShare();
         getThreeImages();
+
+        // checkIfInstagramIsInstalled();
     }, [imagesBackground]);
+
+    // async function checkIfInstagramIsInstalled() {
+    //     const { isInstalled } = await Share.isPackageInstalled('com.instagram.android');
+    //     setIsInstagramInstalled(isInstalled);
+    // }
 
     function handleStatusBarVisibility(){
         setIsStatusBarVisible(true);
@@ -142,7 +151,7 @@ export default function SharePage({ route, navigation }) {
         try {
             const uri = await captureRef(viewRef, {
                 format: 'png',
-                quality: 0.8
+                quality: 1
             });
 
             await Share.open({
@@ -174,7 +183,8 @@ export default function SharePage({ route, navigation }) {
                     <View style={[
                         styles.dashboard, {
                             justifyContent: versePosition,
-                            backgroundColor: backgroundWithColor
+                            backgroundColor: backgroundWithColor,
+                            padding: verseMargin
                         }
                     ]}
                         ref={viewRef}>
@@ -185,7 +195,8 @@ export default function SharePage({ route, navigation }) {
                         collapsable={false}
                         style={[styles.dashboard, {
                             justifyContent: versePosition,
-                            backgroundColor: 'transparent'
+                            backgroundColor: 'transparent',
+                            padding: verseMargin
                         }]}
                         ref={viewRef}
                         imageStyle={{ borderRadius: 16 }}
@@ -216,6 +227,8 @@ export default function SharePage({ route, navigation }) {
                 onChangingVerseTitleLocation={(location) => setVerseTitleLocation(location)}
                 selectingTitleFont={(item) => setVerseTitleFont(item)}
                 selectingVerseFont={(item) => setVerseFont(item)}
+                onChangeVerseMargin={(margin) => setVerseMargin(margin)}
+                margin={verseMargin}
             />
         </View>
     );
@@ -234,7 +247,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.background
     },
     dashboard: {
-        padding: 38,
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',

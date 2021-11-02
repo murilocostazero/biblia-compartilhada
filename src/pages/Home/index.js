@@ -29,7 +29,6 @@ export default function Home({ navigation }) {
         if (isFocused == true && selectedVerses.length == 0) {
             getInitialData();
         }
-
     }, [selectedVerses, isFocused]);
 
     useFocusEffect(

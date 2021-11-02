@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableHighlight, FlatList, ScrollView, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, TouchableHighlight, FlatList, ScrollView, Image, ActivityIndicator, BackHandler } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../styles/colors';
 import palette from '../../styles/palette';
+import { useFocusEffect } from '@react-navigation/native';
 import { ModalColorPicker, FontPicker } from '../../components';
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -12,7 +13,25 @@ export default function Settings(props) {
     const [isModalColorPickerVisible, setIsModalColorPickerVisible] = useState(false);
 
     //ModalColorPicker
-    const [selectedColor, setSelectedColor] = useState(null)
+    const [selectedColor, setSelectedColor] = useState(null);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            const onBackPress = () => {
+                if (selectedSetting > 0) {
+                    setSelectedSetting(0);
+                    return true;
+                } else {
+                    return false;
+                }
+            };
+
+            BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+            return () =>
+                BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+        }, [selectedSetting])
+    );
 
     function onSelectingSetting(from) {
         if (selectedSetting == from) {
@@ -44,7 +63,13 @@ export default function Settings(props) {
                         props.onChangingVerseTitleLocation('top');
                     }}
                     underlayColor={colors.primary.opacity}
-                    style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: 4,
+                        borderRadius: 8,
+                        backgroundColor: colors.primary.light
+                    }}>
                     <MaterialIcons name='vertical-align-top' color={colors.icon} size={28} />
                 </TouchableHighlight>
                 <TouchableHighlight
@@ -53,19 +78,26 @@ export default function Settings(props) {
                         props.onChangingVerseTitleLocation('bottom');
                     }}
                     underlayColor={colors.primary.opacity}
-                    style={{ alignItems: 'center', justifyContent: 'center', marginLeft: 16 }}>
+                    style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: 4,
+                        borderRadius: 8,
+                        backgroundColor: colors.primary.light,
+                        marginLeft: 16
+                    }}>
                     <MaterialIcons name='vertical-align-bottom' color={colors.icon} size={28} />
                 </TouchableHighlight>
             </ScrollView>
         );
     }
 
-    function onSelectingFont(item){
+    function onSelectingFont(item) {
         props.selectingTitleFont(item);
         setSelectedSetting(0);
     }
 
-    function onSelectingVerseFont(item){
+    function onSelectingVerseFont(item) {
         props.selectingVerseFont(item);
         setSelectedSetting(0);
     }
@@ -151,6 +183,27 @@ export default function Settings(props) {
         }
     }
 
+    function decrementMargin() {
+        if (props.margin > 8) {
+            const decrementedMargin = (parseInt(props.margin)/2);
+            // console.log(decrementedMargin)
+            props.onChangeVerseMargin(decrementedMargin);
+        } else {
+            props.onChangeVerseMargin(props.margin);
+        }
+    }
+
+    function incrementMargin() {
+        if (props.margin < 112) {
+            const incrementedMargin = (parseInt(props.margin)*2);
+            // console.log(incrementedMargin)
+            props.onChangeVerseMargin(incrementedMargin);
+        } else {
+            props.onChangeVerseMargin(props.margin);
+        }
+    }
+
+
     function RenderVerseOptions() {
         return (
             <ScrollView
@@ -193,33 +246,69 @@ export default function Settings(props) {
                         <Ionicons name='add' color='#FFF' size={32} />
                     </TouchableHighlight>
                 </View>
-                <Text style={styles.labelTitle}>Opacidade (0 a 1)</Text>
 
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', padding: 4 }}>
-                    <TouchableHighlight
-                        onPress={() => decrementOpacity()}
-                        style={[
-                            styles.textFormatButton,
-                            { backgroundColor: '#FFF' }
-                        ]}>
-                        <MaterialIcons name='remove' color={colors.primary.regular} size={18} />
-                    </TouchableHighlight>
-                    <View style={{ marginHorizontal: 10, alignItems: 'center' }}>
-                        <Text style={{
-                            fontFamily: 'PTSans-Regular',
-                            fontSize: 18
-                        }}>
-                            {props.opacity}
-                        </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
+                    <View style={{ alignItems: 'center' }}>
+                        <Text style={styles.labelTitle}>Opacidade</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', padding: 4 }}>
+                            <TouchableHighlight
+                                underlayColor={colors.secondary.light}
+                                onPress={() => decrementOpacity()}
+                                style={[
+                                    styles.textFormatButton,
+                                    { backgroundColor: '#FFF' }
+                                ]}>
+                                <MaterialIcons name='remove' color={colors.primary.regular} size={18} />
+                            </TouchableHighlight>
+                            <View style={{ marginHorizontal: 10, alignItems: 'center' }}>
+                                <Text style={{
+                                    fontFamily: 'PTSans-Regular',
+                                    fontSize: 18
+                                }}>
+                                    {props.opacity}
+                                </Text>
+                            </View>
+                            <TouchableHighlight
+                                underlayColor={colors.secondary.light}
+                                onPress={() => incrementOpacity()}
+                                style={[styles.textFormatButton, { backgroundColor: '#FFF' }]}>
+                                <MaterialIcons name='add' color={colors.primary.regular} size={18} />
+                            </TouchableHighlight>
+                        </View>
                     </View>
-                    <TouchableHighlight
-                        onPress={() => incrementOpacity()}
-                        style={[styles.textFormatButton, { backgroundColor: '#FFF' }]}>
-                        <MaterialIcons name='add' color={colors.primary.regular} size={18} />
-                    </TouchableHighlight>
+
+                    <View style={{ alignItems: 'center' }}>
+                        <Text style={styles.labelTitle}>Margem</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', padding: 4 }}>
+                            <TouchableHighlight
+                                underlayColor={colors.secondary.light}
+                                onPress={() => decrementMargin()}
+                                style={[
+                                    styles.textFormatButton,
+                                    { backgroundColor: '#FFF' }
+                                ]}>
+                                <MaterialIcons name='remove' color={colors.primary.regular} size={18} />
+                            </TouchableHighlight>
+                            <View style={{ marginHorizontal: 10, alignItems: 'center' }}>
+                                <Text style={{
+                                    fontFamily: 'PTSans-Regular',
+                                    fontSize: 18
+                                }}>
+                                    {props.margin}
+                                </Text>
+                            </View>
+                            <TouchableHighlight
+                                underlayColor={colors.secondary.light}
+                                onPress={() => incrementMargin()}
+                                style={[styles.textFormatButton, { backgroundColor: '#FFF' }]}>
+                                <MaterialIcons name='add' color={colors.primary.regular} size={18} />
+                            </TouchableHighlight>
+                        </View>
+                    </View>
+
                 </View>
-                <FontPicker onSelectingFont={(item) => onSelectingVerseFont(item)} />    
+
+                <FontPicker onSelectingFont={(item) => onSelectingVerseFont(item)} />
             </ScrollView>
         );
     }
@@ -340,11 +429,11 @@ export default function Settings(props) {
                                         padding: 4
                                     }}>
                                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <Text style={{ 
+                                        <Text style={{
                                             fontFamily: 'PTSans-Bold',
                                             marginRight: 8,
                                             color: '#FFF'
-                                         }}>Carregar mais</Text>
+                                        }}>Carregar mais</Text>
                                         <Ionicons name='refresh-outline' color={colors.secondary.regular} size={22} />
                                     </View>
                                 </TouchableHighlight>
