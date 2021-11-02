@@ -16,11 +16,13 @@ export default function SharePage({ route, navigation }) {
     const [versePosition, setVersePosition] = useState('center');
     const [verseTitleLocation, setVerseTitleLocation] = useState('bottom');
     const [verseTitle, setVerseTitle] = useState('');
+    const [verseTitleFont, setVerseTitleFont] = useState('PTSans-Bold')
 
     //Verse
     const [verseBackgroundColor, setVerseBackgroundColor] = useState(colors.primary.light);
     const [verseOpacity, setVerseOpacity] = useState(0.8);
     const [versesToShow, setVersesToShow] = useState('');
+    const [verseFont, setVerseFont] = useState('PTSans-Regular');
 
     //Background
     const [backgroundWithImage, setBackgroundWithImage] = useState(null);
@@ -29,7 +31,6 @@ export default function SharePage({ route, navigation }) {
     const [imagesLoaded, setImagesLoaded] = useState(false);
 
     const [isStatusBarVisible, setIsStatusBarVisible] = useState(false);
-
 
     useEffect(() => {
         getVersesToShare();
@@ -93,13 +94,14 @@ export default function SharePage({ route, navigation }) {
                         <View>
                             {route.params.selectedVerses.map((item) =>
                                 <View key={item.id}>
-                                    <Text style={styles.verseItem}>{item.id+1}. {item.verse}</Text>
+                                    <Text style={[styles.verseItem, {fontFamily: verseFont}]}>{item.id+1}. {item.verse}</Text>
                                 </View>)}
                             <Text
                                 style={[
                                     styles.verseTitle, {
                                         textAlign: verseTitlePosition,
-                                        color: verseTitleColor
+                                        color: verseTitleColor,
+                                        fontFamily: verseTitleFont
                                     }]}>
                                 {verseTitle}
                             </Text>
@@ -110,13 +112,14 @@ export default function SharePage({ route, navigation }) {
                                 style={[
                                     styles.verseTitle, {
                                         textAlign: verseTitlePosition,
-                                        color: verseTitleColor
+                                        color: verseTitleColor,
+                                        fontFamily: verseTitleFont
                                     }]}>
                                 {verseTitle}
                             </Text>
                             {route.params.selectedVerses.map((item) =>
                                 <View key={item.id}>
-                                    <Text style={styles.verseItem}>{item.verse}</Text>
+                                    <Text style={[styles.verseItem, {fontFamily: verseFont}]}>{item.verse}</Text>
                                 </View>)}
                         </View>
                 }
@@ -211,6 +214,8 @@ export default function SharePage({ route, navigation }) {
                 imagesLoaded={imagesLoaded}
                 onGettingMoreImages={() => onGettingMoreImages()}
                 onChangingVerseTitleLocation={(location) => setVerseTitleLocation(location)}
+                selectingTitleFont={(item) => setVerseTitleFont(item)}
+                selectingVerseFont={(item) => setVerseFont(item)}
             />
         </View>
     );
@@ -237,13 +242,10 @@ const styles = StyleSheet.create({
         borderRadius: 16
     },
     verseTitle: {
-        fontWeight: '700',
         fontSize: 18,
-        fontFamily: 'PTSans-Bold',
         marginBottom: 4
     },
     verseItem: {
-        fontFamily: 'PTSans-Regular',
         fontSize: 16,
         textAlign: 'justify',
         marginBottom: 8

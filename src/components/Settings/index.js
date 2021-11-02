@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../styles/colors';
 import palette from '../../styles/palette';
-import { ModalColorPicker } from '../../components';
+import { ModalColorPicker, FontPicker } from '../../components';
 import { launchImageLibrary } from 'react-native-image-picker';
 
 export default function Settings(props) {
@@ -60,9 +60,19 @@ export default function Settings(props) {
         );
     }
 
+    function onSelectingFont(item){
+        props.selectingTitleFont(item);
+        setSelectedSetting(0);
+    }
+
+    function onSelectingVerseFont(item){
+        props.selectingVerseFont(item);
+        setSelectedSetting(0);
+    }
+
     function RenderTitleOptions() {
         return (
-            <ScrollView style={{ flex: 1 }}>
+            <ScrollView style={{ maxHeight: 220 }}>
                 <View>
                     <Text style={styles.labelTitle}>Alinhamento</Text>
                     <View style={styles.textAlignContainer}>
@@ -102,6 +112,7 @@ export default function Settings(props) {
 
                     <Text style={styles.labelTitle}>Posição do título</Text>
                     <RenderTitleFormatter />
+                    <FontPicker onSelectingFont={(item) => onSelectingFont(item)} />
                 </View>
             </ScrollView>
         );
@@ -208,7 +219,7 @@ export default function Settings(props) {
                         <MaterialIcons name='add' color={colors.primary.regular} size={18} />
                     </TouchableHighlight>
                 </View>
-
+                <FontPicker onSelectingFont={(item) => onSelectingVerseFont(item)} />    
             </ScrollView>
         );
     }
