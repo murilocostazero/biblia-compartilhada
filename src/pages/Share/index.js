@@ -19,7 +19,7 @@ export default function SharePage({ route, navigation }) {
 
     //Verse
     const [verseBackgroundColor, setVerseBackgroundColor] = useState(colors.primary.light);
-    const [verseOpacity, setVerseOpacity] = useState(1);
+    const [verseOpacity, setVerseOpacity] = useState(0.8);
     const [versesToShow, setVersesToShow] = useState('');
 
     //Background
@@ -68,7 +68,6 @@ export default function SharePage({ route, navigation }) {
     }
 
     function RenderVerses() {
-        console.log('Fui chamado')
         return (
             <TouchableHighlight
                 style={{
@@ -188,7 +187,7 @@ export default function SharePage({ route, navigation }) {
                 onChangeTitleColor={(color) => setVerseTitleColor(color)}
                 onChangeVersePosition={(position) => setVersePosition(position)}
                 onChangeVerseBackgroundColor={(color) => setVerseBackgroundColor(color)}
-                onChangeVerseOpacity={(opacity) => setVerseOpacity(opacity)}
+                onChangeVerseOpacity={(opacity) => setVerseOpacity(parseFloat(opacity))}
                 opacity={verseOpacity}
                 onChangeBackgroundImage={(image) => setBackgroundWithImage(image)}
                 onChangeDashboardBackgroundColor={(color) => onChangeDashboardBackgroundColor(color)}
@@ -214,11 +213,11 @@ const styles = StyleSheet.create({
         backgroundColor: colors.background
     },
     dashboard: {
-        padding: 32,
+        padding: 38,
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        margin: 16,
+        margin: 8,
         borderRadius: 16
     },
     verseTitle: {

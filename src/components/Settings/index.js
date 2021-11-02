@@ -1,21 +1,23 @@
-import React, { useState, useCallback } from 'react';
-import { StyleSheet, View, Text, TouchableHighlight, FlatList, ScrollView, Image } from 'react-native';
-import Slider from '@react-native-community/slider';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, TouchableHighlight, FlatList, ScrollView, Image, ActivityIndicator } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../styles/colors';
 import palette from '../../styles/palette';
+import { ModalColorPicker } from '../../components';
 
 export default function Settings(props) {
     const [selectedSetting, setSelectedSetting] = useState('');
-    const [showOptions, setShowOptions] = useState(false);
+    const [isModalColorPickerVisible, setIsModalColorPickerVisible] = useState(false);
+    const [verseOpacity, setVerseOpacity] = useState(0.8);
+
+    //ModalColorPicker
+    const [selectedColor, setSelectedColor] = useState(null)
 
     function onSelectingSetting(from) {
         if (selectedSetting == from) {
-            setSelectedSetting('');
-            setShowOptions(false);
+            setSelectedSetting(0);
         } else {
-            setShowOptions(true);
             setSelectedSetting(from);
         }
     }
@@ -24,7 +26,10 @@ export default function Settings(props) {
         return (
             <TouchableHighlight
                 underlayColor={item}
-                onPress={() => props.onChangeTitleColor(item)}>
+                onPress={() => {
+                    setSelectedSetting(0);
+                    props.onChangeTitleColor(item);
+                }}>
                 <View style={[styles.paletteColorItem, { backgroundColor: item }]} />
             </TouchableHighlight>
         );
@@ -34,13 +39,19 @@ export default function Settings(props) {
         return (
             <ScrollView horizontal={true}>
                 <TouchableHighlight
-                    onPress={() => props.onChangingVerseTitleLocation('top')}
+                    onPress={() => {
+                        setSelectedSetting(0);
+                        props.onChangingVerseTitleLocation('top');
+                    }}
                     underlayColor={colors.primary.opacity}
                     style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <MaterialIcons name='vertical-align-top' color={colors.icon} size={28} />
                 </TouchableHighlight>
                 <TouchableHighlight
-                    onPress={() => props.onChangingVerseTitleLocation('bottom')}
+                    onPress={() => {
+                        setSelectedSetting(0);
+                        props.onChangingVerseTitleLocation('bottom');
+                    }}
                     underlayColor={colors.primary.opacity}
                     style={{ alignItems: 'center', justifyContent: 'center', marginLeft: 16 }}>
                     <MaterialIcons name='vertical-align-bottom' color={colors.icon} size={28} />
@@ -55,22 +66,39 @@ export default function Settings(props) {
                 <View>
                     <Text style={styles.labelTitle}>Alinhamento</Text>
                     <View style={styles.textAlignContainer}>
-                        <TouchableHighlight underlayColor='transparent' onPress={() => props.onChangeTitlePosition('left')}>
+                        <TouchableHighlight underlayColor='transparent' onPress={() => {
+                            setSelectedSetting(0);
+                            props.onChangeTitlePosition('left');
+                        }}>
                             <MaterialIcons name='format-align-left' color={colors.icon} size={28} />
                         </TouchableHighlight>
-                        <TouchableHighlight underlayColor='transparent' onPress={() => props.onChangeTitlePosition('center')}>
+                        <TouchableHighlight underlayColor='transparent' onPress={() => {
+                            setSelectedSetting(0);
+                            props.onChangeTitlePosition('center');
+                        }}>
                             <MaterialIcons name='format-align-center' color={colors.icon} size={28} />
                         </TouchableHighlight>
-                        <TouchableHighlight underlayColor='transparent' onPress={() => props.onChangeTitlePosition('right')}>
+                        <TouchableHighlight underlayColor='transparent' onPress={() => {
+                            setSelectedSetting(0);
+                            props.onChangeTitlePosition('right');
+                        }}>
                             <MaterialIcons name='format-align-right' color={colors.icon} size={28} />
                         </TouchableHighlight>
                     </View>
                     <Text style={styles.labelTitle}>Cor</Text>
-                    <FlatList
-                        horizontal={true}
-                        data={palette}
-                        renderItem={renderPaletteColor}
-                    />
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <FlatList
+                            horizontal={true}
+                            data={palette}
+                            renderItem={renderPaletteColor}
+                        />
+                        <TouchableHighlight
+                            underlayColor={colors.secondary.opacity}
+                            onPress={() => setIsModalColorPickerVisible(true)}
+                            style={styles.moreColorsButton}>
+                            <Ionicons name='add' color='#FFF' size={32} />
+                        </TouchableHighlight>
+                    </View>
 
                     <Text style={styles.labelTitle}>Posição do título</Text>
                     <RenderTitleFormatter />
@@ -83,47 +111,110 @@ export default function Settings(props) {
         return (
             <TouchableHighlight
                 underlayColor={item}
-                onPress={() => props.onChangeVerseBackgroundColor(item)}>
+                onPress={() => {
+                    setSelectedSetting(0);
+                    props.onChangeVerseBackgroundColor(item);
+                }}>
                 <View style={[styles.paletteColorItem, { backgroundColor: item }]} />
             </TouchableHighlight>
         );
     }
 
+    function handleTextOpacity(text) {
+        if (isNaN(text) == false && text <= 1) {
+            setVerseOpacity(text);
+        }
+    }
+
+    function decrementOpacity() {
+        if (props.opacity > 0.1) {
+            const decrementedOpacity = (parseFloat(props.opacity) - 0.1).toFixed(1);
+            // console.log(decrementedOpacity)
+            props.onChangeVerseOpacity(decrementedOpacity);
+        } else {
+            props.onChangeVerseOpacity(props.opacity)
+        }
+    }
+
+    function incrementOpacity() {
+        if (props.opacity < 1) {
+            const incrementedOpacity = (parseFloat(props.opacity) + 0.1).toFixed(1);
+            // console.log(incrementedOpacity)
+            props.onChangeVerseOpacity(incrementedOpacity);
+        } else {
+            props.onChangeVerseOpacity(props.opacity)
+        }
+    }
+
     function RenderVerseOptions() {
         return (
-            <ScrollView style={{ flex: 1 }}>
+            <ScrollView
+                keyboardDismissMode="on-drag"
+                keyboardShouldPersistTaps={'always'}
+                style={{ flex: 1 }}>
                 <Text style={styles.labelTitle}>Posição</Text>
                 <View style={styles.textAlignContainer}>
-                    <TouchableHighlight underlayColor='transparent' onPress={() => props.onChangeVersePosition('flex-end')}>
+                    <TouchableHighlight underlayColor='transparent' onPress={() => {
+                        setSelectedSetting(0);
+                        props.onChangeVersePosition('flex-end');
+                    }}>
                         <MaterialIcons name='vertical-align-bottom' color={colors.icon} size={28} />
                     </TouchableHighlight>
-                    <TouchableHighlight underlayColor='transparent' onPress={() => props.onChangeVersePosition('center')}>
+                    <TouchableHighlight underlayColor='transparent' onPress={() => {
+                        setSelectedSetting(0);
+                        props.onChangeVersePosition('center');
+                    }}>
                         <MaterialIcons name='vertical-align-center' color={colors.icon} size={28} />
                     </TouchableHighlight>
-                    <TouchableHighlight underlayColor='transparent' onPress={() => props.onChangeVersePosition('flex-start')}>
+                    <TouchableHighlight underlayColor='transparent' onPress={() => {
+                        setSelectedSetting(0);
+                        props.onChangeVersePosition('flex-start');
+                    }}>
                         <MaterialIcons name='vertical-align-top' color={colors.icon} size={28} />
                     </TouchableHighlight>
                 </View>
 
                 <Text style={styles.labelTitle}>Cor de fundo</Text>
-                <FlatList
-                    horizontal={true}
-                    data={palette}
-                    renderItem={renderPaletteBackgroundColor}
-                />
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <FlatList
+                        horizontal={true}
+                        data={palette}
+                        renderItem={renderPaletteBackgroundColor}
+                    />
+                    <TouchableHighlight
+                        underlayColor={colors.secondary.opacity}
+                        onPress={() => setIsModalColorPickerVisible(true)}
+                        style={styles.moreColorsButton}>
+                        <Ionicons name='add' color='#FFF' size={32} />
+                    </TouchableHighlight>
+                </View>
+                <Text style={styles.labelTitle}>Opacidade (0 a 1)</Text>
 
-                <Text style={styles.labelTitle}>Opacidade</Text>
-                <Slider
-                    value={props.opacity}
-                    onValueChange={(value) => props.onChangeVerseOpacity(value)}
-                    style={{ width: '100%', height: 40 }}
-                    minimumValue={0}
-                    maximumValue={1}
-                    step={0.1}
-                    minimumTrackTintColor={colors.secondary.light}
-                    maximumTrackTintColor={colors.secondary.regular}
-                    thumbTintColor={colors.secondary.regular}
-                />
+
+                <View style={{ flexDirection: 'row', alignItems: 'center', padding: 4 }}>
+                    <TouchableHighlight
+                        onPress={() => decrementOpacity()}
+                        style={[
+                            styles.textFormatButton,
+                            { backgroundColor: '#FFF' }
+                        ]}>
+                        <MaterialIcons name='remove' color={colors.primary.regular} size={18} />
+                    </TouchableHighlight>
+                    <View style={{ marginHorizontal: 10, alignItems: 'center' }}>
+                        <Text style={{
+                            fontFamily: 'PTSans-Regular',
+                            fontSize: 18
+                        }}>
+                            {props.opacity}
+                        </Text>
+                    </View>
+                    <TouchableHighlight
+                        onPress={() => incrementOpacity()}
+                        style={[styles.textFormatButton, { backgroundColor: '#FFF' }]}>
+                        <MaterialIcons name='add' color={colors.primary.regular} size={18} />
+                    </TouchableHighlight>
+                </View>
+
             </ScrollView>
         );
     }
@@ -133,7 +224,7 @@ export default function Settings(props) {
             <TouchableHighlight
                 underlayColor={item}
                 onPress={() => {
-                    setShowOptions(false);
+                    setSelectedSetting(0);
                     props.onChangeDashboardBackgroundColor(item);
                 }}>
                 <View style={[styles.paletteColorItem, { backgroundColor: item }]} />
@@ -145,17 +236,25 @@ export default function Settings(props) {
         return (
             <View>
                 <Text style={styles.labelTitle}>Cor de fundo</Text>
-                <FlatList
-                    horizontal={true}
-                    data={palette}
-                    renderItem={renderColorsDashboardBackground}
-                />
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <FlatList
+                        horizontal={true}
+                        data={palette}
+                        renderItem={renderColorsDashboardBackground}
+                    />
+                    <TouchableHighlight
+                        underlayColor={colors.secondary.opacity}
+                        onPress={() => setIsModalColorPickerVisible(true)}
+                        style={styles.moreColorsButton}>
+                        <Ionicons name='add' color='#FFF' size={32} />
+                    </TouchableHighlight>
+                </View>
             </View>
         );
     }
 
     function onSelectingBackground(image) {
-        setShowOptions(false);
+        setSelectedSetting(0);
         props.onChangeBackgroundImage(image);
     }
 
@@ -175,25 +274,27 @@ export default function Settings(props) {
     function RenderBackgroundOptions() {
         return (
             <View>
-                <TouchableHighlight
-                    onPress={() => props.onGettingMoreImages()}
-                    underlayColor={colors.secondary.light}
-                    style={{ alignSelf: 'flex-end', marginVertical: 8 }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ fontFamily: 'PTSans-Bold', marginRight: 4 }}>Carregar mais</Text>
-                        <Ionicons name='refresh-outline' color={colors.secondary.regular} size={22} />
-                    </View>
-                </TouchableHighlight>
                 {
                     props.imagesBackground.length < 3
-                        ? <Text>Carregando</Text>
-                        : <FlatList
-                            horizontal={true}
-                            data={props.imagesBackground}
-                            keyExtractor={(item) => item.image}
-                            renderItem={renderImagesToChoose}
-                            extraData={props.imagesLoaded}
-                        />
+                        ? <ActivityIndicator size="large" color={colors.secondary.regular} />
+                        : <View>
+                            <TouchableHighlight
+                                onPress={() => props.onGettingMoreImages()}
+                                underlayColor={colors.secondary.light}
+                                style={{ alignSelf: 'flex-end', marginVertical: 8 }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text style={{ fontFamily: 'PTSans-Bold', marginRight: 4 }}>Carregar mais</Text>
+                                    <Ionicons name='refresh-outline' color={colors.secondary.regular} size={22} />
+                                </View>
+                            </TouchableHighlight>
+                            <FlatList
+                                horizontal={true}
+                                data={props.imagesBackground}
+                                keyExtractor={(item) => item.image}
+                                renderItem={renderImagesToChoose}
+                                extraData={props.imagesLoaded}
+                            />
+                        </View>
                 }
             </View>
         );
@@ -218,14 +319,36 @@ export default function Settings(props) {
         }
     }
 
+    function onSelectingColor(color) {
+        setIsModalColorPickerVisible(false);
+        setSelectedSetting(0);
+        setSelectedColor(color);
+
+        switch (selectedSetting) {
+            case 1:
+                props.onChangeTitleColor(color);
+                break;
+            case 2:
+                props.onChangeVerseBackgroundColor(color);
+                break;
+            case 3:
+                props.onChangeDashboardBackgroundColor(color);
+                break;
+        }
+    }
+
     return (
         <View style={styles.settingsContainer}>
             {
-                showOptions == false
+                selectedSetting == 0
                     ?
                     <View />
                     :
                     <View style={styles.options}>
+                        <ModalColorPicker
+                            onSelectingColor={(color) => onSelectingColor(color)}
+                            onModalColorPickerCancel={() => setIsModalColorPickerVisible(false)}
+                            isModalColorPickerVisible={isModalColorPickerVisible} />
                         <RenderOptions />
                     </View>
             }
@@ -314,5 +437,25 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-evenly'
-    }
+    },
+    moreColorsButton: {
+        backgroundColor: colors.primary.opacity,
+        width: 36,
+        height: 36,
+        borderRadius: 36 / 2,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: 16
+    },
+    textFormatButton: {
+        width: 22,
+        height: 22,
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    textFormatLabel: {
+        fontWeight: 'bold',
+        color: '#FFF'
+    },
 });
