@@ -15,8 +15,9 @@ import colors from '../../styles/colors';
 import Bible from '../../handlers/handleBible';
 import { storeData } from '../../handlers/handlerASChoice';
 
-export default function Search({navigation}) {
+export default function Search({ navigation }) {
     const [query, setQuery] = useState('');
+    const [oldQuery, setOldQuery] = useState('');
     const [searchResult, setSearchResult] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -30,11 +31,12 @@ export default function Search({navigation}) {
     }
 
     function checkIfQueryEmpty() {
-        if (query.length > 0) {
+        if (query.length > 2) {
+            setOldQuery(query);
             setIsLoading(true);
             getResults();
         } else {
-            Alert.alert('Insira um termo de busca', 'Digite uma palavra ou frase que deseja pesquisar na bíblia.')
+            Alert.alert('Insira um termo de busca maior do que 2 caracteres', 'Digite uma palavra ou frase que deseja pesquisar na bíblia.')
         }
     }
 
@@ -45,18 +47,37 @@ export default function Search({navigation}) {
         navigation.navigate('Home');
     }
 
+    function getHighlightedText(text) {
+        const value = oldQuery;
+        const parts = text.split(new RegExp(`(${value})`, 'gi'));
+        return (
+            <Text style={styles.itemText}>
+                {
+                    parts.map(part => part.toLowerCase() === value.toLowerCase()
+                        ? <Text style={{ color: '#FFF', backgroundColor: colors.secondary.regular }}>
+                            {part}
+                        </Text>
+                        : part)
+                }
+            </Text>
+        );
+    }
+
     function renderSearchResults({ item }) {
         return (
-            <TouchableHighlight 
+            <TouchableHighlight
                 onPress={() => addSearchToStorageAndNavigate(item)}
                 underlayColor={colors.secondary.opacity}
-                style={{margin: 12, borderRadius: 8}}>
+                style={{ margin: 12, borderRadius: 8 }}>
                 <View style={[styles.listItem, styles.shadow]}>
                     <Text style={styles.itemTitle}>
                         {item.book}, capítulo {item.chapter + 1}, versículo {item.verse.id + 1}
-                    </Text>                
-                    
-                    <Text style={styles.itemText}>{item.verse.text}</Text>
+                    </Text>
+                    {
+                        getHighlightedText(item.verse.text)
+                    }
+
+                    {/* <Text style={styles.itemText}>{item.verse.text}</Text> */}
                 </View>
             </TouchableHighlight>
         );
@@ -94,7 +115,7 @@ export default function Search({navigation}) {
                         autoCorrect={false}
                         autoFocus={true}
                         value={query}
-                        onSubmitEditing={()=> checkIfQueryEmpty()}
+                        onSubmitEditing={() => checkIfQueryEmpty()}
                         onChangeText={(text) => setQuery(text)} />
 
                     <TouchableHighlight
@@ -118,11 +139,17 @@ export default function Search({navigation}) {
                         :
                         searchResult.length == 0
                             ? <RenderNoItemsFounded />
-                            : <FlatList
-                                data={searchResult}
-                                keyExtractor={item => item.book + item.chapter + item.verse.id}
-                                renderItem={renderSearchResults}
-                            />
+                            :
+                            <View>
+                                <Text style={styles.listTitle}>
+                                    {searchResult.length} {searchResult.length == 1 ? 'resultado encontrado' : 'resultados encontrados'}
+                                </Text>
+                                <FlatList
+                                    data={searchResult}
+                                    keyExtractor={item => item.book + item.chapter + item.verse.id}
+                                    renderItem={renderSearchResults}
+                                />
+                            </View>
                 }
             </View>
         </View>
@@ -163,12 +190,20 @@ const styles = StyleSheet.create({
         shadowRadius: 4.65,
         elevation: 8
     },
+    listTitle: {
+        color: colors.primary.regular,
+        alignSelf: 'flex-end',
+        marginVertical: 4,
+        marginRight: 16,
+        fontFamily: 'PTSans-Bold',
+        fontSize: 14
+    },
     listItem: {
         backgroundColor: colors.background,
         padding: 16,
         borderRadius: 8
     },
-    itemTitle:{
+    itemTitle: {
         color: '#000',
         fontFamily: 'PTSans-Bold'
     },

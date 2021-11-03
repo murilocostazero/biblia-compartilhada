@@ -206,10 +206,9 @@ export default function Settings(props) {
 
     function RenderVerseOptions() {
         return (
-            <ScrollView
+            <ScrollView style={{ maxHeight: 220 }}
                 keyboardDismissMode="on-drag"
-                keyboardShouldPersistTaps={'always'}
-                style={{ flex: 1 }}>
+                keyboardShouldPersistTaps={'always'}>
                 <Text style={styles.labelTitle}>Posição</Text>
                 <View style={styles.textAlignContainer}>
                     <TouchableHighlight underlayColor='transparent' onPress={() => {

@@ -92,9 +92,9 @@ export default function SharePage({ route, navigation }) {
             <TouchableHighlight
                 style={{
                     backgroundColor: verseBackgroundColor,
-                    opacity: verseOpacity,
                     padding: 12,
-                    borderRadius: 8
+                    borderRadius: 8,
+                    opacity: verseOpacity
                 }}
                 underlayColor='transparent'>
                 {
@@ -162,6 +162,32 @@ export default function SharePage({ route, navigation }) {
         }
     }
 
+    function hexToRgbA(hex, opacity){
+        var c;
+        if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+            c= hex.substring(1).split('');
+            if(c.length== 3){
+                c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+            }
+            c= '0x'+c.join('');
+            return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+`,${opacity})`;
+        } else {
+            return 'rgba(200,200,200,1)'
+        }
+    }
+    
+
+    function handleVerseOpacity(opacity){
+        // console.log('Color')
+        // console.log(verseBackgroundColor)
+        // console.log('Opacity')
+        // console.log(opacity)
+
+        // let colorToRgb = hexToRgbA(verseBackgroundColor, opacity);
+        // setVerseBackgroundColor(colorToRgb);
+        setVerseOpacity(opacity);
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -217,7 +243,7 @@ export default function SharePage({ route, navigation }) {
                 onChangeTitleColor={(color) => setVerseTitleColor(color)}
                 onChangeVersePosition={(position) => setVersePosition(position)}
                 onChangeVerseBackgroundColor={(color) => setVerseBackgroundColor(color)}
-                onChangeVerseOpacity={(opacity) => setVerseOpacity(parseFloat(opacity))}
+                onChangeVerseOpacity={(opacity) => handleVerseOpacity(opacity)}
                 opacity={verseOpacity}
                 onChangeBackgroundImage={(image) => setBackgroundWithImage(image)}
                 onChangeDashboardBackgroundColor={(color) => onChangeDashboardBackgroundColor(color)}
