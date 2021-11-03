@@ -36,7 +36,7 @@ export default function Search({ navigation }) {
             setIsLoading(true);
             getResults();
         } else {
-            Alert.alert('Insira um termo de busca maior do que 2 caracteres', 'Digite uma palavra ou frase que deseja pesquisar na bíblia.')
+            Alert.alert('Insira um termo de busca', 'Digite uma palavra ou frase que deseja pesquisar na bíblia.')
         }
     }
 

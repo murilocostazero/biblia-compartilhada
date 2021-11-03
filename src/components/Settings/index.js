@@ -185,7 +185,7 @@ export default function Settings(props) {
 
     function decrementMargin() {
         if (props.margin > 8) {
-            const decrementedMargin = (parseInt(props.margin)/2);
+            const decrementedMargin = (parseInt(props.margin) / 2);
             // console.log(decrementedMargin)
             props.onChangeVerseMargin(decrementedMargin);
         } else {
@@ -195,7 +195,7 @@ export default function Settings(props) {
 
     function incrementMargin() {
         if (props.margin < 112) {
-            const incrementedMargin = (parseInt(props.margin)*2);
+            const incrementedMargin = (parseInt(props.margin) * 2);
             // console.log(incrementedMargin)
             props.onChangeVerseMargin(incrementedMargin);
         } else {
@@ -387,56 +387,89 @@ export default function Settings(props) {
     function RenderBackgroundOptions() {
         return (
             <View>
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: 4,
+                    marginBottom: 8
+                }}>
+                    <TouchableHighlight
+                        onPress={() => pickImage()}
+                        underlayColor={colors.secondary.opacity}
+                        style={{
+                            backgroundColor: colors.primary.light,
+                            borderRadius: 8,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: 4
+                        }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{
+                                fontFamily: 'PTSans-Bold',
+                                marginRight: 8,
+                                color: '#FFF'
+                            }}>Imagem da galeria</Text>
+                            <Ionicons name='images-outline' color={colors.secondary.regular} size={22} />
+                        </View>
+                    </TouchableHighlight>
+                    {
+                        props.imagesBackground.length < 3
+                            ?
+                            <View />
+                            :
+                            <TouchableHighlight
+                                onPress={() => props.onGettingMoreImages()}
+                                underlayColor={colors.secondary.light}
+                                style={{
+                                    backgroundColor: colors.primary.light,
+                                    borderRadius: 8,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    padding: 4
+                                }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <Text style={{
+                                        fontFamily: 'PTSans-Bold',
+                                        marginRight: 8,
+                                        color: '#FFF'
+                                    }}>Carregar mais</Text>
+                                    <Ionicons name='refresh-outline' color={colors.secondary.regular} size={22} />
+                                </View>
+                            </TouchableHighlight>
+                    }
+                </View>
                 {
-                    props.imagesBackground.length < 3
-                        ? <ActivityIndicator size="large" color={colors.secondary.regular} />
-                        : <View>
-                            <View style={{
-                                flexDirection: 'row',
+                    !props.isConnected
+                        ?
+                        <TouchableHighlight
+                            style={{
+                                padding: 4,
+                                borderRadius: 8,
+                                backgroundColor: colors.primary.light,
                                 alignItems: 'center',
-                                justifyContent: 'space-between',
-                                paddingHorizontal: 4,
-                                marginBottom: 8
-                            }}>
-                                <TouchableHighlight
-                                    onPress={() => pickImage()}
-                                    underlayColor={colors.secondary.opacity}
-                                    style={{
-                                        backgroundColor: colors.primary.light,
-                                        borderRadius: 8,
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        padding: 4
-                                    }}>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <Text style={{
-                                            fontFamily: 'PTSans-Bold',
-                                            marginRight: 8,
-                                            color: '#FFF'
-                                        }}>Imagem da galeria</Text>
-                                        <Ionicons name='images-outline' color={colors.secondary.regular} size={22} />
-                                    </View>
-                                </TouchableHighlight>
-                                <TouchableHighlight
-                                    onPress={() => props.onGettingMoreImages()}
-                                    underlayColor={colors.secondary.light}
-                                    style={{
-                                        backgroundColor: colors.primary.light,
-                                        borderRadius: 8,
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        padding: 4
-                                    }}>
-                                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                        <Text style={{
-                                            fontFamily: 'PTSans-Bold',
-                                            marginRight: 8,
-                                            color: '#FFF'
-                                        }}>Carregar mais</Text>
-                                        <Ionicons name='refresh-outline' color={colors.secondary.regular} size={22} />
-                                    </View>
-                                </TouchableHighlight>
+                                justifyContent: 'center'
+                            }}
+                            onPress={() => props.onCheckingConnection()}
+                            underlayColor={colors.secondary.opacity}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={{
+                                    color: '#FFF',
+                                    fontFamily: 'PTSans-Bold',
+                                    marginVertical: 8,
+                                    alignSelf: 'center',
+                                    fontSize: 16,
+                                    marginRight: 8
+                                }}>
+                                    Conecte-se à internet e atualize
+                                </Text>
+                                <MaterialIcons name='refresh' size={22} color='#FFF' />
                             </View>
+                        </TouchableHighlight>
+                        :
+                        props.imagesBackground.length < 3
+                            ? <ActivityIndicator size="large" color={colors.secondary.regular} />
+                            :
                             <FlatList
                                 style={{ flex: 1 }}
                                 horizontal={true}
@@ -445,7 +478,6 @@ export default function Settings(props) {
                                 renderItem={renderImagesToChoose}
                                 extraData={props.imagesLoaded}
                             />
-                        </View>
                 }
             </View>
         );

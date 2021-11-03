@@ -1,10 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableHighlight, ImageBackground } from 'react-native';
+import {
+    StyleSheet,
+    View,
+    Text,
+    TouchableHighlight,
+    ImageBackground
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Settings, StatusBar} from '../../components/';
+import { Settings, StatusBar } from '../../components/';
 import colors from '../../styles/colors';
 import { captureRef } from 'react-native-view-shot';
 import Share from 'react-native-share';
+import NetInfo from "@react-native-community/netinfo";
 import { getPromiseImageStorySize } from '../../handlers/handleFetchImages';
 
 export default function SharePage({ route, navigation }) {
@@ -31,29 +38,38 @@ export default function SharePage({ route, navigation }) {
     const [imagesBackground, setImagesBackground] = useState([]);
     const [imagesLoaded, setImagesLoaded] = useState(false);
 
+    //StatusBar
     const [isStatusBarVisible, setIsStatusBarVisible] = useState(false);
+    const [statusBarType, setStatusBarType] = useState('');
+    const [statusBarMessage, setStatusBarMessage] = useState('');
+
+    //Checking
+    const[isConnected, setIsConnected] = useState(false);
+
     // const [isInstagramInstalled, setIsInstagramInstalled] = useState(false);
 
     useEffect(() => {
         getVersesToShare();
         getThreeImages();
 
+        checkInternetConnection();
         // checkIfInstagramIsInstalled();
     }, [imagesBackground]);
+
+    function checkInternetConnection() {
+        NetInfo.fetch().then(state => {
+            console.log("Connection type", state.type);
+            console.log("Is connected?", state.isConnected);
+            setIsConnected(state.isConnected);
+
+            if(!state.isConnected) handleStatusBarVisibility('error', 'Você não está conectado a internet')
+        });
+    }
 
     // async function checkIfInstagramIsInstalled() {
     //     const { isInstalled } = await Share.isPackageInstalled('com.instagram.android');
     //     setIsInstagramInstalled(isInstalled);
     // }
-
-    function handleStatusBarVisibility(){
-        setIsStatusBarVisible(true);
-
-        setTimeout(()=>{
-            setIsStatusBarVisible(false);
-        }, 2000);
-    }
-
 
     async function getVersesToShare() {
         const selectedVerses = route.params.selectedVerses;
@@ -67,7 +83,7 @@ export default function SharePage({ route, navigation }) {
             setVersesToShow(`${selectedVerses[0].id + 1}`);
         }
 
-        const verseTitle = `${route.params.choice.choosedBook} ${route.params.choice.chapter+1}`;
+        const verseTitle = `${route.params.choice.choosedBook} ${route.params.choice.chapter + 1}`;
         setVerseTitle(verseTitle);
     }
 
@@ -83,7 +99,11 @@ export default function SharePage({ route, navigation }) {
 
     async function getImages() {
         const images = imagesBackground;
-        await getPromiseImageStorySize().then((image) => images.push({ image: image }));
+        await getPromiseImageStorySize()
+            .then((image) => images.push({ image: image }))
+            .catch((error) => {
+                console.log('Error: ', error);
+            });
         setImagesBackground(images);
     }
 
@@ -103,7 +123,7 @@ export default function SharePage({ route, navigation }) {
                         <View>
                             {route.params.selectedVerses.map((item) =>
                                 <View key={item.id}>
-                                    <Text style={[styles.verseItem, {fontFamily: verseFont}]}>{item.id+1}. {item.verse}</Text>
+                                    <Text style={[styles.verseItem, { fontFamily: verseFont }]}>{item.id + 1}. {item.verse}</Text>
                                 </View>)}
                             <Text
                                 style={[
@@ -128,7 +148,7 @@ export default function SharePage({ route, navigation }) {
                             </Text>
                             {route.params.selectedVerses.map((item) =>
                                 <View key={item.id}>
-                                    <Text style={[styles.verseItem, {fontFamily: verseFont}]}>{item.verse}</Text>
+                                    <Text style={[styles.verseItem, { fontFamily: verseFont }]}>{item.verse}</Text>
                                 </View>)}
                         </View>
                 }
@@ -158,26 +178,35 @@ export default function SharePage({ route, navigation }) {
                 url: uri
             });
         } catch (err) {
-            handleStatusBarVisibility();
+            handleStatusBarVisibility('warning', 'A imagem não foi compartilhada');
         }
     }
 
-    function hexToRgbA(hex, opacity){
+    function handleStatusBarVisibility(type, message) {
+        setIsStatusBarVisible(true);
+        setStatusBarType(type);
+        setStatusBarMessage(message);
+        setTimeout(() => {
+            setIsStatusBarVisible(false);
+        }, 2000);
+    }
+
+    function hexToRgbA(hex, opacity) {
         var c;
-        if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-            c= hex.substring(1).split('');
-            if(c.length== 3){
-                c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+        if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+            c = hex.substring(1).split('');
+            if (c.length == 3) {
+                c = [c[0], c[0], c[1], c[1], c[2], c[2]];
             }
-            c= '0x'+c.join('');
-            return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+`,${opacity})`;
+            c = '0x' + c.join('');
+            return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + `,${opacity})`;
         } else {
             return 'rgba(200,200,200,1)'
         }
     }
-    
 
-    function handleVerseOpacity(opacity){
+
+    function handleVerseOpacity(opacity) {
         // console.log('Color')
         // console.log(verseBackgroundColor)
         // console.log('Opacity')
@@ -186,6 +215,10 @@ export default function SharePage({ route, navigation }) {
         // let colorToRgb = hexToRgbA(verseBackgroundColor, opacity);
         // setVerseBackgroundColor(colorToRgb);
         setVerseOpacity(opacity);
+    }
+
+    function onCheckingConnection(){
+        setImagesBackground([]);
     }
 
     return (
@@ -233,9 +266,9 @@ export default function SharePage({ route, navigation }) {
             }
 
             {
-                isStatusBarVisible 
-                ? <StatusBar type='error' message='Compartilhamento cancelado' />
-                : <View />
+                isStatusBarVisible
+                    ? <StatusBar type={statusBarType} message={statusBarMessage} />
+                    : <View />
             }
 
             <Settings
@@ -255,6 +288,8 @@ export default function SharePage({ route, navigation }) {
                 selectingVerseFont={(item) => setVerseFont(item)}
                 onChangeVerseMargin={(margin) => setVerseMargin(margin)}
                 margin={verseMargin}
+                isConnected={isConnected}
+                onCheckingConnection={() => onCheckingConnection()}
             />
         </View>
     );
