@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     welcomeMessage: {
         marginHorizontal: 16,
         color: colors.primary.regular,
-        fontFamily: 'PTSans-Regular',
+        fontFamily: 'PTSans-Bold',
         fontWeight: '600',
         fontSize: 16,
         textAlign: 'center'

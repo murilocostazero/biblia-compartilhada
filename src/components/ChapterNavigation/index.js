@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
+import {  View, Text, TouchableHighlight } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from '../../styles/colors';
+import generalStyles from '../../styles/general';
 
 export default function ChapterNavigation(props) {
     return (
@@ -21,14 +22,7 @@ export default function ChapterNavigation(props) {
                     <TouchableHighlight
                         onPress={() => props.handleChapterNavigation(0)}
                         underlayColor='transparent'>
-                        <View style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            backgroundColor: colors.primary.light,
-                            borderRadius: 8,
-                            paddingVertical: 4,
-                            paddingHorizontal: 8
-                        }}>
+                        <View style={generalStyles.defaultButton}>
                             <Ionicons name='caret-back-outline' color='#FFF' size={28} />
                             <Text style={{ fontFamily: 'PTSans-Bold', color: '#FFF', fontSize: 16 }}>
                                 Anterior
@@ -45,14 +39,7 @@ export default function ChapterNavigation(props) {
                     <TouchableHighlight
                         onPress={() => props.handleChapterNavigation(1)}
                         underlayColor='transparent'>
-                        <View style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            backgroundColor: colors.primary.light,
-                            borderRadius: 8,
-                            paddingVertical: 4,
-                            paddingHorizontal: 8
-                        }}>
+                        <View style={generalStyles.defaultButton}>
                             <Text style={{ fontFamily: 'PTSans-Bold', color: '#FFF', fontSize: 16 }}>
                                 Próximo
                             </Text>

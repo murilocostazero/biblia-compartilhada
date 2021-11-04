@@ -345,7 +345,7 @@ export default function Home({ navigation }) {
                             underlayColor='transparent'
                             onPress={() => chooseBook()}
                             style={styles.initialButton}>
-                            <Text style={styles.initialButtonText}>Começar</Text>
+                            <Text style={styles.initialButtonText}>Vamos nessa!</Text>
                         </TouchableHighlight>
             }
         </View>
