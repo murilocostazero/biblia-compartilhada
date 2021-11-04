@@ -288,7 +288,7 @@ export default function SharePage({ route, navigation }) {
 
             {
                 isStatusBarVisible
-                    ? <StatusBar type={statusBarType} message={statusBarMessage} />
+                    ? <StatusBar type={statusBarType} message={statusBarMessage} bottom={112} />
                     : <View />
             }
 

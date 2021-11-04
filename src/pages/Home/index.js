@@ -1,9 +1,15 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, FlatList, TouchableHighlight, StyleSheet, BackHandler, ActivityIndicator } from 'react-native';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
-import { getData } from '../../handlers/handlerASChoice';
+import { getData, storeData } from '../../handlers/handlerASChoice';
 import { getFavoriteData, storeFavoriteData } from '../../handlers/handlerASFavorites';
-import { Header, FirstUseComponent, VersesSettings } from '../../components';
+import {
+    Header,
+    FirstUseComponent,
+    VersesSettings,
+    ChapterNavigation,
+    StatusBar
+} from '../../components';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../styles/colors';
 import Bible from '../../handlers/handleBible';
@@ -150,7 +156,7 @@ export default function Home({ navigation }) {
                 underlayColor={colors.secondary.light}
                 onPress={() => handleSelect(item)}
                 style={[item.item.isSelected == true ? styles.selectedItem : styles.unselectedItem, styles.verseItem]}>
-                <View style={{flexDirection: 'column'}}>
+                <View style={{ flexDirection: 'column' }}>
                     {
                         isVerseFavorite != undefined
                             ? <View
@@ -246,6 +252,23 @@ export default function Home({ navigation }) {
         return favorite;
     }
 
+    async function handleChapterNavigation(option) {
+        const bible = new Bible();
+        if (option == 0) {
+            const response = bible.goToPreviousChapter(choice);
+            if (response != null) {
+                await storeData(response);
+                getInitialData();
+            }
+        } else {
+            const response = bible.goToNextChapter(choice);
+            if (response != null) {
+                await storeData(response);
+                getInitialData();
+            }
+        }
+    }
+
     return (
         <View
             style={[
@@ -296,6 +319,13 @@ export default function Home({ navigation }) {
                                     renderItem={renderVerse}
                                     extraData={refreshChapter}
                                 />
+                                {
+                                    selectedVerses.length > 0
+                                        ? <View />
+                                        : <ChapterNavigation
+                                            choice={choice} 
+                                            handleChapterNavigation={(option) => handleChapterNavigation(option)} />
+                                }
                             </View>
                             :
                             <FirstUseComponent />

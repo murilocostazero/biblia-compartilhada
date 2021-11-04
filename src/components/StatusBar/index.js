@@ -31,7 +31,13 @@ const FadeInView = (props) => {
 
 export default function StatusBar(props) {
     return (
-        <FadeInView>
+        <FadeInView
+            style={{
+                position: 'absolute',
+                left: 16,
+                right: 16,
+                bottom: props.bottom,
+            }}>
             <View style={[
                 styles.container,
                 styles.shadow,
@@ -58,12 +64,8 @@ export default function StatusBar(props) {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.background,
-        position: 'absolute',
-        height: 48,
-        left: 16,
-        right: 16,
-        bottom: 112,
         borderRadius: 16,
+        height: 48,
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row'

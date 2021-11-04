@@ -59,14 +59,43 @@ export default class Bible {
                                     text: verse
                                 }
                             }
-
                             searchResult.push(result);
                         }
                     }
                 }
             }
-
             return resolve(searchResult);
         });
+    }
+
+    goToNextChapter(currentChapter){
+        let bookIndex = bible.findIndex((item) => item.name == currentChapter.choosedBook);
+        const bookChapters = bible[bookIndex].chapters.length;
+
+        if(currentChapter.chapter < bookChapters-1){
+            //Avançar um capitulo
+            return { chapter: (currentChapter.chapter+1), choosedBook: currentChapter.choosedBook };
+        } else if(currentChapter.chapter == bookChapters-1 && bookIndex < bible.length-1){
+            //Avançar o livro o livro
+            return { chapter: 0, choosedBook: bible[bookIndex+1].name };
+        } else {
+            //Não avançar
+           return null;
+        }
+    }
+
+    goToPreviousChapter(currentChapter){
+        let bookIndex = bible.findIndex((item) => item.name == currentChapter.choosedBook);
+
+        if(currentChapter.chapter > 0){
+            //Voltar um capitulo
+            return { chapter: (currentChapter.chapter - 1), choosedBook: currentChapter.choosedBook };
+        } else if(currentChapter.chapter == 0 && bookIndex > 0){
+            //Voltar o livro
+            return { chapter: (bible[bookIndex-1].chapters.length-1), choosedBook: bible[bookIndex-1].name };
+        } else {
+            //Não voltar
+           return null;
+        }
     }
 }
