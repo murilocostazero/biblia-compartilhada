@@ -16,6 +16,7 @@ import { getPromiseImageStorySize } from '../../handlers/handleFetchImages';
 
 export default function SharePage({ route, navigation }) {
     const viewRef = useRef();
+    const refToInstagram = useRef();
 
     //Verse Title
     const [verseTitlePosition, setVerseTitlePosition] = useState('left');
@@ -24,13 +25,14 @@ export default function SharePage({ route, navigation }) {
     const [verseTitleLocation, setVerseTitleLocation] = useState('bottom');
     const [verseTitle, setVerseTitle] = useState('');
     const [verseTitleFont, setVerseTitleFont] = useState('PTSans-Bold')
+    const [verseTextColor, setVerseTextColor] = useState('light')
 
     //Verse
     const [verseBackgroundColor, setVerseBackgroundColor] = useState(colors.primary.light);
-    const [verseOpacity, setVerseOpacity] = useState(0.8);
+    const [verseOpacity, setVerseOpacity] = useState(1);
     const [versesToShow, setVersesToShow] = useState('');
     const [verseFont, setVerseFont] = useState('PTSans-Regular');
-    const [verseMargin, setVerseMargin] = useState(38);
+    const [verseMargin, setVerseMargin] = useState(32);
 
     //Background
     const [backgroundWithImage, setBackgroundWithImage] = useState(null);
@@ -44,32 +46,32 @@ export default function SharePage({ route, navigation }) {
     const [statusBarMessage, setStatusBarMessage] = useState('');
 
     //Checking
-    const[isConnected, setIsConnected] = useState(false);
+    const [isConnected, setIsConnected] = useState(false);
 
-    // const [isInstagramInstalled, setIsInstagramInstalled] = useState(false);
+    const [isInstagramInstalled, setIsInstagramInstalled] = useState(false);
 
     useEffect(() => {
         getVersesToShare();
         getThreeImages();
 
         checkInternetConnection();
-        // checkIfInstagramIsInstalled();
+        checkIfInstagramIsInstalled();
     }, [imagesBackground]);
 
     function checkInternetConnection() {
         NetInfo.fetch().then(state => {
-            console.log("Connection type", state.type);
-            console.log("Is connected?", state.isConnected);
+            // console.log("Connection type", state.type);
+            // console.log("Is connected?", state.isConnected);
             setIsConnected(state.isConnected);
 
-            if(!state.isConnected) handleStatusBarVisibility('error', 'Você não está conectado a internet')
+            if (!state.isConnected) handleStatusBarVisibility('error', 'Você não está conectado a internet')
         });
     }
 
-    // async function checkIfInstagramIsInstalled() {
-    //     const { isInstalled } = await Share.isPackageInstalled('com.instagram.android');
-    //     setIsInstagramInstalled(isInstalled);
-    // }
+    async function checkIfInstagramIsInstalled() {
+        const { isInstalled } = await Share.isPackageInstalled('com.instagram.android');
+        setIsInstagramInstalled(isInstalled);
+    }
 
     async function getVersesToShare() {
         const selectedVerses = route.params.selectedVerses;
@@ -110,6 +112,7 @@ export default function SharePage({ route, navigation }) {
     function RenderVerses() {
         return (
             <TouchableHighlight
+                ref={refToInstagram}
                 style={{
                     backgroundColor: verseBackgroundColor,
                     padding: 12,
@@ -123,7 +126,12 @@ export default function SharePage({ route, navigation }) {
                         <View>
                             {route.params.selectedVerses.map((item) =>
                                 <View key={item.id}>
-                                    <Text style={[styles.verseItem, { fontFamily: verseFont }]}>{item.id + 1}. {item.verse}</Text>
+                                    <Text style={[
+                                        styles.verseItem, {
+                                            fontFamily: verseFont,
+                                            color: verseTextColor == 'light' ? '#FFF' : '#000'
+                                        }
+                                    ]}>{item.id + 1}. {item.verse}</Text>
                                 </View>)}
                             <Text
                                 style={[
@@ -148,7 +156,12 @@ export default function SharePage({ route, navigation }) {
                             </Text>
                             {route.params.selectedVerses.map((item) =>
                                 <View key={item.id}>
-                                    <Text style={[styles.verseItem, { fontFamily: verseFont }]}>{item.verse}</Text>
+                                    <Text style={[
+                                        styles.verseItem, {
+                                            fontFamily: verseFont,
+                                            color: verseTextColor == 'light' ? '#FFF' : '#000'
+                                        }
+                                    ]}>{item.id + 1}. {item.verse}</Text>
                                 </View>)}
                         </View>
                 }
@@ -182,6 +195,25 @@ export default function SharePage({ route, navigation }) {
         }
     }
 
+    async function onInstagramShare() {
+        try {
+            const uri = await captureRef(refToInstagram, {
+                format: 'png',
+                quality: 1
+            });
+
+            await Share.shareSingle({
+                backgroundImage: `data:image/jpeg;base64,${backgroundWithImage}`,
+                stickerImage: uri, //or you can use "data:" link
+                backgroundBottomColor: backgroundWithColor,
+                backgroundTopColor: backgroundWithColor,
+                social: Share.Social.INSTAGRAM_STORIES
+            });
+        } catch (err) {
+            handleStatusBarVisibility('warning', 'A imagem não foi compartilhada');
+        }
+    }
+
     function handleStatusBarVisibility(type, message) {
         setIsStatusBarVisible(true);
         setStatusBarType(type);
@@ -191,33 +223,11 @@ export default function SharePage({ route, navigation }) {
         }, 2000);
     }
 
-    function hexToRgbA(hex, opacity) {
-        var c;
-        if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-            c = hex.substring(1).split('');
-            if (c.length == 3) {
-                c = [c[0], c[0], c[1], c[1], c[2], c[2]];
-            }
-            c = '0x' + c.join('');
-            return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + `,${opacity})`;
-        } else {
-            return 'rgba(200,200,200,1)'
-        }
-    }
-
-
     function handleVerseOpacity(opacity) {
-        // console.log('Color')
-        // console.log(verseBackgroundColor)
-        // console.log('Opacity')
-        // console.log(opacity)
-
-        // let colorToRgb = hexToRgbA(verseBackgroundColor, opacity);
-        // setVerseBackgroundColor(colorToRgb);
-        setVerseOpacity(opacity);
+        setVerseOpacity(parseFloat(opacity));
     }
 
-    function onCheckingConnection(){
+    function onCheckingConnection() {
         setImagesBackground([]);
     }
 
@@ -228,6 +238,17 @@ export default function SharePage({ route, navigation }) {
                     <Ionicons name='chevron-back-outline' color={colors.icon} size={32} />
                 </TouchableHighlight>
                 <View style={{ flexDirection: 'row' }}>
+                    {
+                        !isInstagramInstalled
+                            ? <View />
+                            :
+                            <TouchableHighlight
+                                style={{ marginLeft: 16 }}
+                                underlayColor='transparent'
+                                onPress={() => onInstagramShare()}>
+                                <Ionicons name='logo-instagram' color={colors.icon} size={32} />
+                            </TouchableHighlight>
+                    }
                     <TouchableHighlight
                         style={{ marginLeft: 16 }}
                         underlayColor='transparent'
@@ -290,6 +311,7 @@ export default function SharePage({ route, navigation }) {
                 margin={verseMargin}
                 isConnected={isConnected}
                 onCheckingConnection={() => onCheckingConnection()}
+                onSelectingVerseTextColor={(verseTextColor) => setVerseTextColor(verseTextColor)}
             />
         </View>
     );

@@ -44,9 +44,9 @@ export default function ChooseVerse({ route, navigation }) {
                     <Ionicons name='chevron-back-outline' color={colors.icon} size={32} />
                 </TouchableHighlight>
 
-                <Text style={styles.headerTitle}>Livro: {choosedBook}</Text>
+                <Text style={styles.headerTitle}>{choosedBook}</Text>
             </View>
-            <View style={styles.container}>
+            <View style={styles.flatlistContainer}>
                 <Text style={styles.chooseChapterText}>Escolha o capítulo</Text>
                 <View style={{ paddingLeft: 8, paddingTop: 16, paddingBottom: 64 }}>
                     <FlatList
@@ -66,6 +66,9 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         backgroundColor: colors.darkBackground
+    },
+    flatlistContainer: {
+        paddingHorizontal: 16
     },
     header: {
         width: '100%',
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
     chooseChapterText: {
         fontSize: 18,
         fontFamily: 'PTSans-Regular',
-        color: colors.primary.dark,
+        color: colors.primary.dark
     },
     chapterButton: {
         margin: 8,

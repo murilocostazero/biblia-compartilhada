@@ -22,7 +22,7 @@ export default function ChooseBook({ navigation }) {
         ? chaptersList.filter(
             chapterName => chapterName
                 .toLowerCase()
-                .includes(query))
+                .includes(query.toLowerCase()))
         : chaptersList;
 
     function renderBooks({ item }) {
@@ -62,7 +62,7 @@ export default function ChooseBook({ navigation }) {
                         autoCorrect={false}
                         autoFocus={true}
                         value={query}
-                        onChangeText={(text) => onChangeText(text)} />
+                        onChangeText={(text) => setQuery(text)} />
                     <Ionicons name='search' color={colors.primary.dark} size={22} />
                 </View>
             </View>

@@ -47,23 +47,26 @@ export default function Search({ navigation }) {
         navigation.navigate('Home');
     }
 
-    function getHighlightedText(text) {
-        const value = oldQuery;
-        const parts = text.split(new RegExp(`(${value})`, 'gi'));
-        return (
-            <Text style={styles.itemText}>
-                {
-                    parts.map(part => part.toLowerCase() === value.toLowerCase()
-                        ? <Text style={{ color: '#FFF', backgroundColor: colors.secondary.regular }}>
-                            {part}
-                        </Text>
-                        : part)
-                }
-            </Text>
-        );
-    }
+    // function getHighlightedText(text) {
+    //     const value = oldQuery;
+    //     const parts = text.split(new RegExp(`(${value})`, 'gi'));
+    //     return (
+    //         <Text style={styles.itemText}>
+    //             {
+    //                 parts.map(part => part.toLowerCase() === value.toLowerCase()
+    //                     ? <Text style={{ color: '#FFF', backgroundColor: colors.secondary.regular }}>
+    //                         {part}
+    //                     </Text>
+    //                     : part)
+    //             }
+    //         </Text>
+    //     );
+    // }
 
     function renderSearchResults({ item }) {
+        const id = item.book + item.chapter + item.verse.id;
+        const value = oldQuery;
+        const parts = item.verse.text.split(new RegExp(`(${value})`, 'gi'));
         return (
             <TouchableHighlight
                 onPress={() => addSearchToStorageAndNavigate(item)}
@@ -73,10 +76,20 @@ export default function Search({ navigation }) {
                     <Text style={styles.itemTitle}>
                         {item.book}, capítulo {item.chapter + 1}, versículo {item.verse.id + 1}
                     </Text>
-                    {
-                        getHighlightedText(item.verse.text)
-                    }
-
+                    <Text style={styles.itemText}>
+                        {
+                            parts.map(part => part.toLowerCase() === value.toLowerCase()
+                                ? <Text
+                                    key={id+Math.random()}
+                                    style={{
+                                        color: '#FFF',
+                                        backgroundColor: colors.secondary.regular
+                                    }}>
+                                    {part}
+                                </Text>
+                                : part)
+                        }
+                    </Text>
                     {/* <Text style={styles.itemText}>{item.verse.text}</Text> */}
                 </View>
             </TouchableHighlight>

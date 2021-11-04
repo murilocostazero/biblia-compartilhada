@@ -64,6 +64,7 @@ export default function Home({ navigation }) {
 
             let chapter = getChapter(data.choosedBook, data.chapter);
             setChapterToShow(chapter);
+            setIsFirstUse(false);
         } else {
             setIsFirstUse(true);
         }

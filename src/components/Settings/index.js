@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableHighlight, FlatList, ScrollView, Image, ActivityIndicator, BackHandler } from 'react-native';
+import {
+    StyleSheet,
+    View,
+    Text,
+    TouchableHighlight,
+    FlatList,
+    ScrollView,
+    Image,
+    ActivityIndicator,
+    BackHandler
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../styles/colors';
@@ -104,7 +114,7 @@ export default function Settings(props) {
 
     function RenderTitleOptions() {
         return (
-            <ScrollView style={{ maxHeight: 220 }}>
+            <ScrollView style={{ flex: 1 }}>
                 <View>
                     <Text style={styles.labelTitle}>Alinhamento</Text>
                     <View style={styles.textAlignContainer}>
@@ -130,6 +140,7 @@ export default function Settings(props) {
                     <Text style={styles.labelTitle}>Cor</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <FlatList
+                            showsHorizontalScrollIndicator={false}
                             horizontal={true}
                             data={palette}
                             renderItem={renderPaletteColor}
@@ -164,28 +175,38 @@ export default function Settings(props) {
     }
 
     function decrementOpacity() {
-        if (props.opacity > 0.1) {
-            const decrementedOpacity = (parseFloat(props.opacity) - 0.1).toFixed(1);
+        let doubleOpacity = parseFloat(props.opacity);
+        console.log(doubleOpacity)
+
+        if (doubleOpacity > 0.1) {
+            const decrementedOpacity = (doubleOpacity - 0.1).toFixed(1);
+            console.log(decrementedOpacity)
+
             // console.log(decrementedOpacity)
             props.onChangeVerseOpacity(decrementedOpacity);
         } else {
-            props.onChangeVerseOpacity(props.opacity)
+            props.onChangeVerseOpacity(doubleOpacity)
         }
     }
 
     function incrementOpacity() {
-        if (props.opacity < 1) {
-            const incrementedOpacity = (parseFloat(props.opacity) + 0.1).toFixed(1);
+        let doubleOpacity = parseFloat(props.opacity);
+        console.log(doubleOpacity)
+
+        if (doubleOpacity < 1) {
+            const incrementedOpacity = (doubleOpacity + 0.1).toFixed(1);
+            console.log(incrementedOpacity)
+
             // console.log(incrementedOpacity)
             props.onChangeVerseOpacity(incrementedOpacity);
         } else {
-            props.onChangeVerseOpacity(props.opacity)
+            props.onChangeVerseOpacity(doubleOpacity)
         }
     }
 
     function decrementMargin() {
         if (props.margin > 8) {
-            const decrementedMargin = (parseInt(props.margin) / 2);
+            const decrementedMargin = (parseInt(props.margin)/2);
             // console.log(decrementedMargin)
             props.onChangeVerseMargin(decrementedMargin);
         } else {
@@ -194,8 +215,8 @@ export default function Settings(props) {
     }
 
     function incrementMargin() {
-        if (props.margin < 112) {
-            const incrementedMargin = (parseInt(props.margin) * 2);
+        if (props.margin < 124) {
+            const incrementedMargin = (parseInt(props.margin)*2);
             // console.log(incrementedMargin)
             props.onChangeVerseMargin(incrementedMargin);
         } else {
@@ -206,7 +227,7 @@ export default function Settings(props) {
 
     function RenderVerseOptions() {
         return (
-            <ScrollView style={{ maxHeight: 220 }}
+            <ScrollView style={{ flex: 1 }}
                 keyboardDismissMode="on-drag"
                 keyboardShouldPersistTaps={'always'}>
                 <Text style={styles.labelTitle}>Posição</Text>
@@ -231,9 +252,58 @@ export default function Settings(props) {
                     </TouchableHighlight>
                 </View>
 
+                <Text style={styles.labelTitle}>Cor do texto</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <TouchableHighlight
+                        style={{
+                            backgroundColor: colors.primary.light,
+                            padding: 4,
+                            borderRadius: 8,
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                        }}
+                        onPress={() => {
+                            props.onSelectingVerseTextColor('light');
+                            setSelectedSetting(0);
+                        }}
+                        underlayColor={colors.secondary.light}>
+                        <Text style={{
+                            fontFamily: 'PTSans-Bold',
+                            color: '#FFF',
+                            fontSize: 16
+                        }}>
+                            Texto claro
+                        </Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        style={{
+                            backgroundColor: colors.primary.light,
+                            padding: 4,
+                            borderRadius: 8,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginLeft: 8
+                        }}
+                        onPress={() => {
+                            props.onSelectingVerseTextColor('dark');
+                            setSelectedSetting(0);
+                        }}
+                        underlayColor={colors.secondary.light}>
+                        <Text style={{
+                            fontFamily: 'PTSans-Bold',
+                            color: '#000',
+                            fontSize: 16
+                        }}>
+                            Texto escuro
+                        </Text>
+                    </TouchableHighlight>
+                </View>
+
+
                 <Text style={styles.labelTitle}>Cor de fundo</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <FlatList
+                        showsHorizontalScrollIndicator={false}
                         horizontal={true}
                         data={palette}
                         renderItem={renderPaletteBackgroundColor}
@@ -331,6 +401,7 @@ export default function Settings(props) {
                 <Text style={styles.labelTitle}>Cor de fundo</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <FlatList
+                        showsHorizontalScrollIndicator={false}
                         horizontal={true}
                         data={palette}
                         renderItem={renderColorsDashboardBackground}
