@@ -611,7 +611,10 @@ export default function Settings(props) {
                     underlayColor='transparent'
                     onPress={() => onSelectingSetting(1)}>
                     <View style={styles.buttonContainer}>
-                        <Ionicons name='text-outline' size={32} color={colors.icon} />
+                        <Ionicons 
+                            name='text-outline' 
+                            size={32} 
+                            color={selectedSetting == 1 ? '#FFF' : colors.icon} />
                         <Text style={styles.buttonLabel}>Título</Text>
                     </View>
                 </TouchableHighlight>
@@ -619,7 +622,10 @@ export default function Settings(props) {
                     underlayColor='transparent'
                     onPress={() => onSelectingSetting(2)}>
                     <View style={styles.buttonContainer}>
-                        <Ionicons name='document-text-outline' size={32} color={colors.icon} />
+                        <Ionicons 
+                            name='document-text-outline' 
+                            size={32} 
+                            color={selectedSetting == 2 ? '#FFF' : colors.icon} />
                         <Text style={styles.buttonLabel}>Versículo</Text>
                     </View>
                 </TouchableHighlight>
@@ -627,7 +633,10 @@ export default function Settings(props) {
                     underlayColor='transparent'
                     onPress={() => onSelectingSetting(3)}>
                     <View style={styles.buttonContainer}>
-                        <Ionicons name='color-palette-outline' size={32} color={colors.icon} />
+                        <Ionicons 
+                            name='color-palette-outline' 
+                            size={32} 
+                            color={selectedSetting == 3 ? '#FFF' : colors.icon} />
                         <Text style={styles.buttonLabel}>Cor de fundo</Text>
                     </View>
                 </TouchableHighlight>
@@ -635,7 +644,10 @@ export default function Settings(props) {
                     underlayColor='transparent'
                     onPress={() => onSelectingSetting(4)}>
                     <View style={styles.buttonContainer}>
-                        <Ionicons name='images-outline' size={32} color={colors.icon} />
+                        <Ionicons 
+                            name='images-outline' 
+                            size={32} 
+                            color={selectedSetting == 4 ? '#FFF' : colors.icon} />
                         <Text style={styles.buttonLabel}>Plano de fundo</Text>
                     </View>
                 </TouchableHighlight>
@@ -664,13 +676,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: 16
+        paddingVertical: 8,
+        paddingHorizontal: 16
     },
     buttonContainer: {
         alignItems: 'center'
     },
     buttonLabel: {
-        marginTop: 4,
+        marginTop: 2,
         fontFamily: 'PTSans-Bold'
     },
     paletteColorItem: {

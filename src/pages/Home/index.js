@@ -28,6 +28,7 @@ export default function Home({ navigation }) {
     const [verseIsSelected, setVerseIsSelected] = useState(false);
     const [favoriteData, setFavotireData] = useState([]);
     const [containerSize, setContainerSize] = useState(50);
+    const [isScrolling, setIsScrolling] = useState(false);
 
     const isFocused = useIsFocused();
 
@@ -269,6 +270,13 @@ export default function Home({ navigation }) {
         }
     }
 
+    function onShowingChapterNavigation() {
+        setIsScrolling(true);
+        setTimeout(() => {
+            setIsScrolling(false);
+        }, 2000);
+    }
+
     return (
         <View
             style={[
@@ -313,19 +321,32 @@ export default function Home({ navigation }) {
                                     </Text>
                                 </View>
                                 <FlatList
-                                    contentContainerStyle={{ paddingTop: 16 }}
+                                    onScrollBeginDrag={() => onShowingChapterNavigation()}
+                                    contentContainerStyle={{ paddingTop: 8, paddingBottom: 22 }}
                                     data={chapterToShow}
                                     keyExtractor={item => item.id}
                                     renderItem={renderVerse}
                                     extraData={refreshChapter}
                                 />
+                                <View style={{
+                                    backgroundColor: 'transparent',
+                                    position: 'absolute',
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    height: 56
+                                }}>
                                 {
                                     selectedVerses.length > 0
                                         ? <View />
-                                        : <ChapterNavigation
-                                            choice={choice} 
-                                            handleChapterNavigation={(option) => handleChapterNavigation(option)} />
+                                        : !isScrolling
+                                            ? <View />
+                                            :
+                                            <ChapterNavigation
+                                                choice={choice}
+                                                handleChapterNavigation={(option) => handleChapterNavigation(option)} />
                                 }
+                                </View>
                             </View>
                             :
                             <FirstUseComponent />
@@ -342,7 +363,7 @@ export default function Home({ navigation }) {
                         <View />
                         :
                         <TouchableHighlight
-                            underlayColor='transparent'
+                            underlayColor={colors.secondary.light}
                             onPress={() => chooseBook()}
                             style={styles.initialButton}>
                             <Text style={styles.initialButtonText}>Vamos nessa!</Text>

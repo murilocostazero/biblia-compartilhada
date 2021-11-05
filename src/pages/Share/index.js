@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        margin: 8,
+        marginHorizontal: 8,
         borderRadius: 16
     },
     verseTitle: {

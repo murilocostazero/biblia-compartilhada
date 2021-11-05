@@ -29,36 +29,33 @@ export default function Header(props) {
         );
     }
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.headerLabel}>Bíblia</Text>
-            <View style={styles.buttonsContainer}>
+    function RenderHeaderButtons() {
+        return (
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {
-                    props.isFirstUse
+                    props.selectedVerses.length > 0
                         ? <View />
-                        : props.selectedVerses.length > 0
-                            ? <View />
-                            : <>
-                                <TouchableHighlight
-                                    onPress={() => props.onTappingFavorites()}
-                                    style={styles.headerButton}
-                                    underlayColor={colors.primary.opacity}>
-                                    <MaterialIcons
-                                        name='favorite'
-                                        color={colors.icon}
-                                        size={28} />
-                                </TouchableHighlight>
-                                <TouchableHighlight
-                                    onPress={() => props.onOpenVersesSettings()}
-                                    style={styles.headerButton}
-                                    underlayColor={colors.primary.opacity}>
-                                    <MaterialIcons
-                                        style={{ marginTop: 2 }}
-                                        name={props.openVersesSettings == true ? 'close' : 'text-format'}
-                                        color={colors.icon}
-                                        size={32} />
-                                </TouchableHighlight>
-                            </>
+                        : <>
+                            <TouchableHighlight
+                                onPress={() => props.onTappingFavorites()}
+                                style={styles.headerButton}
+                                underlayColor={colors.primary.opacity}>
+                                <MaterialIcons
+                                    name='favorite'
+                                    color={colors.icon}
+                                    size={28} />
+                            </TouchableHighlight>
+                            <TouchableHighlight
+                                onPress={() => props.onOpenVersesSettings()}
+                                style={styles.headerButton}
+                                underlayColor={colors.primary.opacity}>
+                                <MaterialIcons
+                                    style={{ marginTop: 2 }}
+                                    name={props.openVersesSettings == true ? 'close' : 'text-format'}
+                                    color={colors.icon}
+                                    size={32} />
+                            </TouchableHighlight>
+                        </>
                 }
                 {
                     props.selectedVerses.length == 1
@@ -109,6 +106,21 @@ export default function Header(props) {
                                     size={28} />
                             </TouchableHighlight>
                         </>
+                }
+            </View>
+        );
+    }
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.headerLabel}>Bíblia</Text>
+            <View style={styles.buttonsContainer}>
+                {
+                    props.isFirstUse
+                        ?
+                        <View />
+                        :
+                        <RenderHeaderButtons />
                 }
             </View>
         </View>
