@@ -13,6 +13,7 @@ import { captureRef } from 'react-native-view-shot';
 import Share from 'react-native-share';
 import NetInfo from "@react-native-community/netinfo";
 import { getPromiseImageStorySize } from '../../handlers/handleFetchImages';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 export default function SharePage({ route, navigation }) {
     const viewRef = useRef();
@@ -47,6 +48,7 @@ export default function SharePage({ route, navigation }) {
 
     //Checking
     const [isConnected, setIsConnected] = useState(false);
+    const [copiedText, setCopiedText] = useState('');
 
     const [isInstagramInstalled, setIsInstagramInstalled] = useState(false);
 
@@ -109,9 +111,24 @@ export default function SharePage({ route, navigation }) {
         setImagesBackground(images);
     }
 
+    function copyToClipboard() {
+        let verseToShare = `${route.params.choice.choosedBook}, capítulo ${route.params.choice.chapter + 1}\n\n`;
+
+        route.params.selectedVerses.map((item) => {
+            verseToShare = `${verseToShare}Versículo ${item.id+1}. ${item.verse}\n`
+        });
+
+        Clipboard.setString(verseToShare);
+        setCopiedText(verseToShare);
+        handleStatusBarVisibility('success', 'Versículo copiado')
+    }
+
     function RenderVerses() {
         return (
             <TouchableHighlight
+                underlayColor={colors.primary.regular}
+                onPress={() => handleStatusBarVisibility('warning', 'Segure o versículo para copiá-lo')}
+                onLongPress={()=> copyToClipboard()}
                 ref={refToInstagram}
                 style={{
                     backgroundColor: verseBackgroundColor,
