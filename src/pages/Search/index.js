@@ -42,7 +42,7 @@ export default function Search({ navigation }) {
 
     async function addSearchToStorageAndNavigate(item) {
         //Add book and chapter to async storage and navigate to home
-        let choice = { choosedBook: item.book, chapter: item.chapter };
+        let choice = { choosedBook: item.book, chapter: item.chapter, indexItem: item.verse.id };
         await storeData(choice);
         navigation.navigate('Home');
     }

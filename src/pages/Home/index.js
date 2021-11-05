@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { View, Text, FlatList, TouchableHighlight, StyleSheet, BackHandler, ActivityIndicator } from 'react-native';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { getData, storeData } from '../../handlers/handlerASChoice';
@@ -29,8 +29,10 @@ export default function Home({ navigation }) {
     const [favoriteData, setFavotireData] = useState([]);
     const [containerSize, setContainerSize] = useState(50);
     const [isScrolling, setIsScrolling] = useState(false);
+    const [temporarilySelected, setTemporarilySelected] = useState(-1);
 
     const isFocused = useIsFocused();
+    const flatlistRef = useRef();
 
     useEffect(() => {
         if (isFocused == true && selectedVerses.length == 0) {
@@ -56,12 +58,23 @@ export default function Home({ navigation }) {
         }, [selectedVerses])
     );
 
+    function scrollToIndex(item) {
+        let index = item;
+        flatlistRef.current.scrollToIndex({ animated: true, index: index });
+    }
+
     async function getInitialData() {
         await getDataFromAS();
         await getDataFromFavoriteAS();
         await setChapterIsReady(true);
     }
 
+    function handleTemporarilySelected(index){
+        setTemporarilySelected(index);
+        setTimeout(()=> {
+            setTemporarilySelected(-1);
+        }, 1500);
+    }
 
     async function getDataFromAS() {
         let data = await getData();
@@ -72,6 +85,13 @@ export default function Home({ navigation }) {
             let chapter = getChapter(data.choosedBook, data.chapter);
             setChapterToShow(chapter);
             setIsFirstUse(false);
+
+
+            const index = data.indexItem == null ? 0 : data.indexItem;
+            setTimeout(() => {
+                scrollToIndex(index);
+                handleTemporarilySelected(index);
+            }, 500);
         } else {
             setIsFirstUse(true);
         }
@@ -156,7 +176,14 @@ export default function Home({ navigation }) {
             <TouchableHighlight
                 underlayColor={colors.secondary.light}
                 onPress={() => handleSelect(item)}
-                style={[item.item.isSelected == true ? styles.selectedItem : styles.unselectedItem, styles.verseItem]}>
+                style={[
+                    // temporarilySelected == item.item.id 
+                    // ? styles.selectedItem : 
+
+                    item.item.isSelected == true 
+                    ? styles.selectedItem 
+                    : styles.unselectedItem, styles.verseItem
+                    ]}>
                 <View style={{ flexDirection: 'column' }}>
                     {
                         isVerseFavorite != undefined
@@ -326,7 +353,15 @@ export default function Home({ navigation }) {
                                     data={chapterToShow}
                                     keyExtractor={item => item.id}
                                     renderItem={renderVerse}
+                                    initialScrollIndex={0}
                                     extraData={refreshChapter}
+                                    ref={flatlistRef}
+                                    onScrollToIndexFailed={info => {
+                                        const wait = new Promise(resolve => setTimeout(resolve, 700));
+                                        wait.then(() => {
+                                            flatlistRef.current?.scrollToIndex({ index: info.index, animated: true });
+                                        });
+                                      }}
                                 />
                                 <View style={{
                                     backgroundColor: 'transparent',
@@ -336,16 +371,16 @@ export default function Home({ navigation }) {
                                     right: 0,
                                     height: 56
                                 }}>
-                                {
-                                    selectedVerses.length > 0
-                                        ? <View />
-                                        : !isScrolling
+                                    {
+                                        selectedVerses.length > 0
                                             ? <View />
-                                            :
-                                            <ChapterNavigation
-                                                choice={choice}
-                                                handleChapterNavigation={(option) => handleChapterNavigation(option)} />
-                                }
+                                            : !isScrolling
+                                                ? <View />
+                                                :
+                                                <ChapterNavigation
+                                                    choice={choice}
+                                                    handleChapterNavigation={(option) => handleChapterNavigation(option)} />
+                                    }
                                 </View>
                             </View>
                             :

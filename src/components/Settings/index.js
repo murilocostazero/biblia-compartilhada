@@ -684,7 +684,8 @@ const styles = StyleSheet.create({
     },
     buttonLabel: {
         marginTop: 2,
-        fontFamily: 'PTSans-Bold'
+        fontFamily: 'PTSans-Bold',
+        color: '#FFF'
     },
     paletteColorItem: {
         width: 40,
