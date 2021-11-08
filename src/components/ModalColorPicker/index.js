@@ -43,13 +43,13 @@ export default function ModalColorPicker(props) {
                         <TouchableHighlight
                             underlayColor='transparent'
                             onPress={() => props.onModalColorPickerCancel()}
-                            style={{
+                            style={[{
                                 backgroundColor: colors.error,
                                 padding: 8,
                                 borderRadius: 8,
                                 alignItems: 'center',
                                 justifyContent: 'center'
-                            }}>
+                            }, styles.shadow]}>
                             <Text style={{
                                 fontFamily: 'PTSans-Bold',
                                 color: colors.background,
@@ -59,14 +59,14 @@ export default function ModalColorPicker(props) {
                         <TouchableHighlight
                             underlayColor='transparent'
                             onPress={() => props.onSelectingColor(currentColor)}
-                            style={{
+                            style={[{
                                 backgroundColor: colors.success,
                                 padding: 8,
                                 borderRadius: 8,
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 marginLeft: 8
-                            }}>
+                            }, styles.shadow]}>
                             <Text style={{
                                 fontFamily: 'PTSans-Bold',
                                 color: colors.background,

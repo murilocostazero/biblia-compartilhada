@@ -50,7 +50,7 @@ export default function FontPicker(props) {
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 8
+        marginVertical: 12
     },
     labelTitle: {
         fontFamily: 'PTSans-Bold',

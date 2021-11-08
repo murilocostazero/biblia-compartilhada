@@ -15,7 +15,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../styles/colors';
 import palette from '../../styles/palette';
 import { useFocusEffect } from '@react-navigation/native';
-import { ModalColorPicker, FontPicker } from '../../components';
+import { ModalColorPicker, FontPicker, RenderChangeFontSize } from '../../components';
 import { launchImageLibrary } from 'react-native-image-picker';
 
 export default function Settings(props) {
@@ -24,6 +24,14 @@ export default function Settings(props) {
 
     //ModalColorPicker
     const [selectedColor, setSelectedColor] = useState(null);
+
+    const titleVerses = [
+        `${props.verseTitle.book} ${props.verseTitle.chapter}`,
+        `${props.verseTitle.book}, ${props.verseTitle.chapter}`,
+        `${props.verseTitle.book}: ${props.verseTitle.chapter}`,
+        `${props.verseTitle.book} - ${props.verseTitle.chapter}`,
+        `${props.verseTitle.book}, capítulo ${props.verseTitle.chapter}`,
+    ];
 
     useFocusEffect(
         React.useCallback(() => {
@@ -60,13 +68,13 @@ export default function Settings(props) {
                     props.onChangeTitleColor(item);
                 }}>
                 {
-                        item != 'transparent'
+                    item != 'transparent'
                         ? <View style={[styles.paletteColorItem, { backgroundColor: item }]} />
-                        : 
+                        :
                         <View style={[styles.paletteColorItem, { backgroundColor: item }]}>
                             <MaterialIcons name='block' color={colors.error} size={32} />
                         </View>
-                    }
+                }
             </TouchableHighlight>
         );
     }
@@ -119,6 +127,27 @@ export default function Settings(props) {
         setSelectedSetting(0);
     }
 
+    function renderTitles({ item }) {
+        return (
+            <TouchableHighlight
+                onPress={() => {
+                    setSelectedSetting(0);
+                    props.onChangeVerseTitle(item);
+                }}
+                style={{
+                    backgroundColor: colors.primary.light,
+                    padding: 4,
+                    borderRadius: 8,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: 8
+                }}
+                underlayColor='transparent'>
+                <Text style={{ color: '#FFF', fontFamily: 'PTSans-Bold' }}>{item}</Text>
+            </TouchableHighlight>
+        );
+    }
+
     function RenderTitleOptions() {
         return (
             <ScrollView style={{ flex: 1 }}>
@@ -160,8 +189,32 @@ export default function Settings(props) {
                         </TouchableHighlight>
                     </View>
 
-                    <Text style={styles.labelTitle}>Posição do título</Text>
-                    <RenderTitleFormatter />
+                    <View style={{
+                        flexDirection: 'row',
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
+                    }}>
+                        <View style={{ alignItems: 'center' }}>
+                            <Text style={styles.labelTitle}>Posição do título</Text>
+                            <RenderTitleFormatter />
+                        </View>
+
+                        <View style={{
+                            flex: 1,
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            marginLeft: 16
+                        }}>
+                            <Text style={styles.labelTitle}>Tipo de título</Text>
+                            <FlatList
+                                horizontal={true}
+                                renderItem={renderTitles}
+                                key={item => item}
+                                data={titleVerses} />
+                        </View>
+                    </View>
+
                     <FontPicker onSelectingFont={(item) => onSelectingFont(item)} />
                 </View>
             </ScrollView>
@@ -177,13 +230,13 @@ export default function Settings(props) {
                     props.onChangeVerseBackgroundColor(item);
                 }}>
                 {
-                        item != 'transparent'
+                    item != 'transparent'
                         ? <View style={[styles.paletteColorItem, { backgroundColor: item }]} />
-                        : 
+                        :
                         <View style={[styles.paletteColorItem, { backgroundColor: item }]}>
                             <MaterialIcons name='block' color={colors.error} size={32} />
                         </View>
-                    }
+                }
             </TouchableHighlight>
         );
     }
@@ -220,7 +273,7 @@ export default function Settings(props) {
 
     function decrementMargin() {
         if (props.margin > 8) {
-            const decrementedMargin = (parseInt(props.margin)/2);
+            const decrementedMargin = (parseInt(props.margin) / 2);
             // console.log(decrementedMargin)
             props.onChangeVerseMargin(decrementedMargin);
         } else {
@@ -229,8 +282,8 @@ export default function Settings(props) {
     }
 
     function incrementMargin() {
-        if (props.margin < 124) {
-            const incrementedMargin = (parseInt(props.margin)*2);
+        if (props.margin < 128) {
+            const incrementedMargin = (parseInt(props.margin) * 2);
             // console.log(incrementedMargin)
             props.onChangeVerseMargin(incrementedMargin);
         } else {
@@ -238,6 +291,10 @@ export default function Settings(props) {
         }
     }
 
+    function onChangingFontSize(item){
+        setSelectedSetting(0);
+        props.onChangeVerseFontSize(item);
+    }
 
     function RenderVerseOptions() {
         return (
@@ -312,7 +369,6 @@ export default function Settings(props) {
                         </Text>
                     </TouchableHighlight>
                 </View>
-
 
                 <Text style={styles.labelTitle}>Cor de fundo</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -389,6 +445,35 @@ export default function Settings(props) {
                         </View>
                     </View>
 
+                    <View style={{ alignItems: 'center' }}>
+                        <Text style={styles.labelTitle}>Tamanho da fonte</Text>
+                        <RenderChangeFontSize verseFontSize={props.verseFontSize} onChangingFontSize={(item) => onChangingFontSize(item)} />
+                        {/* <View style={{ flexDirection: 'row', alignItems: 'center', padding: 4 }}>
+                            <TouchableHighlight
+                                underlayColor={colors.secondary.light}
+                                onPress={() => decrementFontSize()}
+                                style={[
+                                    styles.textFormatButton,
+                                    { backgroundColor: '#FFF' }
+                                ]}>
+                                <MaterialIcons name='remove' color={colors.primary.regular} size={18} />
+                            </TouchableHighlight>
+                            <View style={{ marginHorizontal: 10, alignItems: 'center' }}>
+                                <Text style={{
+                                    fontFamily: 'PTSans-Regular',
+                                    fontSize: 18
+                                }}>
+                                    {props.verseFontSize}
+                                </Text>
+                            </View>
+                            <TouchableHighlight
+                                underlayColor={colors.secondary.light}
+                                onPress={() => incrementFontSize()}
+                                style={[styles.textFormatButton, { backgroundColor: '#FFF' }]}>
+                                <MaterialIcons name='add' color={colors.primary.regular} size={18} />
+                            </TouchableHighlight>
+                        </View> */}
+                    </View>
                 </View>
 
                 <FontPicker onSelectingFont={(item) => onSelectingVerseFont(item)} />
@@ -404,14 +489,14 @@ export default function Settings(props) {
                     setSelectedSetting(0);
                     props.onChangeDashboardBackgroundColor(item);
                 }}>
-                    {
-                        item != 'transparent'
+                {
+                    item != 'transparent'
                         ? <View style={[styles.paletteColorItem, { backgroundColor: item }]} />
-                        : 
+                        :
                         <View style={[styles.paletteColorItem, { backgroundColor: item }]}>
                             <MaterialIcons name='block' color={colors.error} size={32} />
                         </View>
-                    }                
+                }
             </TouchableHighlight>
         );
     }
@@ -456,7 +541,7 @@ export default function Settings(props) {
         );
     }
 
-    function pickImage() {
+    function pickGalleryImage() {
         launchImageLibrary({
             title: 'Select Image',
             storageOptions: {
@@ -487,7 +572,7 @@ export default function Settings(props) {
                     marginBottom: 8
                 }}>
                     <TouchableHighlight
-                        onPress={() => pickImage()}
+                        onPress={() => pickGalleryImage()}
                         underlayColor={colors.secondary.opacity}
                         style={{
                             backgroundColor: colors.primary.light,
@@ -505,6 +590,7 @@ export default function Settings(props) {
                             <Ionicons name='images-outline' color={colors.secondary.regular} size={22} />
                         </View>
                     </TouchableHighlight>
+
                     {
                         props.imagesBackground.length < 3
                             ?
@@ -575,8 +661,6 @@ export default function Settings(props) {
         );
     }
 
-
-
     function RenderOptions() {
         switch (selectedSetting) {
             case 1:
@@ -632,9 +716,9 @@ export default function Settings(props) {
                     underlayColor='transparent'
                     onPress={() => onSelectingSetting(1)}>
                     <View style={styles.buttonContainer}>
-                        <Ionicons 
-                            name='text-outline' 
-                            size={32} 
+                        <Ionicons
+                            name='text-outline'
+                            size={32}
                             color={selectedSetting == 1 ? '#FFF' : colors.icon} />
                         <Text style={styles.buttonLabel}>Título</Text>
                     </View>
@@ -643,9 +727,9 @@ export default function Settings(props) {
                     underlayColor='transparent'
                     onPress={() => onSelectingSetting(2)}>
                     <View style={styles.buttonContainer}>
-                        <Ionicons 
-                            name='document-text-outline' 
-                            size={32} 
+                        <Ionicons
+                            name='document-text-outline'
+                            size={32}
                             color={selectedSetting == 2 ? '#FFF' : colors.icon} />
                         <Text style={styles.buttonLabel}>Versículo</Text>
                     </View>
@@ -654,9 +738,9 @@ export default function Settings(props) {
                     underlayColor='transparent'
                     onPress={() => onSelectingSetting(3)}>
                     <View style={styles.buttonContainer}>
-                        <Ionicons 
-                            name='color-palette-outline' 
-                            size={32} 
+                        <Ionicons
+                            name='color-palette-outline'
+                            size={32}
                             color={selectedSetting == 3 ? '#FFF' : colors.icon} />
                         <Text style={styles.buttonLabel}>Cor de fundo</Text>
                     </View>
@@ -665,9 +749,9 @@ export default function Settings(props) {
                     underlayColor='transparent'
                     onPress={() => onSelectingSetting(4)}>
                     <View style={styles.buttonContainer}>
-                        <Ionicons 
-                            name='images-outline' 
-                            size={32} 
+                        <Ionicons
+                            name='images-outline'
+                            size={32}
                             color={selectedSetting == 4 ? '#FFF' : colors.icon} />
                         <Text style={styles.buttonLabel}>Plano de fundo</Text>
                     </View>
@@ -679,7 +763,7 @@ export default function Settings(props) {
 
 const styles = StyleSheet.create({
     settingsContainer: {
-        backgroundColor: colors.background,
+        backgroundColor: 'transparent',
         position: 'absolute',
         left: 0,
         right: 0,
@@ -748,5 +832,15 @@ const styles = StyleSheet.create({
     textFormatLabel: {
         fontWeight: 'bold',
         color: '#FFF'
+    },
+    shadow: {
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.30,
+        shadowRadius: 4.65,
+        elevation: 8
     },
 });

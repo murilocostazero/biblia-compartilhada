@@ -6,3 +6,4 @@ export { default as Settings } from './Settings';
 export { default as StatusBar } from './StatusBar';
 export { default as FontPicker } from './FontPicker';
 export { default as ChapterNavigation } from './ChapterNavigation';
+export { default as RenderChangeFontSize } from './RenderChangeFontSize';

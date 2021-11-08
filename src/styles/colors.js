@@ -3,7 +3,7 @@ const colors = {
         light: '#344a72',
         dark: '#00001f',
         regular: '#002346',
-        opacity: 'rgba(0,35,70,0.5)'
+        opacity: 'rgba(0,35,70,0.6)'
     },
     secondary: {
         dark: '#b82c00',

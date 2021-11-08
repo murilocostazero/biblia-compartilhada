@@ -29,11 +29,13 @@ export default function SharePage({ route, navigation }) {
     const [verseTextColor, setVerseTextColor] = useState('light')
 
     //Verse
-    const [verseBackgroundColor, setVerseBackgroundColor] = useState(colors.primary.light);
+    const verseColor = hexToRgbA(colors.primary.light);
+    const [verseBackgroundColor, setVerseBackgroundColor] = useState(verseColor);
     const [verseOpacity, setVerseOpacity] = useState(1);
     const [versesToShow, setVersesToShow] = useState('');
     const [verseFont, setVerseFont] = useState('PTSans-Regular');
     const [verseMargin, setVerseMargin] = useState(32);
+    const [verseFontSize, setVerseFontSize] = useState(16);
 
     //Background
     const [backgroundWithImage, setBackgroundWithImage] = useState(null);
@@ -50,14 +52,14 @@ export default function SharePage({ route, navigation }) {
     const [isConnected, setIsConnected] = useState(false);
     const [copiedText, setCopiedText] = useState('');
 
-    const [isInstagramInstalled, setIsInstagramInstalled] = useState(false);
+    // const [isInstagramInstalled, setIsInstagramInstalled] = useState(false);
 
     useEffect(() => {
         getVersesToShare();
         getThreeImages();
 
         checkInternetConnection();
-        checkIfInstagramIsInstalled();
+        // checkIfInstagramIsInstalled();
     }, [imagesBackground]);
 
     function checkInternetConnection() {
@@ -70,10 +72,10 @@ export default function SharePage({ route, navigation }) {
         });
     }
 
-    async function checkIfInstagramIsInstalled() {
-        const { isInstalled } = await Share.isPackageInstalled('com.instagram.android');
-        setIsInstagramInstalled(isInstalled);
-    }
+    // async function checkIfInstagramIsInstalled() {
+    //     const { isInstalled } = await Share.isPackageInstalled('com.instagram.android');
+    //     setIsInstagramInstalled(isInstalled);
+    // }
 
     async function getVersesToShare() {
         const selectedVerses = route.params.selectedVerses;
@@ -115,7 +117,7 @@ export default function SharePage({ route, navigation }) {
         let verseToShare = `${route.params.choice.choosedBook}, capítulo ${route.params.choice.chapter + 1}\n\n`;
 
         route.params.selectedVerses.map((item) => {
-            verseToShare = `${verseToShare}Versículo ${item.id+1}. ${item.verse}\n`
+            verseToShare = `${verseToShare}Versículo ${item.id + 1}. ${item.verse}\n`
         });
 
         Clipboard.setString(verseToShare);
@@ -127,14 +129,12 @@ export default function SharePage({ route, navigation }) {
         return (
             <TouchableHighlight
                 underlayColor={colors.primary.regular}
-                onPress={() => handleStatusBarVisibility('warning', 'Segure o versículo para copiá-lo')}
-                onLongPress={()=> copyToClipboard()}
                 ref={refToInstagram}
                 style={{
                     backgroundColor: verseBackgroundColor,
                     padding: 12,
-                    borderRadius: 8,
-                    opacity: verseOpacity
+                    borderRadius: 8
+                    // opacity: verseOpacity
                 }}
                 underlayColor='transparent'>
                 {
@@ -145,6 +145,7 @@ export default function SharePage({ route, navigation }) {
                                 <View key={item.id}>
                                     <Text style={[
                                         styles.verseItem, {
+                                            fontSize: verseFontSize,
                                             fontFamily: verseFont,
                                             color: verseTextColor == 'light' ? '#FFF' : '#000'
                                         }
@@ -175,6 +176,7 @@ export default function SharePage({ route, navigation }) {
                                 <View key={item.id}>
                                     <Text style={[
                                         styles.verseItem, {
+                                            fontSize: verseFontSize,
                                             fontFamily: verseFont,
                                             color: verseTextColor == 'light' ? '#FFF' : '#000'
                                         }
@@ -240,7 +242,35 @@ export default function SharePage({ route, navigation }) {
         }, 2000);
     }
 
+    function hexToRgbA(hex){
+        var c;
+        if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+            c= hex.substring(1).split('');
+            if(c.length== 3){
+                c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+            }
+            c= '0x'+c.join('');
+            return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',1)';
+        } else {
+            return 'rgba(200,200,200,1)';
+        }
+    }
+
+    function handleVerseColor(color){
+        if(color != 'transparent') {
+            const actualColor = hexToRgbA(color);
+            setVerseBackgroundColor(actualColor);
+        } else {
+            setVerseBackgroundColor('rgba(255,255,255,0)');
+        } 
+
+        setVerseOpacity(1);      
+    }
+
     function handleVerseOpacity(opacity) {
+        const actualOpacity = verseBackgroundColor.replace(`,${verseOpacity})`, `,${opacity})`);
+        // console.log('Opacity', actualOpacity);
+        setVerseBackgroundColor(actualOpacity);
         setVerseOpacity(parseFloat(opacity));
     }
 
@@ -255,7 +285,13 @@ export default function SharePage({ route, navigation }) {
                     <Ionicons name='chevron-back-outline' color={colors.icon} size={32} />
                 </TouchableHighlight>
                 <View style={{ flexDirection: 'row' }}>
-                    {
+                    <TouchableHighlight
+                        underlayColor='transparent'
+                        onPress={() => copyToClipboard()}
+                        style={{  }}>
+                        <Ionicons name='clipboard-outline' size={32} color={colors.icon} />
+                    </TouchableHighlight>
+                    {/* {
                         !isInstagramInstalled
                             ? <View />
                             :
@@ -265,7 +301,7 @@ export default function SharePage({ route, navigation }) {
                                 onPress={() => onInstagramShare()}>
                                 <Ionicons name='logo-instagram' color={colors.icon} size={32} />
                             </TouchableHighlight>
-                    }
+                    } */}
                     <TouchableHighlight
                         style={{ marginLeft: 16 }}
                         underlayColor='transparent'
@@ -313,7 +349,7 @@ export default function SharePage({ route, navigation }) {
                 onChangeTitlePosition={(position) => setVerseTitlePosition(position)}
                 onChangeTitleColor={(color) => setVerseTitleColor(color)}
                 onChangeVersePosition={(position) => setVersePosition(position)}
-                onChangeVerseBackgroundColor={(color) => setVerseBackgroundColor(color)}
+                onChangeVerseBackgroundColor={(color) => handleVerseColor(color)}
                 onChangeVerseOpacity={(opacity) => handleVerseOpacity(opacity)}
                 opacity={verseOpacity}
                 onChangeBackgroundImage={(image) => setBackgroundWithImage(image)}
@@ -325,10 +361,14 @@ export default function SharePage({ route, navigation }) {
                 selectingTitleFont={(item) => setVerseTitleFont(item)}
                 selectingVerseFont={(item) => setVerseFont(item)}
                 onChangeVerseMargin={(margin) => setVerseMargin(margin)}
+                onChangeVerseFontSize={(size)=> setVerseFontSize(size)}
+                verseFontSize={verseFontSize}
                 margin={verseMargin}
                 isConnected={isConnected}
                 onCheckingConnection={() => onCheckingConnection()}
                 onSelectingVerseTextColor={(verseTextColor) => setVerseTextColor(verseTextColor)}
+                verseTitle={{book: route.params.choice.choosedBook, chapter: route.params.choice.chapter+1}}
+                onChangeVerseTitle={(item)=> setVerseTitle(item)}
             />
         </View>
     );
@@ -360,7 +400,6 @@ const styles = StyleSheet.create({
         marginBottom: 4
     },
     verseItem: {
-        fontSize: 16,
         textAlign: 'justify',
         marginBottom: 8
     },

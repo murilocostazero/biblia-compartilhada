@@ -301,7 +301,7 @@ export default function Home({ navigation }) {
         setIsScrolling(true);
         setTimeout(() => {
             setIsScrolling(false);
-        }, 2000);
+        }, 1000);
     }
 
     return (
@@ -349,7 +349,7 @@ export default function Home({ navigation }) {
                                 </View>
                                 <FlatList
                                     onScrollBeginDrag={() => onShowingChapterNavigation()}
-                                    contentContainerStyle={{ paddingTop: 8, paddingBottom: 22 }}
+                                    contentContainerStyle={{ paddingTop: 8, paddingBottom: 48 }}
                                     data={chapterToShow}
                                     keyExtractor={item => item.id}
                                     renderItem={renderVerse}
@@ -374,7 +374,7 @@ export default function Home({ navigation }) {
                                     {
                                         selectedVerses.length > 0
                                             ? <View />
-                                            : !isScrolling
+                                            : isScrolling
                                                 ? <View />
                                                 :
                                                 <ChapterNavigation
