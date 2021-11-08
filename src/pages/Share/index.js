@@ -351,7 +351,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         marginHorizontal: 8,
-        borderRadius: 16
+        borderRadius: 16,
+        marginBottom: 82,
+        paddingVertical: 62
     },
     verseTitle: {
         fontSize: 18,

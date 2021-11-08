@@ -1,4 +1,5 @@
 const palette = [
+    'transparent',
     '#f44336',
     '#e91e63',
     '#9c27b0',

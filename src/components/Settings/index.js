@@ -59,7 +59,14 @@ export default function Settings(props) {
                     setSelectedSetting(0);
                     props.onChangeTitleColor(item);
                 }}>
-                <View style={[styles.paletteColorItem, { backgroundColor: item }]} />
+                {
+                        item != 'transparent'
+                        ? <View style={[styles.paletteColorItem, { backgroundColor: item }]} />
+                        : 
+                        <View style={[styles.paletteColorItem, { backgroundColor: item }]}>
+                            <MaterialIcons name='block' color={colors.error} size={32} />
+                        </View>
+                    }
             </TouchableHighlight>
         );
     }
@@ -169,7 +176,14 @@ export default function Settings(props) {
                     setSelectedSetting(0);
                     props.onChangeVerseBackgroundColor(item);
                 }}>
-                <View style={[styles.paletteColorItem, { backgroundColor: item }]} />
+                {
+                        item != 'transparent'
+                        ? <View style={[styles.paletteColorItem, { backgroundColor: item }]} />
+                        : 
+                        <View style={[styles.paletteColorItem, { backgroundColor: item }]}>
+                            <MaterialIcons name='block' color={colors.error} size={32} />
+                        </View>
+                    }
             </TouchableHighlight>
         );
     }
@@ -390,7 +404,14 @@ export default function Settings(props) {
                     setSelectedSetting(0);
                     props.onChangeDashboardBackgroundColor(item);
                 }}>
-                <View style={[styles.paletteColorItem, { backgroundColor: item }]} />
+                    {
+                        item != 'transparent'
+                        ? <View style={[styles.paletteColorItem, { backgroundColor: item }]} />
+                        : 
+                        <View style={[styles.paletteColorItem, { backgroundColor: item }]}>
+                            <MaterialIcons name='block' color={colors.error} size={32} />
+                        </View>
+                    }                
             </TouchableHighlight>
         );
     }
@@ -693,7 +714,9 @@ const styles = StyleSheet.create({
         borderRadius: 40 / 2,
         borderWidth: 2,
         borderColor: '#FFF',
-        marginRight: 4
+        marginRight: 4,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     labelTitle: {
         fontSize: 16,
