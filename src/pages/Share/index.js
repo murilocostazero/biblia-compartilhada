@@ -36,6 +36,7 @@ export default function SharePage({ route, navigation }) {
     const [verseFont, setVerseFont] = useState('PTSans-Regular');
     const [verseMargin, setVerseMargin] = useState(32);
     const [verseFontSize, setVerseFontSize] = useState(16);
+    const [verseShadow, setVerseShadow] = useState(false);
 
     //Background
     const [backgroundWithImage, setBackgroundWithImage] = useState(null);
@@ -144,6 +145,7 @@ export default function SharePage({ route, navigation }) {
                             {route.params.selectedVerses.map((item) =>
                                 <View key={item.id}>
                                     <Text style={[
+                                        verseShadow == true ? styles.shadowToText : null,
                                         styles.verseItem, {
                                             fontSize: verseFontSize,
                                             fontFamily: verseFont,
@@ -175,6 +177,7 @@ export default function SharePage({ route, navigation }) {
                             {route.params.selectedVerses.map((item) =>
                                 <View key={item.id}>
                                     <Text style={[
+                                        verseShadow == true ? styles.shadowToText : null,
                                         styles.verseItem, {
                                             fontSize: verseFontSize,
                                             fontFamily: verseFont,
@@ -242,29 +245,29 @@ export default function SharePage({ route, navigation }) {
         }, 2000);
     }
 
-    function hexToRgbA(hex){
+    function hexToRgbA(hex) {
         var c;
-        if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-            c= hex.substring(1).split('');
-            if(c.length== 3){
-                c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+        if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+            c = hex.substring(1).split('');
+            if (c.length == 3) {
+                c = [c[0], c[0], c[1], c[1], c[2], c[2]];
             }
-            c= '0x'+c.join('');
-            return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',1)';
+            c = '0x' + c.join('');
+            return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',1)';
         } else {
             return 'rgba(200,200,200,1)';
         }
     }
 
-    function handleVerseColor(color){
-        if(color != 'transparent') {
+    function handleVerseColor(color) {
+        if (color != 'transparent') {
             const actualColor = hexToRgbA(color);
             setVerseBackgroundColor(actualColor);
         } else {
             setVerseBackgroundColor('rgba(255,255,255,0)');
-        } 
+        }
 
-        setVerseOpacity(1);      
+        setVerseOpacity(1);
     }
 
     function handleVerseOpacity(opacity) {
@@ -288,7 +291,7 @@ export default function SharePage({ route, navigation }) {
                     <TouchableHighlight
                         underlayColor='transparent'
                         onPress={() => copyToClipboard()}
-                        style={{  }}>
+                        style={{}}>
                         <Ionicons name='clipboard-outline' size={32} color={colors.icon} />
                     </TouchableHighlight>
                     {/* {
@@ -361,14 +364,16 @@ export default function SharePage({ route, navigation }) {
                 selectingTitleFont={(item) => setVerseTitleFont(item)}
                 selectingVerseFont={(item) => setVerseFont(item)}
                 onChangeVerseMargin={(margin) => setVerseMargin(margin)}
-                onChangeVerseFontSize={(size)=> setVerseFontSize(size)}
+                onChangeVerseShadow={()=> setVerseShadow(!verseShadow)}
+                verseShadow={verseShadow}
+                onChangeVerseFontSize={(size) => setVerseFontSize(size)}
                 verseFontSize={verseFontSize}
                 margin={verseMargin}
                 isConnected={isConnected}
                 onCheckingConnection={() => onCheckingConnection()}
                 onSelectingVerseTextColor={(verseTextColor) => setVerseTextColor(verseTextColor)}
-                verseTitle={{book: route.params.choice.choosedBook, chapter: route.params.choice.chapter+1}}
-                onChangeVerseTitle={(item)=> setVerseTitle(item)}
+                verseTitle={{ book: route.params.choice.choosedBook, chapter: route.params.choice.chapter + 1 }}
+                onChangeVerseTitle={(item) => setVerseTitle(item)}
             />
         </View>
     );
@@ -418,5 +423,10 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#FFF',
         marginRight: 4
+    },
+    shadowToText: {
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: { width: -1, height: 1 },
+        textShadowRadius: 10
     }
 });

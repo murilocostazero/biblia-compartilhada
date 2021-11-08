@@ -291,7 +291,7 @@ export default function Settings(props) {
         }
     }
 
-    function onChangingFontSize(item){
+    function onChangingFontSize(item) {
         setSelectedSetting(0);
         props.onChangeVerseFontSize(item);
     }
@@ -323,51 +323,86 @@ export default function Settings(props) {
                     </TouchableHighlight>
                 </View>
 
-                <Text style={styles.labelTitle}>Cor do texto</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <TouchableHighlight
-                        style={{
-                            backgroundColor: colors.primary.light,
-                            padding: 4,
-                            borderRadius: 8,
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                        }}
-                        onPress={() => {
-                            props.onSelectingVerseTextColor('light');
-                            setSelectedSetting(0);
-                        }}
-                        underlayColor={colors.secondary.light}>
-                        <Text style={{
-                            fontFamily: 'PTSans-Bold',
-                            color: '#FFF',
-                            fontSize: 16
-                        }}>
-                            Texto claro
-                        </Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight
-                        style={{
-                            backgroundColor: colors.primary.light,
-                            padding: 4,
-                            borderRadius: 8,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginLeft: 8
-                        }}
-                        onPress={() => {
-                            props.onSelectingVerseTextColor('dark');
-                            setSelectedSetting(0);
-                        }}
-                        underlayColor={colors.secondary.light}>
-                        <Text style={{
-                            fontFamily: 'PTSans-Bold',
-                            color: '#000',
-                            fontSize: 16
-                        }}>
-                            Texto escuro
-                        </Text>
-                    </TouchableHighlight>
+                    <View style={{ alignItems: 'center' }}>
+                        <Text style={styles.labelTitle}>Cor do texto</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <TouchableHighlight
+                                style={{
+                                    backgroundColor: colors.primary.light,
+                                    padding: 4,
+                                    borderRadius: 8,
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                }}
+                                onPress={() => {
+                                    props.onSelectingVerseTextColor('light');
+                                    setSelectedSetting(0);
+                                }}
+                                underlayColor={colors.secondary.light}>
+                                <Text style={{
+                                    fontFamily: 'PTSans-Bold',
+                                    color: '#FFF',
+                                    fontSize: 16
+                                }}>
+                                    Texto claro
+                                </Text>
+                            </TouchableHighlight>
+                            <TouchableHighlight
+                                style={{
+                                    backgroundColor: colors.primary.light,
+                                    padding: 4,
+                                    borderRadius: 8,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    marginLeft: 8
+                                }}
+                                onPress={() => {
+                                    props.onSelectingVerseTextColor('dark');
+                                    setSelectedSetting(0);
+                                }}
+                                underlayColor={colors.secondary.light}>
+                                <Text style={{
+                                    fontFamily: 'PTSans-Bold',
+                                    color: '#000',
+                                    fontSize: 16
+                                }}>
+                                    Texto escuro
+                                </Text>
+                            </TouchableHighlight>
+                        </View>
+                    </View>
+                    <View style={{
+                        flex: 1,
+                        alignItems: 'center'
+                    }}>
+                        <Text style={styles.labelTitle}>Sombreamento</Text>
+                        <TouchableHighlight
+                            style={{
+                                backgroundColor: props.verseShadow ? '#FFF' : colors.primary.light ,
+                                padding: 4,
+                                borderRadius: 8,
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                            onPress={() => {
+                                setSelectedSetting(0);
+                                props.onChangeVerseShadow();
+                            }}
+                            underlayColor={colors.secondary.light}>
+                            <Text style={{
+                                fontFamily: 'PTSans-Bold',
+                                color: props.verseShadow ? colors.primary.regular : '#FFF',
+                                fontSize: 16
+                            }}>
+                                {
+                                    props.verseShadow
+                                    ? 'Ativado'
+                                    : 'Desativado'
+                                }
+                            </Text>
+                        </TouchableHighlight>
+                    </View>
                 </View>
 
                 <Text style={styles.labelTitle}>Cor de fundo</Text>
