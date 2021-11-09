@@ -48,14 +48,12 @@ export default function ChooseVerse({ route, navigation }) {
             </View>
             <View style={styles.flatlistContainer}>
                 <Text style={styles.chooseChapterText}>Escolha o capítulo</Text>
-                <View style={{ paddingLeft: 8, paddingTop: 16, paddingBottom: 64 }}>
-                    <FlatList
-                        contentContainerStyle={{ alignItems: 'center' }}
-                        data={chapters}
-                        renderItem={renderChapters}
-                        numColumns={5}
-                    />
-                </View>
+                <FlatList
+                    contentContainerStyle={{ alignItems: 'center', paddingBottom: 16 }}
+                    data={chapters}
+                    renderItem={renderChapters}
+                    numColumns={5}
+                />
             </View>
         </View>
     );
@@ -68,7 +66,8 @@ const styles = StyleSheet.create({
         backgroundColor: colors.darkBackground
     },
     flatlistContainer: {
-        paddingHorizontal: 16
+        paddingHorizontal: 16,
+        flex: 1
     },
     header: {
         width: '100%',

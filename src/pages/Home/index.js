@@ -239,6 +239,10 @@ export default function Home({ navigation }) {
         navigation.navigate('Search');
     }
 
+    function goToDailyVerse(){
+        navigation.navigate('DailyVerse');
+    }
+
     async function getFavorites() {
         const favorites = await getFavoriteData();
         return favorites == null ? [] : favorites;
@@ -320,6 +324,7 @@ export default function Home({ navigation }) {
                 isFirstUse={isFirstUse}
                 verseIsSelected={verseIsSelected}
                 goToSearchPage={() => goToSearchPage()}
+                goToDailyVerse={() => goToDailyVerse()}
                 onTappingFavorites={() => onTappingFavorites()}
                 onAddingVerseToFavorite={() => onAddingVerseToFavorite()} />
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

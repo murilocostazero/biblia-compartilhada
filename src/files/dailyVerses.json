@@ -1,0 +1,134 @@
+[
+    { 
+        "choosedBook": "Salmos", 
+        "chapter": 120, 
+        "verse": 1,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Salmos", 
+        "chapter": 120, 
+        "verse": 2,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Salmos", 
+        "chapter": 120, 
+        "verse": 3,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Salmos", 
+        "chapter": 120, 
+        "verse": 4,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Salmos", 
+        "chapter": 120, 
+        "verse": 6,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Salmos", 
+        "chapter": 120, 
+        "verse": 7,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "1 Coríntios", 
+        "chapter": 9, 
+        "verse": 22,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Salmos", 
+        "chapter": 90, 
+        "verse": 10,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Josué", 
+        "chapter": 23, 
+        "verse": 14,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Mateus", 
+        "chapter": 25, 
+        "verse": 40,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "1 João", 
+        "chapter": 4, 
+        "verse": 13,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Eclesiastes", 
+        "chapter": 11, 
+        "verse": 12,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Isaías", 
+        "chapter": 63, 
+        "verse": 7,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Lucas", 
+        "chapter": 0, 
+        "verse": 36,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "1 Pedro", 
+        "chapter": 2, 
+        "verse": 11,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Hebreus", 
+        "chapter": 9, 
+        "verse": 36,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Provérbios", 
+        "chapter": 16, 
+        "verse": 0,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Salmos", 
+        "chapter": 45, 
+        "verse": 0,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Romanos", 
+        "chapter": 4, 
+        "verse": 7,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Isaías", 
+        "chapter": 47, 
+        "verse": 16,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Salmos", 
+        "chapter": 17, 
+        "verse": 31,
+        "indexItem": 0 
+    },
+    { 
+        "choosedBook": "Isaías", 
+        "chapter": 39, 
+        "verse": 30,
+        "indexItem": 0 
+    }
+]

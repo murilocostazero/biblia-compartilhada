@@ -8,7 +8,8 @@ import {
   ChooseVerse,
   Share,
   Favorites,
-  Search
+  Search,
+  DailyVerse
 } from './src/pages';
 
 const Stack = createNativeStackNavigator();
@@ -47,6 +48,11 @@ export default function App() {
           options={{ headerShown: false }}
           name='Search'
           component={Search} />
+
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name='DailyVerse'
+          component={DailyVerse} />
 
       </Stack.Navigator>
     </NavigationContainer>

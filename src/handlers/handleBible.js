@@ -98,4 +98,9 @@ export default class Bible {
            return null;
         }
     }
+
+    getSingleVerse(selectedItem){
+        const book = bible.find((item) => item.name == selectedItem.choosedBook);
+        return book.chapters[selectedItem.chapter][selectedItem.verse];
+    }
 }
