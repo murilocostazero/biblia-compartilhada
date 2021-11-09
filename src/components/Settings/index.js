@@ -13,9 +13,10 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../styles/colors';
+import generalStyles from '../../styles/general';
 import palette from '../../styles/palette';
 import { useFocusEffect } from '@react-navigation/native';
-import { ModalColorPicker, FontPicker, RenderChangeFontSize } from '../../components';
+import { ModalColorPicker, FontPicker, RenderModalList } from '../../components';
 import { launchImageLibrary } from 'react-native-image-picker';
 
 export default function Settings(props) {
@@ -32,6 +33,10 @@ export default function Settings(props) {
         `${props.verseTitle.book} - ${props.verseTitle.chapter}`,
         `${props.verseTitle.book}, capítulo ${props.verseTitle.chapter}`,
     ];
+
+    const sizes = [8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
+    const margins = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120];
+    const opacities = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
 
     useFocusEffect(
         React.useCallback(() => {
@@ -88,13 +93,7 @@ export default function Settings(props) {
                         props.onChangingVerseTitleLocation('top');
                     }}
                     underlayColor={colors.primary.opacity}
-                    style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: 4,
-                        borderRadius: 8,
-                        backgroundColor: colors.primary.light
-                    }}>
+                    style={generalStyles.defaultSquareButton}>
                     <MaterialIcons name='vertical-align-top' color={colors.icon} size={28} />
                 </TouchableHighlight>
                 <TouchableHighlight
@@ -103,14 +102,7 @@ export default function Settings(props) {
                         props.onChangingVerseTitleLocation('bottom');
                     }}
                     underlayColor={colors.primary.opacity}
-                    style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: 4,
-                        borderRadius: 8,
-                        backgroundColor: colors.primary.light,
-                        marginLeft: 16
-                    }}>
+                    style={generalStyles.defaultSquareButton}>
                     <MaterialIcons name='vertical-align-bottom' color={colors.icon} size={28} />
                 </TouchableHighlight>
             </ScrollView>
@@ -154,25 +146,37 @@ export default function Settings(props) {
                 <View>
                     <Text style={styles.labelTitle}>Alinhamento</Text>
                     <View style={styles.textAlignContainer}>
-                        <TouchableHighlight underlayColor='transparent' onPress={() => {
-                            setSelectedSetting(0);
-                            props.onChangeTitlePosition('left');
-                        }}>
+                        <TouchableHighlight
+                            style={generalStyles.defaultSquareButton}
+                            underlayColor='transparent'
+                            onPress={() => {
+                                setSelectedSetting(0);
+                                props.onChangeTitlePosition('left');
+                            }}>
                             <MaterialIcons name='format-align-left' color={colors.icon} size={28} />
                         </TouchableHighlight>
-                        <TouchableHighlight underlayColor='transparent' onPress={() => {
-                            setSelectedSetting(0);
-                            props.onChangeTitlePosition('center');
-                        }}>
+                        <TouchableHighlight
+                            style={generalStyles.defaultSquareButton}
+                            underlayColor='transparent'
+                            onPress={() => {
+                                setSelectedSetting(0);
+                                props.onChangeTitlePosition('center');
+                            }}>
                             <MaterialIcons name='format-align-center' color={colors.icon} size={28} />
                         </TouchableHighlight>
-                        <TouchableHighlight underlayColor='transparent' onPress={() => {
-                            setSelectedSetting(0);
-                            props.onChangeTitlePosition('right');
-                        }}>
+                        <TouchableHighlight
+                            style={generalStyles.defaultSquareButton}
+                            underlayColor='transparent'
+                            onPress={() => {
+                                setSelectedSetting(0);
+                                props.onChangeTitlePosition('right');
+                            }}>
                             <MaterialIcons name='format-align-right' color={colors.icon} size={28} />
                         </TouchableHighlight>
                     </View>
+
+                    <View style={styles.horizontalSeparator} />
+
                     <Text style={styles.labelTitle}>Cor</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <FlatList
@@ -189,6 +193,8 @@ export default function Settings(props) {
                         </TouchableHighlight>
                     </View>
 
+                    <View style={styles.horizontalSeparator} />
+
                     <View style={{
                         flexDirection: 'row',
                         flex: 1,
@@ -199,6 +205,8 @@ export default function Settings(props) {
                             <Text style={styles.labelTitle}>Posição do título</Text>
                             <RenderTitleFormatter />
                         </View>
+
+                        <View style={styles.verticalSeparator} />
 
                         <View style={{
                             flex: 1,
@@ -214,6 +222,8 @@ export default function Settings(props) {
                                 data={titleVerses} />
                         </View>
                     </View>
+
+                    <View style={styles.horizontalSeparator} />
 
                     <FontPicker onSelectingFont={(item) => onSelectingFont(item)} />
                 </View>
@@ -241,54 +251,14 @@ export default function Settings(props) {
         );
     }
 
-    function decrementOpacity() {
-        let doubleOpacity = parseFloat(props.opacity);
-        console.log(doubleOpacity)
-
-        if (doubleOpacity > 0.1) {
-            const decrementedOpacity = (doubleOpacity - 0.1).toFixed(1);
-            console.log(decrementedOpacity)
-
-            // console.log(decrementedOpacity)
-            props.onChangeVerseOpacity(decrementedOpacity);
-        } else {
-            props.onChangeVerseOpacity(doubleOpacity)
-        }
+    function onChangingVerseOpacity(opacity) {
+        setSelectedSetting(0);
+        props.onChangeVerseOpacity(opacity);
     }
 
-    function incrementOpacity() {
-        let doubleOpacity = parseFloat(props.opacity);
-        console.log(doubleOpacity)
-
-        if (doubleOpacity < 1) {
-            const incrementedOpacity = (doubleOpacity + 0.1).toFixed(1);
-            console.log(incrementedOpacity)
-
-            // console.log(incrementedOpacity)
-            props.onChangeVerseOpacity(incrementedOpacity);
-        } else {
-            props.onChangeVerseOpacity(doubleOpacity)
-        }
-    }
-
-    function decrementMargin() {
-        if (props.margin > 8) {
-            const decrementedMargin = (parseInt(props.margin) / 2);
-            // console.log(decrementedMargin)
-            props.onChangeVerseMargin(decrementedMargin);
-        } else {
-            props.onChangeVerseMargin(props.margin);
-        }
-    }
-
-    function incrementMargin() {
-        if (props.margin < 128) {
-            const incrementedMargin = (parseInt(props.margin) * 2);
-            // console.log(incrementedMargin)
-            props.onChangeVerseMargin(incrementedMargin);
-        } else {
-            props.onChangeVerseMargin(props.margin);
-        }
+    function onChangingVerseMargin(margin) {
+        setSelectedSetting(0);
+        props.onChangeVerseMargin(margin);
     }
 
     function onChangingFontSize(item) {
@@ -303,25 +273,36 @@ export default function Settings(props) {
                 keyboardShouldPersistTaps={'always'}>
                 <Text style={styles.labelTitle}>Posição</Text>
                 <View style={styles.textAlignContainer}>
-                    <TouchableHighlight underlayColor='transparent' onPress={() => {
-                        setSelectedSetting(0);
-                        props.onChangeVersePosition('flex-end');
-                    }}>
+                    <TouchableHighlight
+                        style={generalStyles.defaultSquareButton}
+                        underlayColor='transparent'
+                        onPress={() => {
+                            setSelectedSetting(0);
+                            props.onChangeVersePosition('flex-end');
+                        }}>
                         <MaterialIcons name='vertical-align-bottom' color={colors.icon} size={28} />
                     </TouchableHighlight>
-                    <TouchableHighlight underlayColor='transparent' onPress={() => {
-                        setSelectedSetting(0);
-                        props.onChangeVersePosition('center');
-                    }}>
+                    <TouchableHighlight
+                        style={generalStyles.defaultSquareButton}
+                        underlayColor='transparent'
+                        onPress={() => {
+                            setSelectedSetting(0);
+                            props.onChangeVersePosition('center');
+                        }}>
                         <MaterialIcons name='vertical-align-center' color={colors.icon} size={28} />
                     </TouchableHighlight>
-                    <TouchableHighlight underlayColor='transparent' onPress={() => {
-                        setSelectedSetting(0);
-                        props.onChangeVersePosition('flex-start');
-                    }}>
+                    <TouchableHighlight
+                        style={generalStyles.defaultSquareButton}
+                        underlayColor='transparent'
+                        onPress={() => {
+                            setSelectedSetting(0);
+                            props.onChangeVersePosition('flex-start');
+                        }}>
                         <MaterialIcons name='vertical-align-top' color={colors.icon} size={28} />
                     </TouchableHighlight>
                 </View>
+
+                <View style={styles.horizontalSeparator} />
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{ alignItems: 'center' }}>
@@ -372,6 +353,9 @@ export default function Settings(props) {
                             </TouchableHighlight>
                         </View>
                     </View>
+
+                    <View style={styles.verticalSeparator} />
+
                     <View style={{
                         flex: 1,
                         alignItems: 'center'
@@ -379,7 +363,7 @@ export default function Settings(props) {
                         <Text style={styles.labelTitle}>Sombreamento</Text>
                         <TouchableHighlight
                             style={{
-                                backgroundColor: props.verseShadow ? '#FFF' : colors.primary.light ,
+                                backgroundColor: props.verseShadow ? '#FFF' : colors.primary.light,
                                 padding: 4,
                                 borderRadius: 8,
                                 alignItems: 'center',
@@ -397,13 +381,15 @@ export default function Settings(props) {
                             }}>
                                 {
                                     props.verseShadow
-                                    ? 'Ativado'
-                                    : 'Desativado'
+                                        ? 'Ativado'
+                                        : 'Desativado'
                                 }
                             </Text>
                         </TouchableHighlight>
                     </View>
                 </View>
+
+                <View style={styles.horizontalSeparator} />
 
                 <Text style={styles.labelTitle}>Cor de fundo</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -421,95 +407,39 @@ export default function Settings(props) {
                     </TouchableHighlight>
                 </View>
 
+                <View style={styles.horizontalSeparator} />
+
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
                     <View style={{ alignItems: 'center' }}>
                         <Text style={styles.labelTitle}>Opacidade</Text>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', padding: 4 }}>
-                            <TouchableHighlight
-                                underlayColor={colors.secondary.light}
-                                onPress={() => decrementOpacity()}
-                                style={[
-                                    styles.textFormatButton,
-                                    { backgroundColor: '#FFF' }
-                                ]}>
-                                <MaterialIcons name='remove' color={colors.primary.regular} size={18} />
-                            </TouchableHighlight>
-                            <View style={{ marginHorizontal: 10, alignItems: 'center' }}>
-                                <Text style={{
-                                    fontFamily: 'PTSans-Regular',
-                                    fontSize: 18
-                                }}>
-                                    {props.opacity}
-                                </Text>
-                            </View>
-                            <TouchableHighlight
-                                underlayColor={colors.secondary.light}
-                                onPress={() => incrementOpacity()}
-                                style={[styles.textFormatButton, { backgroundColor: '#FFF' }]}>
-                                <MaterialIcons name='add' color={colors.primary.regular} size={18} />
-                            </TouchableHighlight>
-                        </View>
+                        <RenderModalList
+                            itemsToChoose={opacities}
+                            selectedItem={props.opacity}
+                            onChangingSelectedItem={(item) => onChangingVerseOpacity(item)} />
                     </View>
+
+                    <View style={styles.verticalSeparator} />
 
                     <View style={{ alignItems: 'center' }}>
                         <Text style={styles.labelTitle}>Margem</Text>
-                        <View style={{ flexDirection: 'row', alignItems: 'center', padding: 4 }}>
-                            <TouchableHighlight
-                                underlayColor={colors.secondary.light}
-                                onPress={() => decrementMargin()}
-                                style={[
-                                    styles.textFormatButton,
-                                    { backgroundColor: '#FFF' }
-                                ]}>
-                                <MaterialIcons name='remove' color={colors.primary.regular} size={18} />
-                            </TouchableHighlight>
-                            <View style={{ marginHorizontal: 10, alignItems: 'center' }}>
-                                <Text style={{
-                                    fontFamily: 'PTSans-Regular',
-                                    fontSize: 18
-                                }}>
-                                    {props.margin}
-                                </Text>
-                            </View>
-                            <TouchableHighlight
-                                underlayColor={colors.secondary.light}
-                                onPress={() => incrementMargin()}
-                                style={[styles.textFormatButton, { backgroundColor: '#FFF' }]}>
-                                <MaterialIcons name='add' color={colors.primary.regular} size={18} />
-                            </TouchableHighlight>
-                        </View>
+                        <RenderModalList
+                            itemsToChoose={margins}
+                            selectedItem={props.margin}
+                            onChangingSelectedItem={(item) => onChangingVerseMargin(item)} />
                     </View>
+
+                    <View style={styles.verticalSeparator} />
 
                     <View style={{ alignItems: 'center' }}>
                         <Text style={styles.labelTitle}>Tamanho da fonte</Text>
-                        <RenderChangeFontSize verseFontSize={props.verseFontSize} onChangingFontSize={(item) => onChangingFontSize(item)} />
-                        {/* <View style={{ flexDirection: 'row', alignItems: 'center', padding: 4 }}>
-                            <TouchableHighlight
-                                underlayColor={colors.secondary.light}
-                                onPress={() => decrementFontSize()}
-                                style={[
-                                    styles.textFormatButton,
-                                    { backgroundColor: '#FFF' }
-                                ]}>
-                                <MaterialIcons name='remove' color={colors.primary.regular} size={18} />
-                            </TouchableHighlight>
-                            <View style={{ marginHorizontal: 10, alignItems: 'center' }}>
-                                <Text style={{
-                                    fontFamily: 'PTSans-Regular',
-                                    fontSize: 18
-                                }}>
-                                    {props.verseFontSize}
-                                </Text>
-                            </View>
-                            <TouchableHighlight
-                                underlayColor={colors.secondary.light}
-                                onPress={() => incrementFontSize()}
-                                style={[styles.textFormatButton, { backgroundColor: '#FFF' }]}>
-                                <MaterialIcons name='add' color={colors.primary.regular} size={18} />
-                            </TouchableHighlight>
-                        </View> */}
+                        <RenderModalList
+                            itemsToChoose={sizes}
+                            selectedItem={props.verseFontSize}
+                            onChangingSelectedItem={(item) => onChangingFontSize(item)} />
                     </View>
                 </View>
+
+                <View style={styles.horizontalSeparator} />
 
                 <FontPicker onSelectingFont={(item) => onSelectingVerseFont(item)} />
             </ScrollView>
@@ -840,8 +770,8 @@ const styles = StyleSheet.create({
     labelTitle: {
         fontSize: 16,
         fontWeight: 'bold',
-        marginBottom: 12,
-        marginTop: 16
+        marginVertical: 8,
+        color: '#FFF'
     },
     textAlignContainer: {
         flexDirection: 'row',
@@ -878,4 +808,18 @@ const styles = StyleSheet.create({
         shadowRadius: 4.65,
         elevation: 8
     },
+    horizontalSeparator: {
+        borderBottomWidth: 0.4,
+        borderColor: colors.icon,
+        width: '80%',
+        alignSelf: 'center',
+        marginTop: 16
+    },
+    verticalSeparator: {
+        borderRightWidth: 0.4,
+        height: '80%',
+        borderColor: colors.icon,
+        alignSelf: 'center',
+        marginLeft: 8
+    }
 });

@@ -34,7 +34,7 @@ export default function SharePage({ route, navigation }) {
     const [verseOpacity, setVerseOpacity] = useState(1);
     const [versesToShow, setVersesToShow] = useState('');
     const [verseFont, setVerseFont] = useState('PTSans-Regular');
-    const [verseMargin, setVerseMargin] = useState(32);
+    const [verseMargin, setVerseMargin] = useState(30);
     const [verseFontSize, setVerseFontSize] = useState(16);
     const [verseShadow, setVerseShadow] = useState(false);
 

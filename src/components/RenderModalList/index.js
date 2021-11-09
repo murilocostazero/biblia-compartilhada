@@ -3,15 +3,14 @@ import { StyleSheet, Modal, View, Text, TouchableHighlight, FlatList } from 'rea
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from '../../styles/colors';
 
-export default function RenderChangeFontSize(props) {
-    const sizes = [8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
+export default function RenderModalList(props) {
     const [modalVisible, setModalVisible] = useState(false);
 
-    function renderSizes({ item }) {
+    function renderItems({ item }) {
         return (
             <TouchableHighlight
                 onPress={() => {
-                    props.onChangingFontSize(item);
+                    props.onChangingSelectedItem(item);
                     setModalVisible(false);
                 }}
                 underlayColor={colors.primary.opacity}
@@ -46,9 +45,9 @@ export default function RenderChangeFontSize(props) {
                             contentContainerStyle={{
 
                             }}
-                            renderItem={renderSizes}
+                            renderItem={renderItems}
                             keyExtractor={item => item}
-                            data={sizes} />
+                            data={props.itemsToChoose} />
 
                         <TouchableHighlight
                             onPress={() => setModalVisible(false)}
@@ -71,7 +70,7 @@ export default function RenderChangeFontSize(props) {
             <View style={styles.container}>
                 <FontSizePicker />
                 <Text style={styles.label}>
-                    {props.verseFontSize}
+                    {props.selectedItem}
                 </Text>
                 <Ionicons name='caret-down-outline' size={14} color={colors.primary.regular} />
             </View>
