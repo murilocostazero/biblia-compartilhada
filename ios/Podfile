@@ -20,6 +20,8 @@ target 'SharedBible' do
 
   pod 'react-native-blob-util', :path => '../node_modules/react-native-blob-util'
 
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+
   target 'SharedBibleTests' do
     inherit! :complete
     # Pods for testing

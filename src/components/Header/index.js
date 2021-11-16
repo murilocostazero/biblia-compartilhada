@@ -201,7 +201,7 @@ export default function Header(props) {
                 </TouchableHighlight>
             </View>
 
-            <Text style={styles.headerLabel}>Bíblia - NVI</Text>
+            <Text style={styles.headerLabel}>Bíblia</Text>
 
             <View style={styles.buttonsContainer}>
                 {

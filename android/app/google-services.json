@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "979468583752",
+    "project_id": "sharedbible",
+    "storage_bucket": "sharedbible.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979468583752:android:c9dc83967b5e4ef755297d",
+        "android_client_info": {
+          "package_name": "com.sharedbible"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "979468583752-n33v26nipcb1e7p3mfqg4mgihcnui2pf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWtXJfmqeAabE2JfGuAj-nUqJP5rZeK_M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "979468583752-n33v26nipcb1e7p3mfqg4mgihcnui2pf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

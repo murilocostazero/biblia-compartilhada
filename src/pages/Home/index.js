@@ -1,14 +1,23 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { View, Text, FlatList, TouchableHighlight, StyleSheet, BackHandler, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import {
+    View,
+    Text,
+    FlatList,
+    TouchableHighlight,
+    StyleSheet,
+    BackHandler,
+    ActivityIndicator,
+    Platform
+} from 'react-native';
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { getData, storeData } from '../../handlers/handlerASChoice';
 import { getFavoriteData, storeFavoriteData } from '../../handlers/handlerASFavorites';
+import PushNotification from 'react-native-push-notification';
 import {
     Header,
     FirstUseComponent,
     VersesSettings,
-    ChapterNavigation,
-    StatusBar
+    ChapterNavigation
 } from '../../components';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../styles/colors';
@@ -30,14 +39,25 @@ export default function Home({ navigation }) {
     const [containerSize, setContainerSize] = useState(50);
     const [isScrolling, setIsScrolling] = useState(false);
     const [temporarilySelected, setTemporarilySelected] = useState(-1);
+    // const [notification, setNotification] = useState(null);
 
     const isFocused = useIsFocused();
     const flatlistRef = useRef();
+
+    PushNotification.configure({
+        onNotification: function (notification) {
+            console.log("NOTIFICATION:", notification);
+            navigation.navigate('DailyVerse');
+        },
+        requestPermissions: Platform.OS === 'ios'
+    });
 
     useEffect(() => {
         if (isFocused == true && selectedVerses.length == 0) {
             getInitialData();
         }
+
+        initialNotification();
     }, [selectedVerses, isFocused]);
 
     useFocusEffect(
@@ -50,13 +70,31 @@ export default function Home({ navigation }) {
                     return false;
                 }
             };
-
             BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
             return () =>
                 BackHandler.removeEventListener('hardwareBackPress', onBackPress);
         }, [selectedVerses])
     );
+
+    function initialNotification() {
+        PushNotification.createChannel({
+            channelId: 'notification-channel',
+            channelName: 'Notification Channel'
+        });
+
+        PushNotification.cancelAllLocalNotifications();
+
+        PushNotification.localNotificationSchedule({
+            //... You can use all the options from localNotifications
+            channelId: 'notification-channel',
+            title: 'Versículo do dia',
+            message: "Olha que linda mensagem separamos para você.", // (required)
+            date: new Date(Date.now() + 86400 * 1000), 
+            allowWhileIdle: true,
+            repeatType: 'day',
+            repeatTime: 86400*1000
+        });
+    }
 
     function scrollToIndex(item) {
         let index = item;
@@ -69,9 +107,9 @@ export default function Home({ navigation }) {
         await setChapterIsReady(true);
     }
 
-    function handleTemporarilySelected(index){
+    function handleTemporarilySelected(index) {
         setTemporarilySelected(index);
-        setTimeout(()=> {
+        setTimeout(() => {
             setTemporarilySelected(-1);
         }, 1500);
     }
@@ -180,10 +218,10 @@ export default function Home({ navigation }) {
                     // temporarilySelected == item.item.id 
                     // ? styles.selectedItem : 
 
-                    item.item.isSelected == true 
-                    ? styles.selectedItem 
-                    : styles.unselectedItem, styles.verseItem
-                    ]}>
+                    item.item.isSelected == true
+                        ? styles.selectedItem
+                        : styles.unselectedItem, styles.verseItem
+                ]}>
                 <View style={{ flexDirection: 'column' }}>
                     {
                         isVerseFavorite != undefined
@@ -239,7 +277,7 @@ export default function Home({ navigation }) {
         navigation.navigate('Search');
     }
 
-    function goToDailyVerse(){
+    function goToDailyVerse() {
         navigation.navigate('DailyVerse');
     }
 
@@ -366,7 +404,7 @@ export default function Home({ navigation }) {
                                         wait.then(() => {
                                             flatlistRef.current?.scrollToIndex({ index: info.index, animated: true });
                                         });
-                                      }}
+                                    }}
                                 />
                                 <View style={{
                                     backgroundColor: 'transparent',
