@@ -230,7 +230,8 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontFamily: 'Lobster-Regular',
         flex: 1,
-        textAlign: 'center'
+        textAlign: 'center',
+        marginTop: 8
     },
     headerButton: {
         width: 32,

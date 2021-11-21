@@ -5051,11 +5051,6 @@ open@^6.2.0:
   dependencies:
     is-wsl "^1.1.0"
 
-opencollective-postinstall@^2.0.0:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.3.tgz#7a0fff978f6dbfa4d006238fbac98ed4198c3259"
-  integrity sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==
-
 optionator@^0.8.1:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/optionator/-/optionator-0.8.3.tgz#84fa1d036fe9d3c7e21d99884b601167ec8fb495"
@@ -5374,6 +5369,11 @@ react-is@^16.13.0, react-is@^16.8.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-native-admob-native-ads@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-admob-native-ads/-/react-native-admob-native-ads-0.5.0.tgz#c093dcda9d62db8b4262a0fa611448aa9f5b2230"
+  integrity sha512-OMsQZ9RzDVEs48kwrjz9fLthcotTkTtSkQlncFFdSL9L82zx3b1KPA8CYExy9AyyeIQ6gt3b3d1zRtKJa5ZOjw==
+
 react-native-blob-util@^0.13.16:
   version "0.13.16"
   resolved "https://registry.npmjs.org/react-native-blob-util/-/react-native-blob-util-0.13.16.tgz"
@@ -5398,14 +5398,6 @@ react-native-color-picker@^0.6.0:
   dependencies:
     prop-types "^15.5.10"
     tinycolor2 "^1.4.1"
-
-react-native-firebase@^5.6.0:
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.6.0.tgz#6f6123f53cb73477915dd55c55f3e1de91db38d2"
-  integrity sha512-I+o3zNLdIz4pxWTCSZH70M1BcPl+SdqKQfurOT0sWcaMSL2ecDqVy0PCTmN7ORt7/Z879Er6PLgA/psjArQlmw==
-  dependencies:
-    opencollective-postinstall "^2.0.0"
-    prop-types "^15.7.2"
 
 react-native-image-picker@^4.1.2:
   version "4.1.2"

@@ -22,6 +22,12 @@ import {
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../styles/colors';
 import Bible from '../../handlers/handleBible';
+import NativeAdView, {
+    IconView,
+    HeadlineView,
+    TaglineView,
+    AdBadge,
+} from 'react-native-admob-native-ads';
 
 export default function Home({ navigation }) {
     const [chapterIsReady, setChapterIsReady] = useState(false);
@@ -43,6 +49,7 @@ export default function Home({ navigation }) {
 
     const isFocused = useIsFocused();
     const flatlistRef = useRef();
+    const nativeAdViewRef = useRef();
 
     PushNotification.configure({
         onNotification: function (notification) {
@@ -58,6 +65,7 @@ export default function Home({ navigation }) {
         }
 
         initialNotification();
+        nativeAdViewRef.current?.loadAd();
     }, [selectedVerses, isFocused]);
 
     useFocusEffect(
@@ -89,10 +97,10 @@ export default function Home({ navigation }) {
             channelId: 'notification-channel',
             title: 'Versículo do dia',
             message: "Olha que linda mensagem separamos para você.", // (required)
-            date: new Date(Date.now() + 86400 * 1000), 
+            date: new Date(Date.now() + 900 * 1000),
             allowWhileIdle: true,
-            repeatType: 'day',
-            repeatTime: 86400*1000
+            repeatType: 'time',
+            repeatTime: 900 * 1000
         });
     }
 
@@ -447,6 +455,63 @@ export default function Home({ navigation }) {
                             <Text style={styles.initialButtonText}>Vamos nessa!</Text>
                         </TouchableHighlight>
             }
+
+            <View style={{ backgroundColor: '#FFF' }}>
+                <NativeAdView
+                    ref={nativeAdViewRef}
+                    onAdFailedToLoad={(error) => console.log(error)}
+                    onAdLoaded={() => console.log('Ad loaded')}
+                    onAdImpression={() => console.log('Impression')}
+                    style={{
+                        width: '95%',
+                        alignSelf: 'center',
+                        padding: 8,
+                        height: 100,
+                        flexDirection: 'row'
+                    }} adUnitID='ca-app-pub-3940256099942544/2247696110'>
+
+                    <AdBadge
+                        style={{
+                            width: 15,
+                            height: 15,
+                            borderWidth: 1,
+                            borderRadius: 2,
+                            borderColor: 'green',
+                        }}
+                        textStyle={{
+                            fontSize: 9,
+                            color: 'green',
+                        }} />
+
+                    <View style={{
+                        height: 100,
+                        width: '100%',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center'
+                    }}>
+                        <IconView
+                            style={{
+                                width: 60,
+                                height: 60,
+                            }} />
+                        <View style={{ marginLeft: 8 }}>
+                            <HeadlineView style={{
+                                fontWeight: 'bold',
+                                fontSize: 13,
+                                color: colors.primary.dark
+                            }} />
+                            <TaglineView
+                                numberOfLines={1}
+                                style={{
+                                    fontSize: 11,
+                                    width: '100%',
+                                    color: colors.primary.regular
+                                }} />
+                        </View>
+                    </View>
+                </NativeAdView>
+            </View>
         </View>
     );
 }
