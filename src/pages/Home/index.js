@@ -201,7 +201,8 @@ export default function Home({ navigation }) {
         setTextBold(!textBold);
     }
 
-    function onTappingFavorites() {
+    async function onTappingFavorites() {
+        await setSelectedVerses([]);
         navigation.navigate('Favorites');
     }
 
@@ -276,11 +277,13 @@ export default function Home({ navigation }) {
         setReadMode(!readMode);
     }
 
-    function goToSearchPage() {
+    async function goToSearchPage() {
+        await setSelectedVerses([]);
         navigation.navigate('Search');
     }
 
-    function goToDailyVerse() {
+    async function goToDailyVerse() {
+        await setSelectedVerses([]);
         navigation.navigate('DailyVerse');
     }
 
