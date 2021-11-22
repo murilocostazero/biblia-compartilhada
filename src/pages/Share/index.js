@@ -4,7 +4,8 @@ import {
     View,
     Text,
     TouchableHighlight,
-    ImageBackground
+    ImageBackground,
+    ScrollView
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Settings, StatusBar } from '../../components/';
@@ -128,66 +129,69 @@ export default function SharePage({ route, navigation }) {
 
     function RenderVerses() {
         return (
-            <TouchableHighlight
-                underlayColor={colors.primary.regular}
-                ref={refToInstagram}
-                style={{
-                    backgroundColor: verseBackgroundColor,
-                    padding: 12,
-                    borderRadius: 8
-                    // opacity: verseOpacity
-                }}
-                underlayColor='transparent'>
-                {
-                    verseTitleLocation == 'bottom'
-                        ?
-                        <View>
-                            {route.params.selectedVerses.map((item) =>
-                                <View key={item.id}>
-                                    <Text style={[
-                                        verseShadow == true ? styles.shadowToText : null,
-                                        styles.verseItem, {
-                                            fontSize: verseFontSize,
-                                            fontFamily: verseFont,
-                                            color: verseTextColor == 'light' ? '#FFF' : '#000'
-                                        }
-                                    ]}>{item.id + 1}. {item.verse}</Text>
-                                </View>)}
-                            <Text
-                                style={[
-                                    styles.verseTitle, {
-                                        textAlign: verseTitlePosition,
-                                        color: verseTitleColor,
-                                        fontFamily: verseTitleFont
-                                    }]}>
-                                {verseTitle}
-                            </Text>
-                        </View>
-                        :
-                        <View>
-                            <Text
-                                style={[
-                                    styles.verseTitle, {
-                                        textAlign: verseTitlePosition,
-                                        color: verseTitleColor,
-                                        fontFamily: verseTitleFont
-                                    }]}>
-                                {verseTitle}
-                            </Text>
-                            {route.params.selectedVerses.map((item) =>
-                                <View key={item.id}>
-                                    <Text style={[
-                                        verseShadow == true ? styles.shadowToText : null,
-                                        styles.verseItem, {
-                                            fontSize: verseFontSize,
-                                            fontFamily: verseFont,
-                                            color: verseTextColor == 'light' ? '#FFF' : '#000'
-                                        }
-                                    ]}>{item.id + 1}. {item.verse}</Text>
-                                </View>)}
-                        </View>
-                }
-            </TouchableHighlight>
+                <ScrollView
+                    ref={refToInstagram}
+                    style={{
+                        backgroundColor: verseBackgroundColor,
+                        padding: 12,
+                        borderRadius: 8,
+                        flexGrow: 0,
+                        // opacity: verseOpacity
+                    }}
+                    contentContainerStyle={{
+                        paddingVertical: 6
+                    }}
+                    showsVerticalScrollIndicator={false}>
+                    {
+                        verseTitleLocation == 'bottom'
+                            ?
+                            <View>
+                                {route.params.selectedVerses.map((item) =>
+                                    <View key={item.id}>
+                                        <Text style={[
+                                            verseShadow == true ? styles.shadowToText : null,
+                                            styles.verseItem, {
+                                                fontSize: verseFontSize,
+                                                fontFamily: verseFont,
+                                                color: verseTextColor == 'light' ? '#FFF' : '#000'
+                                            }
+                                        ]}>{item.id + 1}. {item.verse}</Text>
+                                    </View>)}
+                                <Text
+                                    style={[
+                                        styles.verseTitle, {
+                                            textAlign: verseTitlePosition,
+                                            color: verseTitleColor,
+                                            fontFamily: verseTitleFont
+                                        }]}>
+                                    {verseTitle}
+                                </Text>
+                            </View>
+                            :
+                            <View>
+                                <Text
+                                    style={[
+                                        styles.verseTitle, {
+                                            textAlign: verseTitlePosition,
+                                            color: verseTitleColor,
+                                            fontFamily: verseTitleFont
+                                        }]}>
+                                    {verseTitle}
+                                </Text>
+                                {route.params.selectedVerses.map((item) =>
+                                    <View key={item.id}>
+                                        <Text style={[
+                                            verseShadow == true ? styles.shadowToText : null,
+                                            styles.verseItem, {
+                                                fontSize: verseFontSize,
+                                                fontFamily: verseFont,
+                                                color: verseTextColor == 'light' ? '#FFF' : '#000'
+                                            }
+                                        ]}>{item.id + 1}. {item.verse}</Text>
+                                    </View>)}
+                            </View>
+                    }
+                </ScrollView>
         );
     }
 
@@ -364,7 +368,7 @@ export default function SharePage({ route, navigation }) {
                 selectingTitleFont={(item) => setVerseTitleFont(item)}
                 selectingVerseFont={(item) => setVerseFont(item)}
                 onChangeVerseMargin={(margin) => setVerseMargin(margin)}
-                onChangeVerseShadow={()=> setVerseShadow(!verseShadow)}
+                onChangeVerseShadow={() => setVerseShadow(!verseShadow)}
                 verseShadow={verseShadow}
                 onChangeVerseFontSize={(size) => setVerseFontSize(size)}
                 verseFontSize={verseFontSize}

@@ -5,9 +5,12 @@ import NativeAdView, {
     HeadlineView,
     TaglineView,
     AdBadge,
+    ImageView,
+    CallToActionView
 } from 'react-native-admob-native-ads';
 import colors from '../../styles/colors';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import generalStyles from '../../styles/general';
 
 export default function AdsComponent() {
     const [showComponent, setShowComponent] = useState(true);
@@ -18,22 +21,24 @@ export default function AdsComponent() {
     }, []);
 
     return (
-        <View style={{
-            backgroundColor: '#FFF',
-            borderRadius: 8
-        }}>
+        <View
+            style={{
+                backgroundColor: '#FFF',
+                borderRadius: 8,
+            }}>
             <TouchableHighlight
                 underlayColor='transparent'
                 onPress={() => setShowComponent(!showComponent)}
                 style={{
                     backgroundColor: 'transparent',
-                    width: 22,
+                    width: '100%',
                     height: 22,
-                    borderRadius: 22/2,
-                    alignItems: 'center',
+                    borderTopLeftRadius: 8,
+                    borderTopRightRadius: 8,
+                    alignItems: 'flex-end',
                     justifyContent: 'center',
                     alignSelf: 'flex-end',
-                    marginRight: 4
+                    paddingRight: 8
                 }}>
                 <MaterialIcons name={showComponent ? 'expand-more' : 'expand-less'} size={20} color={colors.icon} />
             </TouchableHighlight>
@@ -48,14 +53,11 @@ export default function AdsComponent() {
                     onAdLoaded={() => console.log('Ad loaded')}
                     onAdImpression={() => console.log('Impression')}
                     style={{
-                        width: '95%',
-                        alignSelf: 'center',
-                        padding: 8,
-                        height: '100%',
-                        flexDirection: 'row'
+                        alignItems: 'center',
+                        justifyContent: 'center',
                     }}
-                    adUnitID='ca-app-pub-4815716497320828/5035006192'>
-                    {/* adUnitID='ca-app-pub-3940256099942544/2247696110'> */}
+                    // adUnitID='ca-app-pub-4815716497320828/5035006192'>
+                    adUnitID='ca-app-pub-3940256099942544/2247696110'>
 
                     <AdBadge
                         style={{
@@ -71,19 +73,20 @@ export default function AdsComponent() {
                         }} />
 
                     <View style={{
-                        height: '100%',
-                        width: '100%',
                         flexDirection: 'row',
-                        justifyContent: 'flex-start',
+                        justifyContent: 'center',
                         alignItems: 'center',
-                        marginTop: 12
+                        marginTop: 12,
                     }}>
                         <IconView
                             style={{
-                                width: 60,
-                                height: 60,
+                                width: 50,
+                                height: 50
                             }} />
-                        <View style={{ marginLeft: 8 }}>
+                        <View style={{
+                            marginLeft: 2,
+                            width: '60%'
+                        }}>
                             <HeadlineView style={{
                                 fontWeight: 'bold',
                                 fontSize: 13,
@@ -97,6 +100,26 @@ export default function AdsComponent() {
                                     color: colors.primary.regular
                                 }} />
                         </View>
+                        <ImageView
+                            style={{
+                                width: 80,
+                                height: 80,
+                            }}
+                        />
+                        {/* <CallToActionView
+                            style={[{
+                                backgroundColor: colors.secondary.regular,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: 5,
+                                elevation: 10,
+                            }, generalStyles.shadow]}
+                            textStyle={{
+                                color: colors.primary.regular,
+                                fontSize: 14,
+                                fontWeight: 'bold'
+                            }}
+                        /> */}
                     </View>
                 </NativeAdView>
             </View>

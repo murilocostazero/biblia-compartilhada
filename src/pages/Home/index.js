@@ -168,12 +168,14 @@ export default function Home({ navigation }) {
 
     async function handleSelectedVerses(item) {
         const index = selectedVerses.findIndex(x => item.id === x.id);
+
         index > -1 ? selectedVerses.splice(index, 1) : selectedVerses.push(item);
 
         const verse = {
             id: `${choice.choosedBook}-${choice.chapter}-${item.id}`
         };
-        const isSelected = await findVerse(verse);
+
+        const isSelected = await findVerse(verse);        
         isSelected != -1 ? setVerseIsSelected(true) : setVerseIsSelected(false);
         setSelectedVerses(selectedVerses);
     }
