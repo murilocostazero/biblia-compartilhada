@@ -124,6 +124,7 @@ export default function Search({ navigation }) {
                         style={styles.searchBar}
                         placeholder='Faça uma busca pelo termo desejado'
                         placeholderTextColor={colors.icon}
+                        underlineColorAndroid='transparent'
                         autoCapitalize='none'
                         autoCorrect={false}
                         autoFocus={true}
@@ -191,7 +192,8 @@ const styles = StyleSheet.create({
         flex: 1,
         fontFamily: 'PTSans-Regular',
         fontSize: 16,
-        color: colors.primary.regular
+        color: colors.primary.regular,
+        borderWidth: 0
     },
     shadow: {
         shadowColor: "#000",

@@ -23,7 +23,7 @@ export default function VersesSettings(props) {
                     <Text style={styles.textFormatLabel}>
                         Tamanho
                     </Text>
-                    <Text>
+                    <Text style={{color: '#FFF'}}>
                         {props.textVerseSize}
                     </Text>
                 </View>

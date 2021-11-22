@@ -58,6 +58,7 @@ export default function ChooseBook({ navigation }) {
                         style={styles.searchBar}
                         placeholder='Faça uma busca pelo nome do livro'
                         placeholderTextColor={colors.icon}
+                        underlineColorAndroid='transparent'
                         autoCapitalize='none'
                         autoCorrect={false}
                         autoFocus={true}
@@ -107,7 +108,8 @@ const styles = StyleSheet.create({
         flex: 1,
         fontFamily: 'PTSans-Regular',
         fontSize: 16,
-        color: colors.primary.regular
+        color: colors.primary.regular,
+        borderWidth: 0
     },
     listText: {
         marginVertical: 4,
