@@ -49,9 +49,9 @@ export default function AdsComponent() {
             }}>
                 <NativeAdView
                     ref={nativeAdViewRef}
-                    onAdFailedToLoad={(error) => console.log(error)}
-                    onAdLoaded={() => console.log('Ad loaded')}
-                    onAdImpression={() => console.log('Impression')}
+                    // onAdFailedToLoad={(error) => console.log(error)}
+                    // onAdLoaded={() => console.log('Ad loaded')}
+                    // onAdImpression={() => console.log('Impression')}
                     style={{
                         alignItems: 'center',
                         justifyContent: 'center',

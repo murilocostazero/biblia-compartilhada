@@ -36,6 +36,7 @@ export default function Home({ navigation }) {
     const [textBold, setTextBold] = useState(false);
     const [readMode, setReadMode] = useState(false);
     const [verseIsSelected, setVerseIsSelected] = useState(false);
+    const [selectedSingleVerse, setSelectedSingleVerse] = useState(null);
     const [favoriteData, setFavotireData] = useState([]);
     const [containerSize, setContainerSize] = useState(50);
     const [isScrolling, setIsScrolling] = useState(false);
@@ -171,12 +172,19 @@ export default function Home({ navigation }) {
 
         index > -1 ? selectedVerses.splice(index, 1) : selectedVerses.push(item);
 
-        const verse = {
-            id: `${choice.choosedBook}-${choice.chapter}-${item.id}`
-        };
+        if (selectedVerses.length == 1) {
+            const singleVerse = selectedVerses[0];
+            
+            const verse = {
+                id: `${choice.choosedBook}-${choice.chapter}-${singleVerse.id}`
+            };
 
-        const isSelected = await findVerse(verse);        
-        isSelected != -1 ? setVerseIsSelected(true) : setVerseIsSelected(false);
+            const isSelected = await findVerse(verse);
+            isSelected != -1 ? setVerseIsSelected(true) : setVerseIsSelected(false);
+
+            // console.log(item)
+            // setSelectedSingleVerse(item);            
+        }
         setSelectedVerses(selectedVerses);
     }
 
@@ -190,6 +198,12 @@ export default function Home({ navigation }) {
         setRefreshChapter(!refreshChapter);
 
         handleSelectedVerses(item);
+    }
+
+    async function findVerse(verse) {
+        let favorites = await getFavorites();
+        let favorite = favorites.findIndex((item) => item.id == verse.id);
+        return favorite;
     }
 
     function unselectingVerses() {
@@ -320,12 +334,6 @@ export default function Home({ navigation }) {
             favorites.push(favorite);
         }
         setFavorites(favorites);
-    }
-
-    async function findVerse(verse) {
-        let favorites = await getFavorites();
-        let favorite = favorites.findIndex((item) => item.id == verse.id);
-        return favorite;
     }
 
     async function handleChapterNavigation(option) {
