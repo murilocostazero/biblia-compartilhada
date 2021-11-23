@@ -357,7 +357,7 @@ export default function Home({ navigation }) {
         setIsScrolling(true);
         setTimeout(() => {
             setIsScrolling(false);
-        }, 1000);
+        }, 800);
     }
 
     return (

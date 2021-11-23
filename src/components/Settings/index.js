@@ -620,6 +620,7 @@ export default function Settings(props) {
                                 keyExtractor={(item) => item.image}
                                 renderItem={renderImagesToChoose}
                                 extraData={props.imagesLoaded}
+                                contentContainerStyle={{ justifyContent: 'center',  flex: 1 }}
                             />
                 }
             </View>

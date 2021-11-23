@@ -56,8 +56,8 @@ export default function AdsComponent() {
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}
-                    // adUnitID='ca-app-pub-4815716497320828/5035006192'>
-                    adUnitID='ca-app-pub-3940256099942544/2247696110'>
+                    adUnitID='ca-app-pub-4815716497320828/5035006192'>
+                    {/* adUnitID='ca-app-pub-3940256099942544/2247696110'> */}
 
                     <AdBadge
                         style={{

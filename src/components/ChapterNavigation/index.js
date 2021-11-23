@@ -11,7 +11,7 @@ export default function ChapterNavigation(props) {
                 fadeAnim,
                 {
                     toValue: 1,
-                    duration: 400,
+                    duration: 300,
                     useNativeDriver: false
                 }
             ).start();
