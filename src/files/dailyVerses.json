@@ -1,134 +1,548 @@
 [
-    { 
-        "choosedBook": "Salmos", 
-        "chapter": 120, 
-        "verse": 1,
-        "indexItem": 0 
+    {
+        "choosedBook": "Gênesis",
+        "chapter": 0,
+        "verse": 25,
+        "indexItem": 0
     },
-    { 
-        "choosedBook": "Salmos", 
-        "chapter": 120, 
-        "verse": 2,
-        "indexItem": 0 
+    {
+        "choosedBook": "Gênesis",
+        "chapter": 0,
+        "verse": 26,
+        "indexItem": 0
     },
-    { 
-        "choosedBook": "Salmos", 
-        "chapter": 120, 
-        "verse": 3,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Salmos", 
-        "chapter": 120, 
-        "verse": 4,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Salmos", 
-        "chapter": 120, 
-        "verse": 6,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Salmos", 
-        "chapter": 120, 
-        "verse": 7,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "1 Coríntios", 
-        "chapter": 9, 
-        "verse": 22,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Salmos", 
-        "chapter": 90, 
-        "verse": 10,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Josué", 
-        "chapter": 23, 
-        "verse": 14,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Mateus", 
-        "chapter": 25, 
-        "verse": 40,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "1 João", 
-        "chapter": 4, 
-        "verse": 13,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Eclesiastes", 
-        "chapter": 11, 
-        "verse": 12,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Isaías", 
-        "chapter": 63, 
-        "verse": 7,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Lucas", 
-        "chapter": 0, 
-        "verse": 36,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "1 Pedro", 
-        "chapter": 2, 
-        "verse": 11,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Hebreus", 
-        "chapter": 9, 
-        "verse": 36,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Provérbios", 
-        "chapter": 16, 
-        "verse": 0,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Salmos", 
-        "chapter": 45, 
-        "verse": 0,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Romanos", 
-        "chapter": 4, 
-        "verse": 7,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Isaías", 
-        "chapter": 47, 
-        "verse": 16,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Salmos", 
-        "chapter": 17, 
-        "verse": 31,
-        "indexItem": 0 
-    },
-    { 
-        "choosedBook": "Isaías", 
-        "chapter": 39, 
+    {
+        "choosedBook": "Isaías",
+        "chapter": 39,
         "verse": 30,
-        "indexItem": 0 
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Isaías",
+        "chapter": 47,
+        "verse": 16,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Isaías",
+        "chapter": 63,
+        "verse": 7,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Salmos",
+        "chapter": 17,
+        "verse": 31,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Salmos",
+        "chapter": 36,
+        "verse": 3,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Salmos",
+        "chapter": 45,
+        "verse": 0,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Salmos",
+        "chapter": 90,
+        "verse": 10,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Salmos",
+        "chapter": 120,
+        "verse": 1,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Salmos",
+        "chapter": 120,
+        "verse": 2,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Salmos",
+        "chapter": 120,
+        "verse": 3,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Salmos",
+        "chapter": 120,
+        "verse": 4,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Salmos",
+        "chapter": 120,
+        "verse": 6,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Salmos",
+        "chapter": 120,
+        "verse": 7,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Salmos",
+        "chapter": 132,
+        "verse": 1,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Salmos",
+        "chapter": 132,
+        "verse": 2,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "1 Coríntios",
+        "chapter": 9,
+        "verse": 22,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "2 Coríntios",
+        "chapter": 4,
+        "verse": 16,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "2 Coríntios",
+        "chapter": 4,
+        "verse": 20,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "2 Coríntios",
+        "chapter": 11,
+        "verse": 8,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Josué",
+        "chapter": 23,
+        "verse": 14,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Mateus",
+        "chapter": 4,
+        "verse": 15,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Mateus",
+        "chapter": 25,
+        "verse": 40,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Mateus",
+        "chapter": 21,
+        "verse": 36,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "João",
+        "chapter": 13,
+        "verse": 26,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "João",
+        "chapter": 10,
+        "verse": 24,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "João",
+        "chapter": 13,
+        "verse": 5,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "1 João",
+        "chapter": 4,
+        "verse": 13,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "1 João",
+        "chapter": 2,
+        "verse": 15,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Eclesiastes",
+        "chapter": 11,
+        "verse": 12,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Lucas",
+        "chapter": 0,
+        "verse": 36,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "1 Pedro",
+        "chapter": 2,
+        "verse": 11,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "1 Pedro",
+        "chapter": 2,
+        "verse": 14,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Hebreus",
+        "chapter": 3,
+        "verse": 15,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Hebreus",
+        "chapter": 9,
+        "verse": 36,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Provérbios",
+        "chapter": 16,
+        "verse": 0,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Provérbios",
+        "chapter": 2,
+        "verse": 4,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Romanos",
+        "chapter": 4,
+        "verse": 7,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Romanos",
+        "chapter": 9,
+        "verse": 8,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Romanos",
+        "chapter": 9,
+        "verse": 16,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Romanos",
+        "chapter": 11,
+        "verse": 1,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Romanos",
+        "chapter": 7,
+        "verse": 27,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Tiago",
+        "chapter": 0,
+        "verse": 11,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Tiago",
+        "chapter": 4,
+        "verse": 15,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Filipenses",
+        "chapter": 3,
+        "verse": 6,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Atos",
+        "chapter": 17,
+        "verse": 8,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Atos",
+        "chapter": 1,
+        "verse": 37,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Atos",
+        "chapter": 3,
+        "verse": 11,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Colossenses",
+        "chapter": 2,
+        "verse": 22,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Miquéias",
+        "chapter": 5,
+        "verse": 7,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Mateus",
+        "chapter": 27,
+        "verse": 19,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Gálatas",
+        "chapter": 1,
+        "verse": 19,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "1 Pedro",
+        "chapter": 4,
+        "verse": 6,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "1 Pedro",
+        "chapter": 1,
+        "verse": 23,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "João",
+        "chapter": 0,
+        "verse": 11,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Mateus",
+        "chapter": 5,
+        "verse": 32,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Romanos",
+        "chapter": 4,
+        "verse": 7,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Isaías",
+        "chapter": 52,
+        "verse": 4,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Gálatas",
+        "chapter": 4,
+        "verse": 21,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Isaías",
+        "chapter": 39,
+        "verse": 30,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Atos",
+        "chapter": 0,
+        "verse": 7,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Tiago",
+        "chapter": 0,
+        "verse": 1,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "João",
+        "chapter": 4,
+        "verse": 23,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Hebreus",
+        "chapter": 9,
+        "verse": 24,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Filipenses",
+        "chapter": 3,
+        "verse": 5,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Josué",
+        "chapter": 0,
+        "verse": 7,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Isaías",
+        "chapter": 40,
+        "verse": 9,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Josué",
+        "chapter": 0,
+        "verse": 8,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "1 Coríntios",
+        "chapter": 9,
+        "verse": 12,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Efésios",
+        "chapter": 1,
+        "verse": 8,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Romanos",
+        "chapter": 7,
+        "verse": 38,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "João",
+        "chapter": 14,
+        "verse": 12,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "João",
+        "chapter": 12,
+        "verse": 35,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "João",
+        "chapter": 0,
+        "verse": 0,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "João",
+        "chapter": 9,
+        "verse": 9,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Filipenses",
+        "chapter": 3,
+        "verse": 18,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Hebreus",
+        "chapter": 11,
+        "verse": 1,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Hebreus",
+        "chapter": 10,
+        "verse": 0,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Efésios",
+        "chapter": 2,
+        "verse": 19,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Atos",
+        "chapter": 16,
+        "verse": 10,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Romanos",
+        "chapter": 14,
+        "verse": 12,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Hebreus",
+        "chapter": 10,
+        "verse": 5,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "1 Coríntios",
+        "chapter": 5,
+        "verse": 18,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "2 Pedro",
+        "chapter": 0,
+        "verse": 3,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Hebreus",
+        "chapter": 3,
+        "verse": 11,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "2 Timóteo",
+        "chapter": 0,
+        "verse": 6,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Romanos",
+        "chapter": 7,
+        "verse": 37,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Jeremias",
+        "chapter": 28,
+        "verse": 10,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Atos",
+        "chapter": 17,
+        "verse": 9,
+        "indexItem": 0
+    },
+    {
+        "choosedBook": "Mateus",
+        "chapter": 10,
+        "verse": 29,
+        "indexItem": 0
     }
 ]
