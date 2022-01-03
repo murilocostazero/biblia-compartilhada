@@ -122,6 +122,10 @@ export default function SharePage({ route, navigation }) {
             verseToShare = `${verseToShare}Versículo ${item.id + 1}. ${item.verse}\n`
         });
 
+        const appLink = '\n\nCompartilhe seus versículos também: https://play.google.com/store/apps/details?id=com.sharedbible';
+        
+        verseToShare = verseToShare + appLink;
+
         Clipboard.setString(verseToShare);
         setCopiedText(verseToShare);
         handleStatusBarVisibility('success', 'Versículo copiado')
@@ -298,17 +302,6 @@ export default function SharePage({ route, navigation }) {
                         style={{}}>
                         <Ionicons name='clipboard-outline' size={32} color={colors.icon} />
                     </TouchableHighlight>
-                    {/* {
-                        !isInstagramInstalled
-                            ? <View />
-                            :
-                            <TouchableHighlight
-                                style={{ marginLeft: 16 }}
-                                underlayColor='transparent'
-                                onPress={() => onInstagramShare()}>
-                                <Ionicons name='logo-instagram' color={colors.icon} size={32} />
-                            </TouchableHighlight>
-                    } */}
                     <TouchableHighlight
                         style={{ marginLeft: 16 }}
                         underlayColor='transparent'

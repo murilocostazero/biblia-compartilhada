@@ -5369,11 +5369,6 @@ react-is@^16.13.0, react-is@^16.8.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-native-admob-native-ads@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/react-native-admob-native-ads/-/react-native-admob-native-ads-0.5.0.tgz#c093dcda9d62db8b4262a0fa611448aa9f5b2230"
-  integrity sha512-OMsQZ9RzDVEs48kwrjz9fLthcotTkTtSkQlncFFdSL9L82zx3b1KPA8CYExy9AyyeIQ6gt3b3d1zRtKJa5ZOjw==
-
 react-native-blob-util@^0.13.16:
   version "0.13.16"
   resolved "https://registry.npmjs.org/react-native-blob-util/-/react-native-blob-util-0.13.16.tgz"
@@ -5403,11 +5398,6 @@ react-native-image-picker@^4.1.2:
   version "4.1.2"
   resolved "https://registry.npmjs.org/react-native-image-picker/-/react-native-image-picker-4.1.2.tgz"
   integrity sha512-e4frAekSJkOgEmL9UOLukGhjtPwHSD7qSf3Rmwk+850ofxKqZFfAIfWc9MO3UmCb6G7oB6PkckyTOGOXybrN5A==
-
-react-native-push-notification@^8.1.1:
-  version "8.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-8.1.1.tgz#a41d20c70ea5a7709417e96261b225461f8dc73a"
-  integrity sha512-XpBtG/w+a6WXTxu6l1dNYyTiHnbgnvjoc3KxPTxYkaIABRmvuJZkFxqruyGvfCw7ELAlZEAJO+dthdTabCe1XA==
 
 react-native-safe-area-context@^3.3.2:
   version "3.3.2"

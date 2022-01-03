@@ -14,7 +14,6 @@ import Bible from '../../handlers/handleBible';
 import { getLastDay, storeLastDay } from '../../handlers/handleLastDay';
 import { getFavoriteData, storeFavoriteData } from '../../handlers/handlerASFavorites';
 import { getDailyVerseData, storeDailyVerseData } from '../../handlers/handleDailyVerses';
-import { AdsComponent } from '../../components'
 
 export default function DailyVerse({ navigation }) {
     const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
@@ -222,8 +221,6 @@ export default function DailyVerse({ navigation }) {
 
                 </View>
             </View>
-
-            <AdsComponent />
         </View>
     );
 }

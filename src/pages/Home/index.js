@@ -12,13 +12,11 @@ import {
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { getData, storeData } from '../../handlers/handlerASChoice';
 import { getFavoriteData, storeFavoriteData } from '../../handlers/handlerASFavorites';
-import PushNotification from 'react-native-push-notification';
 import {
     Header,
     FirstUseComponent,
     VersesSettings,
-    ChapterNavigation,
-    AdsComponent
+    ChapterNavigation
 } from '../../components';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../styles/colors';
@@ -46,20 +44,10 @@ export default function Home({ navigation }) {
     const isFocused = useIsFocused();
     const flatlistRef = useRef();
 
-    PushNotification.configure({
-        onNotification: function (notification) {
-            console.log("NOTIFICATION:", notification);
-            navigation.navigate('DailyVerse');
-        },
-        requestPermissions: Platform.OS === 'ios'
-    });
-
     useEffect(() => {
         if (isFocused == true && selectedVerses.length == 0) {
             getInitialData();
         }
-
-        initialNotification();
     }, [selectedVerses, isFocused]);
 
     useFocusEffect(
@@ -77,26 +65,6 @@ export default function Home({ navigation }) {
                 BackHandler.removeEventListener('hardwareBackPress', onBackPress);
         }, [selectedVerses])
     );
-
-    function initialNotification() {
-        PushNotification.createChannel({
-            channelId: 'notification-channel',
-            channelName: 'Notification Channel'
-        });
-
-        PushNotification.cancelAllLocalNotifications();
-
-        PushNotification.localNotificationSchedule({
-            //... You can use all the options from localNotifications
-            channelId: 'notification-channel',
-            title: 'Versículo do dia',
-            message: "Olha que linda mensagem separamos para você.", // (required)
-            date: new Date(Date.now() + 3600 * 1000),
-            allowWhileIdle: true,
-            repeatType: 'time',
-            repeatTime: 3600 * 1000
-        });
-    }
 
     function scrollToIndex(item) {
         let index = item;
@@ -461,8 +429,6 @@ export default function Home({ navigation }) {
                             <Text style={styles.initialButtonText}>Vamos nessa!</Text>
                         </TouchableHighlight>
             }
-
-            <AdsComponent />
         </View>
     );
 }

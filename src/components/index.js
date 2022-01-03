@@ -7,4 +7,3 @@ export { default as StatusBar } from './StatusBar';
 export { default as FontPicker } from './FontPicker';
 export { default as ChapterNavigation } from './ChapterNavigation';
 export { default as RenderModalList } from './RenderModalList';
-export { default as AdsComponent } from './AdsComponent';
