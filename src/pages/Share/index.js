@@ -5,7 +5,8 @@ import {
     Text,
     TouchableHighlight,
     ImageBackground,
-    ScrollView
+    ScrollView,
+    ActivityIndicator
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Settings, StatusBar } from '../../components/';
@@ -13,7 +14,7 @@ import colors from '../../styles/colors';
 import { captureRef } from 'react-native-view-shot';
 import Share from 'react-native-share';
 import NetInfo from "@react-native-community/netinfo";
-import { getPromiseImageStorySize } from '../../handlers/handleFetchImages';
+import { getFetchImages, getFetchSingleImage } from '../../handlers/handleFetchImages';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 export default function SharePage({ route, navigation }) {
@@ -42,8 +43,9 @@ export default function SharePage({ route, navigation }) {
     //Background
     const [backgroundWithImage, setBackgroundWithImage] = useState(null);
     const [backgroundWithColor, setBackgroundWithColor] = useState(colors.primary.dark);
-    const [imagesBackground, setImagesBackground] = useState([]);
-    const [imagesLoaded, setImagesLoaded] = useState(false);
+    const [imagesBackground, setImagesBackground] = useState(null);
+    const [loadingImages, setLoadingImages] = useState(false);
+    const [loadingSingleImage, setLoadingSingleImage] = useState(false);
 
     //StatusBar
     const [isStatusBarVisible, setIsStatusBarVisible] = useState(false);
@@ -54,15 +56,32 @@ export default function SharePage({ route, navigation }) {
     const [isConnected, setIsConnected] = useState(false);
     const [copiedText, setCopiedText] = useState('');
 
-    // const [isInstagramInstalled, setIsInstagramInstalled] = useState(false);
-
     useEffect(() => {
         getVersesToShare();
-        getThreeImages();
-
         checkInternetConnection();
-        // checkIfInstagramIsInstalled();
-    }, [imagesBackground]);
+    }, []);
+
+    async function getImages(query) {
+        setLoadingImages(true);
+        // const imagesFetched = await getFetchImages(query);
+        // setImagesBackground(imagesFetched.photos);        
+        await getFetchImages(query)
+        .then((imagesFetched) => setImagesBackground(imagesFetched.photos))
+        .catch((errorMessage) => handleStatusBarVisibility('error', 'Erro ao buscar imagens'));
+
+        setLoadingImages(false);
+    }
+
+    async function onDownloadingImage(imageUrl) {
+        setLoadingSingleImage(true);
+        // const imageTo64 = await getFetchSingleImage(imageUrl);
+        // setBackgroundWithImage(imageTo64);
+        await getFetchSingleImage(imageUrl)
+        .then((image64) => setBackgroundWithImage(image64))
+        .catch((errorMessage) => handleStatusBarVisibility('error', 'Erro ao baixar imagem'));
+
+        setLoadingSingleImage(false);
+    }
 
     function checkInternetConnection() {
         NetInfo.fetch().then(state => {
@@ -70,14 +89,13 @@ export default function SharePage({ route, navigation }) {
             // console.log("Is connected?", state.isConnected);
             setIsConnected(state.isConnected);
 
-            if (!state.isConnected) handleStatusBarVisibility('error', 'Você não está conectado a internet')
+            if (!state.isConnected) {
+                handleStatusBarVisibility('error', 'Você não está conectado a internet')
+            } else {
+                getImages('nature');
+            }
         });
     }
-
-    // async function checkIfInstagramIsInstalled() {
-    //     const { isInstalled } = await Share.isPackageInstalled('com.instagram.android');
-    //     setIsInstagramInstalled(isInstalled);
-    // }
 
     async function getVersesToShare() {
         const selectedVerses = route.params.selectedVerses;
@@ -95,26 +113,6 @@ export default function SharePage({ route, navigation }) {
         setVerseTitle(verseTitle);
     }
 
-    async function getThreeImages() {
-        while (imagesBackground.length < 3) {
-            await getImages();
-        }
-
-        if (imagesBackground.length == 3) {
-            setImagesLoaded(true);
-        }
-    }
-
-    async function getImages() {
-        const images = imagesBackground;
-        await getPromiseImageStorySize()
-            .then((image) => images.push({ image: image }))
-            .catch((error) => {
-                console.log('Error: ', error);
-            });
-        setImagesBackground(images);
-    }
-
     function copyToClipboard() {
         let verseToShare = `${route.params.choice.choosedBook}, capítulo ${route.params.choice.chapter + 1}\n\n`;
 
@@ -123,7 +121,7 @@ export default function SharePage({ route, navigation }) {
         });
 
         const appLink = '\n\nCompartilhe seus versículos também: https://play.google.com/store/apps/details?id=com.sharedbible';
-        
+
         verseToShare = verseToShare + appLink;
 
         Clipboard.setString(verseToShare);
@@ -133,81 +131,75 @@ export default function SharePage({ route, navigation }) {
 
     function RenderVerses() {
         return (
-                <ScrollView
-                    ref={refToInstagram}
-                    style={{
-                        backgroundColor: verseBackgroundColor,
-                        padding: 12,
-                        borderRadius: 8,
-                        flexGrow: 0,
-                        // opacity: verseOpacity
-                    }}
-                    contentContainerStyle={{
-                        paddingVertical: 6
-                    }}
-                    showsVerticalScrollIndicator={false}>
-                    {
-                        verseTitleLocation == 'bottom'
-                            ?
-                            <View>
-                                {route.params.selectedVerses.map((item) =>
-                                    <View key={item.id}>
-                                        <Text style={[
-                                            verseShadow == true ? styles.shadowToText : null,
-                                            styles.verseItem, {
-                                                fontSize: verseFontSize,
-                                                fontFamily: verseFont,
-                                                color: verseTextColor == 'light' ? '#FFF' : '#000'
-                                            }
-                                        ]}>{item.id + 1}. {item.verse}</Text>
-                                    </View>)}
-                                <Text
-                                    style={[
-                                        styles.verseTitle, {
-                                            textAlign: verseTitlePosition,
-                                            color: verseTitleColor,
-                                            fontFamily: verseTitleFont
-                                        }]}>
-                                    {verseTitle}
-                                </Text>
-                            </View>
-                            :
-                            <View>
-                                <Text
-                                    style={[
-                                        styles.verseTitle, {
-                                            textAlign: verseTitlePosition,
-                                            color: verseTitleColor,
-                                            fontFamily: verseTitleFont
-                                        }]}>
-                                    {verseTitle}
-                                </Text>
-                                {route.params.selectedVerses.map((item) =>
-                                    <View key={item.id}>
-                                        <Text style={[
-                                            verseShadow == true ? styles.shadowToText : null,
-                                            styles.verseItem, {
-                                                fontSize: verseFontSize,
-                                                fontFamily: verseFont,
-                                                color: verseTextColor == 'light' ? '#FFF' : '#000'
-                                            }
-                                        ]}>{item.id + 1}. {item.verse}</Text>
-                                    </View>)}
-                            </View>
-                    }
-                </ScrollView>
+            <ScrollView
+                ref={refToInstagram}
+                style={{
+                    backgroundColor: verseBackgroundColor,
+                    padding: 12,
+                    borderRadius: 8,
+                    flexGrow: 0,
+                    // opacity: verseOpacity
+                }}
+                contentContainerStyle={{
+                    paddingVertical: 6
+                }}
+                showsVerticalScrollIndicator={false}>
+                {
+                    verseTitleLocation == 'bottom'
+                        ?
+                        <View>
+                            {route.params.selectedVerses.map((item) =>
+                                <View key={item.id}>
+                                    <Text style={[
+                                        verseShadow == true ? styles.shadowToText : null,
+                                        styles.verseItem, {
+                                            fontSize: verseFontSize,
+                                            fontFamily: verseFont,
+                                            color: verseTextColor == 'light' ? '#FFF' : '#000'
+                                        }
+                                    ]}>{item.id + 1}. {item.verse}</Text>
+                                </View>)}
+                            <Text
+                                style={[
+                                    styles.verseTitle, {
+                                        textAlign: verseTitlePosition,
+                                        color: verseTitleColor,
+                                        fontFamily: verseTitleFont
+                                    }]}>
+                                {verseTitle}
+                            </Text>
+                        </View>
+                        :
+                        <View>
+                            <Text
+                                style={[
+                                    styles.verseTitle, {
+                                        textAlign: verseTitlePosition,
+                                        color: verseTitleColor,
+                                        fontFamily: verseTitleFont
+                                    }]}>
+                                {verseTitle}
+                            </Text>
+                            {route.params.selectedVerses.map((item) =>
+                                <View key={item.id}>
+                                    <Text style={[
+                                        verseShadow == true ? styles.shadowToText : null,
+                                        styles.verseItem, {
+                                            fontSize: verseFontSize,
+                                            fontFamily: verseFont,
+                                            color: verseTextColor == 'light' ? '#FFF' : '#000'
+                                        }
+                                    ]}>{item.id + 1}. {item.verse}</Text>
+                                </View>)}
+                        </View>
+                }
+            </ScrollView>
         );
     }
 
     function onChangeDashboardBackgroundColor(color) {
         setBackgroundWithImage(null);
         setBackgroundWithColor(color);
-    }
-
-    async function onGettingMoreImages() {
-        setImagesBackground([]);
-        setImagesLoaded(false);
-        // getThreeImages();
     }
 
     async function onRegularShare() {
@@ -219,25 +211,6 @@ export default function SharePage({ route, navigation }) {
 
             await Share.open({
                 url: uri
-            });
-        } catch (err) {
-            handleStatusBarVisibility('warning', 'A imagem não foi compartilhada');
-        }
-    }
-
-    async function onInstagramShare() {
-        try {
-            const uri = await captureRef(refToInstagram, {
-                format: 'png',
-                quality: 1
-            });
-
-            await Share.shareSingle({
-                backgroundImage: `data:image/jpeg;base64,${backgroundWithImage}`,
-                stickerImage: uri, //or you can use "data:" link
-                backgroundBottomColor: backgroundWithColor,
-                backgroundTopColor: backgroundWithColor,
-                social: Share.Social.INSTAGRAM_STORIES
             });
         } catch (err) {
             handleStatusBarVisibility('warning', 'A imagem não foi compartilhada');
@@ -280,13 +253,12 @@ export default function SharePage({ route, navigation }) {
 
     function handleVerseOpacity(opacity) {
         const actualOpacity = verseBackgroundColor.replace(`,${verseOpacity})`, `,${opacity})`);
-        // console.log('Opacity', actualOpacity);
         setVerseBackgroundColor(actualOpacity);
         setVerseOpacity(parseFloat(opacity));
     }
 
     function onCheckingConnection() {
-        setImagesBackground([]);
+        checkInternetConnection();
     }
 
     return (
@@ -311,32 +283,37 @@ export default function SharePage({ route, navigation }) {
                 </View>
             </View>
             {
-                backgroundWithImage == null
-                    ?
-                    <View style={[
-                        styles.dashboard, {
-                            justifyContent: versePosition,
-                            backgroundColor: backgroundWithColor,
-                            padding: verseMargin
-                        }
-                    ]}
-                        ref={viewRef}>
-                        <RenderVerses />
+                loadingSingleImage ?
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                        <ActivityIndicator size='large' color={colors.secondary.regular} />
                     </View>
                     :
-                    <ImageBackground
-                        collapsable={false}
-                        style={[styles.dashboard, {
-                            justifyContent: versePosition,
-                            backgroundColor: 'transparent',
-                            padding: verseMargin
-                        }]}
-                        ref={viewRef}
-                        imageStyle={{ borderRadius: 16 }}
-                        source={{ uri: `data:image/jpeg;base64,${backgroundWithImage}` }}
-                        resizeMode='cover'>
-                        <RenderVerses />
-                    </ImageBackground>
+                    backgroundWithImage == null
+                        ?
+                        <View style={[
+                            styles.dashboard, {
+                                justifyContent: versePosition,
+                                backgroundColor: backgroundWithColor,
+                                padding: verseMargin
+                            }
+                        ]}
+                            ref={viewRef}>
+                            <RenderVerses />
+                        </View>
+                        :
+                        <ImageBackground
+                            collapsable={false}
+                            style={[styles.dashboard, {
+                                justifyContent: versePosition,
+                                backgroundColor: 'transparent',
+                                padding: verseMargin
+                            }]}
+                            ref={viewRef}
+                            imageStyle={{ borderRadius: 16 }}
+                            source={{ uri: `data:image/jpeg;base64,${backgroundWithImage}` }}
+                            resizeMode='cover'>
+                            <RenderVerses />
+                        </ImageBackground>
             }
 
             {
@@ -351,26 +328,27 @@ export default function SharePage({ route, navigation }) {
                 onChangeVersePosition={(position) => setVersePosition(position)}
                 onChangeVerseBackgroundColor={(color) => handleVerseColor(color)}
                 onChangeVerseOpacity={(opacity) => handleVerseOpacity(opacity)}
-                opacity={verseOpacity}
                 onChangeBackgroundImage={(image) => setBackgroundWithImage(image)}
                 onChangeDashboardBackgroundColor={(color) => onChangeDashboardBackgroundColor(color)}
-                imagesBackground={imagesBackground}
-                imagesLoaded={imagesLoaded}
-                onGettingMoreImages={() => onGettingMoreImages()}
                 onChangingVerseTitleLocation={(location) => setVerseTitleLocation(location)}
-                selectingTitleFont={(item) => setVerseTitleFont(item)}
-                selectingVerseFont={(item) => setVerseFont(item)}
                 onChangeVerseMargin={(margin) => setVerseMargin(margin)}
                 onChangeVerseShadow={() => setVerseShadow(!verseShadow)}
-                verseShadow={verseShadow}
                 onChangeVerseFontSize={(size) => setVerseFontSize(size)}
+                onChangeVerseTitle={(item) => setVerseTitle(item)}
+                onDownloadingImage={(imageUrl) => onDownloadingImage(imageUrl)}
+                getImages={(query) => getImages(query)}
+                imagesBackground={imagesBackground}
+                loadingImages={loadingImages}
+                opacity={verseOpacity}
+                selectingTitleFont={(item) => setVerseTitleFont(item)}
+                selectingVerseFont={(item) => setVerseFont(item)}
+                verseShadow={verseShadow}
                 verseFontSize={verseFontSize}
                 margin={verseMargin}
                 isConnected={isConnected}
                 onCheckingConnection={() => onCheckingConnection()}
                 onSelectingVerseTextColor={(verseTextColor) => setVerseTextColor(verseTextColor)}
                 verseTitle={{ book: route.params.choice.choosedBook, chapter: route.params.choice.chapter + 1 }}
-                onChangeVerseTitle={(item) => setVerseTitle(item)}
             />
         </View>
     );

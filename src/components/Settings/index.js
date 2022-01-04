@@ -6,9 +6,10 @@ import {
     TouchableHighlight,
     FlatList,
     ScrollView,
+    BackHandler,
     Image,
-    ActivityIndicator,
-    BackHandler
+    TextInput,
+    ActivityIndicator
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -18,6 +19,7 @@ import palette from '../../styles/palette';
 import { useFocusEffect } from '@react-navigation/native';
 import { ModalColorPicker, FontPicker, RenderModalList } from '../../components';
 import { launchImageLibrary } from 'react-native-image-picker';
+import SearchImageBar from '../SearchImageBar';
 
 export default function Settings(props) {
     const [selectedSetting, setSelectedSetting] = useState('');
@@ -493,19 +495,6 @@ export default function Settings(props) {
         props.onChangeBackgroundImage(image);
     }
 
-    function renderImagesToChoose(item) {
-        return (
-            <TouchableHighlight
-                key={item.index}
-                onPress={() => onSelectingBackground(item.item.image)}
-                underlayColor='transparent'>
-                <Image
-                    style={{ width: 112, height: 224, marginRight: 8, borderRadius: 8 }}
-                    source={{ uri: `data:image/jpeg;base64,${item.item.image}` }} />
-            </TouchableHighlight>
-        );
-    }
-
     function pickGalleryImage() {
         launchImageLibrary({
             title: 'Select Image',
@@ -526,6 +515,26 @@ export default function Settings(props) {
         });
     }
 
+    function renderImagesBackground({ item }) {
+        return (
+            <TouchableHighlight
+                underlayColor='transparent'
+                onPress={() => {
+                    props.onDownloadingImage(item.src.original);
+                    setSelectedSetting(0);
+                }} >
+                <Image
+                    source={{ uri: item.src.medium }}
+                    style={{
+                        width: 120,
+                        height: 240,
+                        borderRadius: 8,
+                        marginRight: 8
+                    }} />
+            </TouchableHighlight>
+        );
+    }
+
     function RenderBackgroundOptions() {
         return (
             <View>
@@ -544,7 +553,8 @@ export default function Settings(props) {
                             borderRadius: 8,
                             alignItems: 'center',
                             justifyContent: 'center',
-                            padding: 4
+                            padding: 4,
+                            height: 38
                         }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={{
@@ -556,30 +566,11 @@ export default function Settings(props) {
                         </View>
                     </TouchableHighlight>
 
+                    {/* Tive que levar o TextInput pra fora pra ele parar de re-renderizar quando digita */}
                     {
-                        props.imagesBackground.length < 3
-                            ?
-                            <View />
-                            :
-                            <TouchableHighlight
-                                onPress={() => props.onGettingMoreImages()}
-                                underlayColor={colors.secondary.light}
-                                style={{
-                                    backgroundColor: colors.primary.light,
-                                    borderRadius: 8,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    padding: 4
-                                }}>
-                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <Text style={{
-                                        fontFamily: 'PTSans-Bold',
-                                        marginRight: 8,
-                                        color: '#FFF'
-                                    }}>Carregar mais</Text>
-                                    <Ionicons name='refresh-outline' color={colors.secondary.regular} size={22} />
-                                </View>
-                            </TouchableHighlight>
+                        !props.isConnected ?
+                            <View /> :
+                            <SearchImageBar getImages={(query) => props.getImages(query)} />
                     }
                 </View>
                 {
@@ -610,18 +601,13 @@ export default function Settings(props) {
                             </View>
                         </TouchableHighlight>
                         :
-                        props.imagesBackground.length < 3
-                            ? <ActivityIndicator size="large" color={colors.secondary.regular} />
-                            :
+                        props.loadingImages ?
+                            <ActivityIndicator size='large' color={colors.secondary.regular} /> :
                             <FlatList
-                                style={{ flex: 1 }}
                                 horizontal={true}
                                 data={props.imagesBackground}
-                                keyExtractor={(item) => item.image}
-                                renderItem={renderImagesToChoose}
-                                extraData={props.imagesLoaded}
-                                contentContainerStyle={{ justifyContent: 'center',  flex: 1 }}
-                            />
+                                keyExtractor={item => item.id}
+                                renderItem={renderImagesBackground} />
                 }
             </View>
         );

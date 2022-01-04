@@ -1,67 +1,30 @@
 import ReactNativeBlobUtil from 'react-native-blob-util';
+import API_KEY from '../assets/api-key';
 
-export async function getImages() {
-  const min = Math.ceil(1);
-  const max = Math.floor(100);
-  const page = Math.floor(Math.random() * (max - min + 1)) + min;
-  try {
-    const response = await fetch(`https://picsum.photos/v2/list?page=${page}&limit=5`);
-    const images = await response.json();
-    return images;
-  } catch (error) {
-    console.error(error);
-  }
-}
+export async function getFetchImages(query) {
+  query = query != undefined ? query : 'nature';
 
-export async function getSingleImage(url) {
   return new Promise((resolve, reject) => {
-    ReactNativeBlobUtil
-      .fetch('GET', url)
+    ReactNativeBlobUtil.fetch('GET', `https://api.pexels.com/v1/search?query=${query}`, {
+      Authorization: API_KEY
+    })
       .then((res) => {
-        let status = res.info().status;
-
-        if (status == 200) {
-          let base64Str = res.base64()
-          // let text = res.text()
-          // let json = res.json()
-
-          // console.log('Base 64', base64Str)
-          return resolve({
-            base64: base64Str,
-            imageUrl: res.info().redirects[1]
-          });
-        } else {
-          return reject(null);
-        }
+        return resolve(res.json());
       })
       .catch((errorMessage, statusCode) => {
-        console.log('Error to Fetch single image. ');
-        console.log(errorMessage)
-      });
+        return reject(errorMessage);
+      })
   });
 }
 
-export async function getPromiseImageStorySize() {
+export async function getFetchSingleImage(imageUrl) {
   return new Promise((resolve, reject) => {
-    ReactNativeBlobUtil
-      .fetch('GET', 'https://picsum.photos/1080/1920')
+    ReactNativeBlobUtil.fetch('GET', imageUrl)
       .then((res) => {
-        let status = res.info().status;
-
-        if (status == 200) {
-          let base64Str = res.base64()
-          // let text = res.text()
-          // let json = res.json()
-
-          // console.log('Base 64', base64Str)
-          return resolve(base64Str);
-        } else {
-          return reject(null);
-        }
+        return resolve(res.base64());
       })
       .catch((errorMessage, statusCode) => {
-        console.log('Error to Fetch single image instagram size. ');
-        console.log(errorMessage)
-      });
+        return reject(errorMessage);
+      })
   });
 }
